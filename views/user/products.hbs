@@ -1,0 +1,46 @@
+<div class="btn-group ms-5" role="group" aria-label="Basic radio toggle button group" style="margin-top:100px;">
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+    <label class="btn btn-outline-primary" for="btnradio1">All products</label>
+
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+    <label class="btn btn-outline-primary" for="btnradio2">Gents</label>
+
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+    <label class="btn btn-outline-primary" for="btnradio3">Ladies</label>
+
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+    <label class="btn btn-outline-primary" for="btnradio3">Kids</label>
+</div>
+<section>
+    <div class="container mt-3">
+        <div class="row">
+            {{#each products}}
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="card" style="width: 18rem; margin-top:25px;">
+                    <img style="width:100px; height:180px;" src="/product-images/{{this._id}}/{{this._id}}_0.png"
+                        class="card-img-top mx-auto mt-3" alt="...">
+                    <div class="card-body">
+                        <h6>{{this.brand}}</h6>
+                        <a style="text-decoration: none;" href="/product-details/{{this._id}}">
+                            <h5>{{this.product}}</h5>
+                        </a>
+                        <p class="mb-0" style="text-decoration :line-through;">₹{{this.actualprice}}</p>
+                        <h5>₹{{this.offerprice}}</h5>
+                        {{#if user}}
+                        <a href="/cart" class="btn btn-primary">Add to cart</a>
+                        {{else}}
+                        <a href="/login" class="btn btn-primary">Add to cart</a>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</section>
+<style>
+    .card:hover {
+        box-shadow: rgba(100, 100, 111, 0.5) 0px 7px 29px 0px;
+        transition-duration: .6s;
+    }
+</style>

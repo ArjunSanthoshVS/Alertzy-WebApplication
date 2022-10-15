@@ -1,0 +1,64 @@
+<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-white shadow">
+    <div class="container-fluid">
+        <img class="ms-5" src="/images/Logo.png" alt="" style="display:flex; width: 170px;">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <div class="mx-auto">
+                <ul class="navbar-nav me-3" style="font-weight:700;">
+                    <li class="nav-item">
+                        <a class="nav-link active pe-4" aria-current="page" href="/"
+                            style=" color: #1867C2; font-family:auto; font-size: larger;">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active pe-4" href="/products"
+                            style=" color: #1867C2; font-family:auto; font-size: larger;">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active pe-4" href="#"
+                            style=" color: #1867C2; font-family:auto; font-size: larger;">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active pe-4" href="#"
+                            style=" color: #1867C2; font-family:auto; font-size: larger;">Contact Us</a>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="nav-item dropdown me-5" style="font-weight:700;">
+                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    {{#if user}}
+                    {{user.firstname}}
+                    {{else}}
+                    Account
+                    {{/if}}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="margin-left:-15px;">
+                    {{#if user}}
+                    <form class="d-flex">
+                        <input class="form-control me-1" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-primary" type="submit">Search</button>
+                    </form>
+                    <li><a class="dropdown-item" href="#">User Profile</a></li>
+                    <li><a class="dropdown-item" href="#">Cart</a></li>
+                    <li><a class="dropdown-item" href="#">Wishlist</a></li>
+                    {{else}}
+                    <p></p>
+                    {{/if}}
+
+                    {{#if user}}
+                    <li><a class="dropdown-item" href="/logout">LogOut</a></li>
+                    {{else}}
+                    <li><a class="dropdown-item" href="/login">Login</a></li>
+                    {{/if}}
+
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</nav>

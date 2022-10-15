@@ -1,0 +1,58 @@
+<div class="background pb-3">
+  <div class="container" style="margin-left: 12rem; padding-right: 0px; vh-100">
+    <nav class="navbar navbar-light bg-white p-3 ms-2" style="margin-right:-24px;">
+      <div class="container-fluid">
+        <a class="navbar-brand" style="font-family: none; font-weight: 900; color: black;">
+          <h1>Users</h1>
+        </a>
+        <form class="d-flex">
+          <input class="form-control me-1" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-primary" type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </form>
+      </div>
+    </nav>
+    <div class="row height d-flex p-3">
+    </div>
+    <table class="table table-dark table-striped ms-3" style="">
+      <thead>
+        <tr>
+          <th scope="col">No</th>
+          <th scope="col">User</th>
+          <th scope="col">Email</th>
+          <th scope="col">Mobile</th>
+          <th scope="col">Status</th>
+          <th scope="col">Options</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each users}}
+        <tr>
+          <th scope="row">1</th>
+          <td>{{this.firstname}}</td>
+          <td>{{this.email}}</td>
+          <td>{{this.mobile}}</td>
+          <td>
+            {{#if this.status}}
+            Active
+            {{else}}
+            Inactive
+            {{/if}}
+          </td>
+          <td>
+            {{#if this.status}}
+            <a class="btn btn-danger" href="/admin/users/{{this._id}}"
+              onclick="return confirm('Do you want to deactivate the user')">Block</a>
+            {{else}}
+            <a class="btn btn-success" href="/admin/users/{{this._id}}"
+              onclick="return confirm('Do you want to activate the user')">Unblock</a>
+            {{/if}}
+          </td>
+        </tr>
+        {{/each}}
+
+      </tbody>
+    </table>
+  </div>
+</div>

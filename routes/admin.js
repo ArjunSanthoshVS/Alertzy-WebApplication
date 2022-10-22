@@ -2,16 +2,18 @@ var express = require('express');
 var router = express.Router();
 const adminHelpers = require('../helpers/admin-helpers');
 const productHelpers = require('../helpers/product-helpers');
+const userHelpers = require('../helpers/user-helpers');
 const middleware = require('../middlewares/authentication-check')
 const mkdirp = require('mkdirp')
 
-/* GET users listing. */
+//ENTERING PAGE
 router.get('/', function (req, res, next) {
   res.render('admin/login', { not: true });
 });
 
+//LOGIN
 router.get('/login', middleware.adminLoginUnchecked, (req, res) => {
-  res.render('admin/login', { "loginErr": req.session.loginErr });
+  res.render('admin/login', { "loginErr": req.session.loginErr, not: true });
   req.session.loginErr = false;
 });
 
@@ -28,23 +30,25 @@ router.post('/login', (req, res) => {
   });
 });
 
-// router.get('/signup', middleware.adminLoginUnchecked, (req, res) => {
-//   res.render('admin/signup', { "signupErr": req.session.signupErr })
-//   req.session.signupErr = false
-// })
+//ADMIN SIGNUP
+router.get('/signup', middleware.adminLoginUnchecked, (req, res) => {
+  res.render('admin/signup', { "signupErr": req.session.signupErr })
+  req.session.signupErr = false
+})
 
-// router.post('/signup', (req, res) => {
-//   adminHelpers.adminSignUp(req.body).then((resolve) => {
-//     console.log(resolve)
-//     if (resolve.data) {
-//       res.redirect('/admin/login')
-//     } else {
-//       req.session.signupErr = resolve.message;
-//       res.redirect('/signup');
-//     }
-//   })
-// })
+router.post('/signup', (req, res) => {
+  adminHelpers.adminSignUp(req.body).then((resolve) => {
+    console.log(resolve)
+    if (resolve.data) {
+      res.redirect('/admin/login')
+    } else {
+      req.session.signupErr = resolve.message;
+      res.redirect('/signup');
+    }
+  })
+})
 
+//PRODUCTS LISTING
 router.get('/products', middleware.adminLoginChecked, function (req, res, next) {
   productHelpers.getAllProducts().then((products) => {
     let admin = req.session.admin;
@@ -52,7 +56,8 @@ router.get('/products', middleware.adminLoginChecked, function (req, res, next) 
   })
 });
 
-router.get('/add-product', async (req, res) => {
+//ADD PRODUCT
+router.get('/add-product', middleware.adminLoginChecked, async (req, res) => {
   let admin = req.session.admin;
   let category = await adminHelpers.getCategory()
   res.render('admin/add-product', { category, admin: true, admin })
@@ -76,6 +81,7 @@ router.post("/add-product", (req, res) => {
   })
 })
 
+//EDIT PRODUCT
 router.get('/edit-product/:id', async (req, res) => {
   let admin = req.session.admin;
   let product = await productHelpers.getProductDetails(req.params.id)
@@ -101,6 +107,7 @@ router.post('/edit-product/:id', (req, res) => {
   })
 })
 
+//DELETE PRODUCT
 router.get('/delete-product/:id', (req, res) => {
   let prodId = req.params.id
   productHelpers.deleteProduct(prodId).then((response) => {
@@ -108,20 +115,23 @@ router.get('/delete-product/:id', (req, res) => {
   })
 })
 
-router.get('/users', (req, res) => {
+//USERS LISTING
+router.get('/users', middleware.adminLoginChecked, (req, res) => {
   adminHelpers.listAllUsers().then((users) => {
     let admin = req.session.admin
     res.render('admin/users', { admin: true, users, admin })
   })
 })
 
+//USER STATUS
 router.get('/users/:id', (req, res) => {
   adminHelpers.userStatus(req.params.id).then((response) => {
     res.redirect('/admin/users')
   })
 })
 
-router.get('/category', (req, res) => {
+//CATEGORY LISTING
+router.get('/category', middleware.adminLoginChecked, (req, res) => {
   adminHelpers.getCategory().then((category) => {
     let admin = req.session.admin
     res.render('admin/manage-category', { admin: true, category, admin })
@@ -142,6 +152,7 @@ router.post('/category', (req, res) => {
 
 })
 
+//DELETE CATEGORY 
 router.get('/delete-category/:id', (req, res) => {
   let catId = req.params.id
   adminHelpers.deleteCategory(catId).then((response) => {
@@ -149,16 +160,30 @@ router.get('/delete-category/:id', (req, res) => {
   })
 })
 
-router.post('/edit-category/:id', (req, res) => {
-  let catId = req.params.id
-  adminHelpers.editCategory(req.params.id, req.body).then(() => {
-    if (!err) {
-      let successmsg = encodeURIComponent('Category added successfully');
-      res.redirect('/admin/category?msg=' + successmsg)
-    }
-  }).catch(() => {
-    res.redirect('/admin/category')
+//ORDERS
+router.get('/orders', middleware.adminLoginChecked, (req, res) => {
+  adminHelpers.getOrderDetails('placed').then((orderItems) => {
+    res.render('admin/orders', { admin: true, orderItems })
   })
 })
 
+//ORDER STATUS
+router.get('/orders/:status', (req, res) => {
+  adminHelpers.getOrderDetails(req.params.status).then((response) => {
+    res.json(response)
+  })
+})
+
+router.post('/order-status', (req, res) => {
+  adminHelpers.changeOrderStatus(req.body.orderId, req.body.status).then(() => {
+    res.json({ status: true })
+  })
+})
+
+//CANCEL ORDER
+router.get('cancel-order/:orderId', (req, res) => {
+  userHelpers.cancelOrder(req.params.orderId).then(() => {
+    res.json({ status: true })
+  })
+})
 module.exports = router;

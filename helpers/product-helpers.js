@@ -3,17 +3,23 @@ var collection = require('../config/collection')
 var objectId = require('mongodb').ObjectId
 
 module.exports = {
+
+    //ADD PRODUCT
     addProduct: (product, callback) => {
         db.get().collection(collection.PRODUCT_COLLECTION).insertOne(product).then((data) => {
             callback(data.insertedId.toString());
         })
     },
+
+    //ALL PRODUCTS
     getAllProducts: () => {
         return new Promise(async (resolve, reject) => {
             let products = await db.get().collection(collection.PRODUCT_COLLECTION).find().toArray();
             resolve(products)
         })
     },
+
+    //DELETE PRODUCT
     deleteProduct: (prodId) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.PRODUCT_COLLECTION).deleteOne({ _id: objectId(prodId) }).then((response) => {
@@ -22,6 +28,8 @@ module.exports = {
             })
         })
     },
+
+    //PRODUCT DETAILS
     getProductDetails: (prodId) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.PRODUCT_COLLECTION).findOne({ _id: objectId(prodId) }).then((product) => {
@@ -31,6 +39,7 @@ module.exports = {
         })
     },
 
+    //UPDATE PRODUCT
     updateProduct: (prodId, prodDetails) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.PRODUCT_COLLECTION)

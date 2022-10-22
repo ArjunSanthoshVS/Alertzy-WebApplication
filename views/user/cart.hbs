@@ -1,576 +1,549 @@
-<div id="app">
+<div class="container" style="display: flex;">
+  <div class="col-9">
+    <div class="container bg-white"
+      style="margin-top: 130px; border-radius: 10px; box-shadow: rgb(100 100 111 / 50%) 0px 7px 29px 0px;">
 
-  <!-- Header -->
-  <header class="container">
-    <h1>Shopping Cart</h1>
-    <ul class="breadcrumb">
-      <li>Home</li>
-      <li>Shopping Cart</li>
-    </ul>
-    <span class="count">
-      {{!-- {{ itemCount }} --}}
-      5
-      items in the bag</span>
-  </header>
-  <!-- End Header -->
+      <body>
 
-  <!-- Product List -->
-  <section class="container">
-    <div v-if="products.length > 0">
-      <ul class="products">
-        <li class="row" v-for="(product, index) in products">
-          <div class="col left">
-            <div class="thumbnail">
-              <a href="#">
-                <img :src="product.image" :alt="product.name" />
-              </a>
+        <main>
+          <div class="basket mt-5 ">
+            <div class="basket-module">
+              {{!-- <label for="promo-code">Enter a promotional code</label>
+              <input id="promo-code" type="text" name="promo-code" maxlength="5" class="promo-code-field">
+              <button class="promo-code-cta">Apply</button> --}}
+              <h2 class="fw-bold">Your Cart..! <h4>( {{cartCount}} items )</h4>
+              </h2>
             </div>
-            <div class="detail">
-              <div class="name"><a href="#">
-                  {{!-- {{ product.name }} --}}
-                  Arjun
-                </a></div>
-              <div class="description">
-                {{!-- {{ product.description }} --}}
-                ygwhbdjhvwjubgwbkw
+            <div class="basket-labels">
+              <ul>
+                <li class="item item-heading">Item</li>
+                <li class="price">Price</li>
+                <li class="quantity">Quantity</li>
+                {{!-- <li class="subtotal">Subtotal</li> --}}
+              </ul>
+            </div>
+            {{#each products}}
+            <div class="basket-product">
+              <div class="item">
+                <div class="product-image">
+                  <img src="/product-images/{{this.product._id}}/{{this.product._id}}_0.png" alt="Placholder Image 2">
+                </div>
+                <div class="product-details">
+                  <p style="font-weight: 600;">{{this.product.brand}}</p>
+                  <h1 style="font-size:27px;"><strong>{{this.product.product}}</strong></h1>
+                </div>
               </div>
-              <div class="price">
-                {{!-- {{ product.price | currencyFormatted }} --}}
-                32851769
+              <div class="price" style="font-size: 20px; font-weight: 600;">₹{{this.product.offerprice}}</div>
+              <div class="quantity" style=" font-size: 20px; font-weight: 600;">
+                <button class="cart-item-count"
+                  onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../userId}}',-1)">-</button>
+                <span id="{{this.product._id}}">{{this.quantity}}</span>
+                <button class="cart-item-count"
+                  onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../userId}}',1)">+</button>
+                <div class="remove"><a href="/delete-cart-product/{{this.product._id}}?_method=DELETE"
+                    data-mdb-toggle="tooltip" title="Remove item">
+                    <button><i class="fa-solid fa-trash"></i></button></a>
+                </div>
               </div>
             </div>
+            {{/each}}
           </div>
+        </main>
+      </body>
+      <div class="ibox-content pb-3">
 
-          <div class="col right">
-            <div class="quantity">
-              <input type="number" class="quantity" step="1" :value="product.quantity"
-                @input="updateQuantity(index, $event)" @blur="checkQuantity(index, $event)" />
-            </div>
+        <a class=" checkout-cta btn btn-primary" style="width:20%" href="/products"><i
+            class="fa fa-arrow-left"></i>Continue to
+          shopping</a>
 
-            <div class="remove">
-              <svg @click="removeItem(index)" version="1.1" class="close" xmlns="//www.w3.org/2000/svg"
-                xmlns:xlink="//www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 60 60"
-                enable-background="new 0 0 60 60" xml:space="preserve">
-                <polygon
-                  points="38.936,23.561 36.814,21.439 30.562,27.691 24.311,21.439 22.189,23.561 28.441,29.812 22.189,36.064 24.311,38.186 30.562,31.934 36.814,38.186 38.936,36.064 32.684,29.812">
-                </polygon>
-              </svg>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div v-else class="empty-product">
-      <h3>There are no products in your cart.</h3>
-      <button>Shopping now</button>
-    </div>
-  </section>
-  <!-- End Product List -->
 
-  <!-- Summary -->
-  <section class="container" v-if="products.length > 0">
-    <div class="promotion">
-      <label for="promo-code">Have A Promo Code?</label>
-      <input type="text" id="promo-code" v-model="promoCode" /> <button type="button" @click="checkPromoCode"></button>
+      </div>
     </div>
+  </div>
 
-    <div class="summary">
-      <ul>
-        <li>Subtotal <span>
-            {{!-- {{ subTotal | currencyFormatted }} --}}
-            avdveb
-          </span></li>
-        <li v-if="discount > 0">Discount <span>
-            {{!-- {{ discountPrice | currencyFormatted }} --}}
-            8245176
-          </span></li>
-        <li>Tax <span>
-            {{!-- {{ tax | currencyFormatted }} --}}
-            456262
-          </span></li>
-        <li class="total">Total <span>
-            {{!-- {{ totalPrice | currencyFormatted }} --}}
-            7436175
-          </span></li>
-      </ul>
-    </div>
+  <div class="col-3 mt-5 my-auto">
+    <div class="summary ms-5 mt-5" style=" box-shadow: rgb(100 100 111 / 20%) 0px 0px 9px 0px; margin-top: 50px">
+      <div class="summary-total-items"><span class="total-items"></span> Items in your Bag</div>
+      {{#each products}}
+      <div class="summary-subtotal">
+        <div class="subtotal-title w-100">{{this.product.product}}</div>
+        <div class="summary-promo hide">
+          <div class="promo-title">Promotion</div>
+          <div class="promo-value final-value" id="basket-promo"></div>
+        </div>
+      </div>
+      {{/each}}
+      {{!-- <div class="summary-delivery">
+        <select name="delivery-collection" class="summary-delivery-selection">
+          <option value="0" selected="selected">Select Collection or Delivery</option>
+          <option value="collection">Collection</option>
+          <option value="first-class">Royal Mail 1st Class</option>
+          <option value="second-class">Royal Mail 2nd Class</option>
+          <option value="signed-for">Royal Mail Special Delivery</option>
+        </select>
+      </div> --}}
+      <div class="summary-total">
+        <div class="total-title">Total</div>
+        <div class="total-value final-value" id="basket-total">
+          <span id="total">₹{{totalValue}}</span>
+        </div>
+      </div>
 
-    <div class="checkout">
-      <button type="button">Check Out</button>
+      <div class="summary-checkout">
+        {{#if cartCount}}
+        <a href="/place-order" class="checkout-cta btn btn-primary"><b>Place Order</b></a>
+        {{else}}
+        <h4 class="fw-bold text-danger">Please add Some Products...!</h4>
+        {{/if}}
+        {{!-- <button class="checkout-cta">Go to Secure Checkout</button> --}}
+      </div>
+
     </div>
-  </section>
-  <!-- End Summary -->
+  </div>
 </div>
 
 <style>
-  * {
-    box-sizing: border-box;
-  }
+  @charset "utf-8";
 
-  html {
-    font-size: 12px;
+  @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,600);
+
+  html,
+  html a {
+    -webkit-font-smoothing: antialiased;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
   }
 
   body {
-    margin: 20px 0;
-    padding: 0;
-    font-family: arial, sans-serif;
-    overflow: scroll;
-  }
-
-  img {
-    max-width: 100%;
-    vertical-align: middle;
-    border-radius: 4px;
+    background-color: #fff;
+    color: #1867C2;
+    font-family: 'Open Sans', sans-serif;
+    margin: 0 auto;
   }
 
   a {
+    border: 0 none;
+    outline: 0;
     text-decoration: none;
-    color: #333333;
   }
 
-  a:hover {
-    color: #f58551;
-  }
-
-  button {
-    background-color: #16cc9b;
-    border: 2px solid #16cc9b;
-    color: #ffffff;
-    transition: all 0.25s linear;
-    cursor: pointer;
-  }
-
-  button::after {
-    position: relative;
-    right: 0;
-    content: " \276f";
-    transition: all 0.15s linear;
-  }
-
-  button:hover {
-    background-color: #f58551;
-    border-color: #f58551;
-  }
-
-  button:hover::after {
-    right: -5px;
-  }
-
-  button:focus {
-    outline: none;
-  }
-
-  ul {
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
-  }
-
-  input {
-    transition: all 0.25s linear;
-  }
-
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    margin: 0;
-  }
-
-  input {
-    outline: none;
-  }
-
-  .container {
-    width: 90%;
-    margin: 0 auto;
-    overflow: auto;
-  }
-
-  /* --- HEADER --- */
-  header.container {
-    margin-bottom: 1.5rem;
-  }
-
-  header .breadcrumb {
-    color: #7d7d7d;
-  }
-
-  header .breadcrumb li {
-    float: left;
-    padding: 0 6px;
-    height: 20px;
-    line-height: 20px;
-  }
-
-  header .breadcrumb li:first-child {
-    padding-left: 2px;
-  }
-
-  header .breadcrumb li:not(:last-child)::after {
-    content: " \276f";
-    padding-left: 8px;
-  }
-
-  header .count {
-    float: right;
-    color: #333333;
-    height: 20px;
-    line-height: 20px;
-  }
-
-  /* --- PRODUCT LIST --- */
-  .products {
-    border-top: 1px solid #ddd;
-  }
-
-  .products>li {
-    padding: 1rem 0;
-    border-bottom: 1px solid #ddd;
-  }
-
-  .row {
-    position: relative;
-    overflow: auto;
-    width: 100%;
-  }
-
-  .col,
-  .quantity,
-  .remove {
-    float: left;
-  }
-
-  .col.left {
-    width: 70%;
-  }
-
-  .col.right {
-    width: 30%;
-    position: absolute;
-    right: 0;
-    top: calc(50% - 30px);
-  }
-
-  .detail {
-    padding: 0 0.5rem;
-    line-height: 2.2rem;
-  }
-
-  .detail .name {
-    font-size: 1.2rem;
-  }
-
-  .detail .description {
-    color: #7d7d7d;
-    font-size: 1rem;
-  }
-
-  .detail .price {
-    font-size: 1.5rem;
-  }
-
-  .quantity,
-  .remove {
-    width: 50%;
-    text-align: center;
-  }
-
-  .remove svg {
-    width: 60px;
-    height: 60px;
-  }
-
-  .quantity>input {
-    display: inline-block;
-    width: 60px;
-    height: 60px;
-    position: relative;
-    left: calc(50% - 30px);
-    background: #fff;
-    border: 2px solid #ddd;
-    color: #7f7f7f;
-    text-align: center;
-    font: 600 1.5rem Helvetica, Arial, sans-serif;
-  }
-
-  .quantity>input:hover,
-  .quantity>input:focus {
-    border-color: #f58551;
-  }
-
-  .close {
-    fill: #7d7d7d;
-    transition: color 150ms linear, background-color 150ms linear,
-      fill 150ms linear, 150ms opacity linear;
-    cursor: pointer;
-  }
-
-  .close:hover {
-    fill: #f58551;
-  }
-
-  /* --- SUMMARY --- */
-  .promotion,
-  .summary,
-  .checkout {
-    float: left;
-    width: 100%;
-    margin-top: 1.5rem;
-  }
-
-  .promotion>label {
-    float: left;
-    width: 100%;
-    margin-bottom: 1rem;
-  }
-
-  .promotion>input {
-    float: left;
-    width: 80%;
-    font-size: 1rem;
-    padding: 0.5rem 0 0.5rem 1.8rem;
-    border: 2px solid #16cc9b;
-    border-radius: 2rem 0 0 2rem;
-  }
-
-  .promotion:hover>input {
-    border-color: #f58551;
-  }
-
-  .promotion>button {
-    float: left;
-    width: 20%;
-    height: 2.4rem;
-    border-radius: 0 2rem 2rem 0;
-  }
-
-  .promotion:hover>button {
-    border-color: #f58551;
-    background-color: #f58551;
-  }
-
-  .promotion>button::after {
-    content: "\276f";
-    font-size: 1rem;
-  }
-
-  .summary {
-    font-size: 1.2rem;
-    text-align: right;
-  }
-
-  .summary ul li {
-    padding: 0.5rem 0;
-  }
-
-  .summary ul li span {
-    display: inline-block;
-    width: 30%;
-  }
-
-  .summary ul li.total {
+  strong {
     font-weight: bold;
   }
 
-  .checkout {
+  p {
+    margin: 0.75rem 0 0;
+  }
+
+  input,
+  button {
+    border: 0 none;
+    outline: 0 none;
+  }
+
+  button {
+    background-color: #1867C2;
+    color: #fff;
+  }
+
+  button:hover,
+  button:focus {
+    background-color: #555;
+  }
+
+  img,
+  .basket-module,
+  .basket-labels,
+  .basket-product {
+    width: 70%;
+  }
+
+  input,
+  button,
+  .basket,
+  .basket-module,
+  .basket-labels,
+  .item,
+  .price,
+  .quantity,
+  .subtotal,
+  .basket-product,
+  .product-image,
+  .product-details {
+    float: left;
+  }
+
+  .price:before,
+  .subtotal:before,
+  .subtotal-value:before,
+  .total-value:before,
+  .promo-value:before {
+    +
+  }
+
+  .hide {
+    display: none;
+  }
+
+  main {
+    clear: both;
+    font-size: 0.75rem;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 1rem 0;
+    width: 140%;
+  }
+
+  .basket,
+  aside {
+    padding: 0 1rem;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  .basket {
+    width: 98%;
+  }
+
+  .basket-module {
+    color: #1867C2;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.3125rem;
+  }
+
+  .promo-code-field {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    text-transform: uppercase;
+    transition: all 0.2s linear;
+    width: 48%;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -o-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  }
+
+  .promo-code-field:hover,
+  .promo-code-field:focus {
+    border: 1px solid #1867C2;
+  }
+
+  .promo-code-cta {
+    border-radius: 4px;
+    font-size: 0.625rem;
+    margin-left: 0.625rem;
+    padding: 0.6875rem 1.25rem 0.625rem;
+  }
+
+  .basket-labels {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    margin-top: 1.625rem;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    color: #1867C2;
+    display: inline-block;
+    padding: 0.625rem 0;
+  }
+
+  li.price:before,
+  li.subtotal:before {
+    content: '';
+  }
+
+  .item {
+    width: 55%;
+  }
+
+  .price,
+  .quantity,
+  .subtotal {
+    width: 15%;
+  }
+
+  .subtotal {
     text-align: right;
   }
 
-  .checkout>button {
-    font-size: 1.2rem;
-    padding: 0.8rem 2.8rem;
-    border-radius: 1.5rem;
+  .remove {
+    bottom: 1.125rem;
+    float: right;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    width: 45%;
   }
 
-  .empty-product {
+  .remove button {
+    background-color: transparent;
+    color: rgb(255, 0, 0);
+    float: none;
+    text-decoration: underline;
+    text-transform: uppercase;
+  }
+
+  .item-heading {
+    padding-left: 4.375rem;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  .basket-product {
+    border-bottom: 1px solid #ccc;
+    padding: 1rem 0;
+    position: relative;
+
+  }
+
+  .product-image {
+    width: 35%;
+  }
+
+  .product-details {
+    width: 65%;
+  }
+
+  .product-frame {
+    border: 1px solid #aaa;
+  }
+
+  .product-details {
+    padding: 0 1.5rem;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  .quantity-field {
+    background-color: rgb(255, 255, 255);
+    border: 1px solid #1867C2;
+    border-radius: 4px;
+    font-size: 0.625rem;
+    padding: 2px;
+    width: 3.75rem;
+  }
+
+  aside {
+    float: right;
+    position: relative;
+    width: 30%;
+  }
+
+  .summary {
+    background-color: #fff;
+    border: 1px solid #aaa;
+    border-radius: 10px;
+    padding: 1rem;
+    position: fixed;
+    width: 250px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+
+  .summary-total-items {
+    color: #1867C2;
+    font-size: 0.875rem;
     text-align: center;
   }
 
-  .empty-product>button {
-    font-size: 1.3rem;
-    padding: 10px 30px;
-    border-radius: 5px;
+  .summary-subtotal,
+  .summary-total {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    clear: both;
+    margin: 1rem 0;
+    overflow: hidden;
+    padding: 0.5rem 0;
   }
 
-  /* --- SMALL SCREEN --- */
-  @media all and (max-width: 599px) {
-    .thumbnail img {
-      display: none;
-    }
-
-    .quantity>input {
-      width: 40px;
-      height: 40px;
-      left: calc(50% - 20px);
-    }
-
-    .remove svg {
-      width: 40px;
-      height: 40px;
-    }
+  .subtotal-title,
+  .subtotal-value,
+  .total-title,
+  .total-value,
+  .promo-title,
+  .promo-value {
+    color: #111;
+    float: left;
+    width: 50%;
   }
 
-  /* --- MEDIUM & LARGE SCREEN --- */
-  @media all and (min-width: 600px) {
-    html {
-      font-size: 14px;
-    }
+  .summary-promo {
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
+  }
 
-    .container {
-      width: 75%;
-      max-width: 960px;
-    }
+  .promo-title {
+    float: left;
+    width: 70%;
+  }
 
-    .thumbnail,
-    .detail {
-      float: left;
-    }
+  .promo-value {
+    color: #8B0000;
+    float: left;
+    text-align: right;
+    width: 30%;
+  }
 
-    .thumbnail {
-      width: 35%;
-    }
+  .summary-delivery {
+    padding-bottom: 3rem;
+  }
 
-    .detail {
-      width: 65%;
-    }
+  .subtotal-value,
+  .total-value {
+    text-align: right;
+  }
 
-    .promotion,
-    .summary {
-      width: 50%;
-    }
+  .total-title {
+    font-weight: bold;
+    text-transform: uppercase;
+  }
 
-    .checkout {
+  .summary-checkout {
+    display: block;
+  }
+
+  .checkout-cta {
+    display: block;
+    float: none;
+    font-size: 0.75rem;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 0.625rem 0;
+    width: 100%;
+  }
+
+  .summary-delivery-selection {
+    background-color: rgb(255, 255, 255);
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    display: block;
+    font-size: 0.625rem;
+    height: 34px;
+    width: 100%;
+  }
+
+  @media screen and (max-width: 640px) {
+
+    aside,
+    .basket,
+    .summary,
+    .item,
+    .remove {
       width: 100%;
     }
 
-    .checkout,
+    .basket-labels {
+      display: none;
+    }
+
+    .basket-module {
+      margin-bottom: 1rem;
+    }
+
+    .item {
+      margin-bottom: 1rem;
+    }
+
+    .product-image {
+      width: 40%;
+    }
+
+    .product-details {
+      width: 60%;
+    }
+
+    .price,
+    .subtotal {
+      width: 33%;
+    }
+
+    .quantity {
+      text-align: center;
+      width: 34%;
+    }
+
+    .quantity-field {
+      float: none;
+    }
+
+    .remove {
+      bottom: 0;
+      text-align: left;
+      margin-top: 0.75rem;
+      position: relative;
+    }
+
+    .remove button {
+      padding: 0;
+    }
+
     .summary {
-      text-align: right;
+      margin-top: 1.25rem;
+      position: relative;
     }
   }
 
-  /* --- LARGE SCREEN --- */
-  @media all and (min-width: 992px) {
-    html {
-      font-size: 16px;
+  @media screen and (min-width: 641px) and (max-width: 960px) {
+    aside {
+      padding: 0 1rem 0 0;
+    }
+
+    .summary {
+      width: 28%;
+    }
+  }
+
+  @media screen and (max-width: 960px) {
+    main {
+      width: 100%;
+    }
+
+    .product-details {
+      padding: 0 1rem;
     }
   }
 </style>
 
+
 <script>
-  new Vue({
-    el: "#app",
-    data: {
-      products: [
-        {
-          image: "https://via.placeholder.com/200x150",
-          name: "PRODUCT ITEM NUMBER 1",
-          description: "Description for product item number 1",
-          price: 5.99,
-          quantity: 2
-        },
-        {
-          image: "https://via.placeholder.com/200x150",
-          name: "PRODUCT ITEM NUMBER 2",
-          description: "Description for product item number 1",
-          price: 9.99,
-          quantity: 1
-        }
-      ],
-      tax: 5,
-      promotions: [
-        {
-          code: "SUMMER",
-          discount: "50%"
-        },
-        {
-          code: "AUTUMN",
-          discount: "40%"
-        },
-        {
-          code: "WINTER",
-          discount: "30%"
-        }
-      ],
-      promoCode: "",
-      discount: 0
-    },
-    computed: {
-      itemCount: function () {
-        var count = 0;
+  function changeQuantity(cartId, prodId, userId, count) {
+    let quantity = parseInt(document.getElementById(prodId).innerHTML)
+    count = parseInt(count)
 
-        for (var i = 0; i < this.products.length; i++) {
-          count += parseInt(this.products[i].quantity) || 0;
-        }
-
-        return count;
+    $.ajax({
+      url: '/change-product-quantity',
+      data: {
+        user: userId,
+        cart: cartId,
+        product: prodId,
+        count: count,
+        quantity: quantity
       },
-      subTotal: function () {
-        var subTotal = 0;
-
-        for (var i = 0; i < this.products.length; i++) {
-          subTotal += this.products[i].quantity * this.products[i].price;
+      method: 'post',
+      success: (response) => {
+        if (response.removeProduct) {
+          alert("Product Removed From the Cart")
+          location.reload()
+        } else {
+          document.getElementById(prodId).innerHTML = quantity + count
+          document.getElementById('total').innerHTML = response.total
         }
-
-        return subTotal;
-      },
-      discountPrice: function () {
-        return this.subTotal * this.discount / 100;
-      },
-      totalPrice: function () {
-        return this.subTotal - this.discountPrice + this.tax;
       }
-    },
-    filters: {
-      currencyFormatted: function (value) {
-        return Number(value).toLocaleString("en-US", {
-          style: "currency",
-          currency: "USD"
-        });
-      }
-    },
-    methods: {
-      updateQuantity: function (index, event) {
-        var product = this.products[index];
-        var value = event.target.value;
-        var valueInt = parseInt(value);
-
-        // Minimum quantity is 1, maximum quantity is 100, can left blank to input easily
-        if (value === "") {
-          product.quantity = value;
-        } else if (valueInt > 0 && valueInt < 100) {
-          product.quantity = valueInt;
-        }
-
-        this.$set(this.products, index, product);
-      },
-      checkQuantity: function (index, event) {
-        // Update quantity to 1 if it is empty
-        if (event.target.value === "") {
-          var product = this.products[index];
-          product.quantity = 1;
-          this.$set(this.products, index, product);
-        }
-      },
-      removeItem: function (index) {
-        this.products.splice(index, 1);
-      },
-      checkPromoCode: function () {
-        for (var i = 0; i < this.promotions.length; i++) {
-          if (this.promoCode === this.promotions[i].code) {
-            this.discount = parseFloat(
-              this.promotions[i].discount.replace("%", "")
-            );
-            return;
-          }
-        }
-
-        alert("Sorry, the Promotional code you entered is not valid!");
-      }
-    }
-  });
-
+    })
+  }
 </script>

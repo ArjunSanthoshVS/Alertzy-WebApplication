@@ -16,29 +16,36 @@
     <h2 style="font-weight:bold; font-size: 45px; color:#1867C2;">Major Categories</h2>
   </div>
 </div>
-
-<div class="categoryList" style="font-family: none;">
-  <a href="/products" style="text-decoration:none;">
-    <div class="container p-4 my-5 border text-center"
-      style="width:40rem; background-color:#24747E;font-weight:bold; font-size: 60px; color:white;">Gents
-      <img src="/images/Gents.webp" alt="" style="width:100px;">
+<div class="container mt-5">
+  <div class="row mb-5">
+    {{#each category}}
+    <div class="col-lg-3 col-md-6 col-sm-12">
+      <div class="card" style="border-radius:10px; box-shadow: rgba(100, 100, 111, 0.5) 0px 0px 9px 0px;">
+        <div class="card-block">
+          <h4 class="card-title ms-5 p-5 fw-bold text-primary" style="text-shadow:2px 1px chocolate;">
+            {{this.category}}
+          </h4>
+        </div>
+      </div>
     </div>
-  </a>
-  <a href="/products" style="text-decoration:none;">
-    <div class="container p-4 my-5 border text-center"
-      style="width:40rem; background-color:#C82657;font-weight:bold; font-size: 60px; color:white;">Ladies
-      <img src="/images/ladies watch.png" alt="" style="width:150px;">
-    </div>
-  </a>
-  <a href="/products" style="text-decoration:none;">
-    <div class="container p-4 my-5 border text-center"
-      style="width:40rem; background-color:#828282;font-weight:bold; font-size: 60px; color:white;">Kids
-      <img src="/images/kids watch.webp" alt="" style="width:100px;">
-    </div>
-  </a>
+    {{/each}}
+  </div>
 </div>
+{{!-- <a href="/products" style="text-decoration:none;">
+  <div class="container p-4 my-5 border text-center"
+    style="width:40rem; background-color:#C82657;font-weight:bold; font-size: 60px; color:white;">Ladies
+    <img src="/images/ladies watch.png" alt="" style="width:150px;">
+  </div>
+</a>
+<a href="/products" style="text-decoration:none;">
+  <div class="container p-4 my-5 border text-center"
+    style="width:40rem; background-color:#828282;font-weight:bold; font-size: 60px; color:white;">Kids
+    <img src="/images/kids watch.webp" alt="" style="width:100px;">
+  </div>
+</a>
+</div> --}}
 
-<div class="container mb-5">
+<div class="container pt-5 mb-5">
   <div class="text-center">
     <h2 style="font-weight:bold; font-size: 45px; color:#1867C2;">Popular Products</h2>
   </div>

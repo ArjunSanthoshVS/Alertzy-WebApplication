@@ -1,3 +1,6 @@
+
+
+//SIGNUP DATA VALIDATING
 function signUpValidate() {
     // const userName=document.getElementById('username')
     const number = document.getElementById('number')
@@ -62,6 +65,7 @@ function signUpValidate() {
     return true;
 }
 
+//VALIDATING LOGIN DATA
 function logInValidate() {
     const email = document.getElementById('email')
     const password = document.getElementById('password')
@@ -90,6 +94,7 @@ function logInValidate() {
     return true;
 }
 
+//VALIDATING OTP DETAILS
 function otpValidation() {
     let otp = document.getElementById('otp');
     let err = document.getElementsByClassName('error')
@@ -104,6 +109,7 @@ function otpValidation() {
     return true;
 }
 
+//IMAGE ZOOM
 var options = {
     width: 300,
     zoomWidth: 900,
@@ -111,3 +117,113 @@ var options = {
     scale: .5
 };
 new ImageZoom(document.getElementById("img-container"), options);
+
+//ADD TO CART AJAX
+function addToCart(prodId) {
+    $.ajax({
+        url: '/add-to-cart/' + prodId,
+        method: 'get',
+        success: (response) => {
+            if (response.status) {
+                let count = $('#cart-count').html()
+                count = parseInt(count) + 1
+                $("#cart-count").html(count)
+                //popup
+                document.getElementById('success').classList.remove('d-none')
+                setTimeout(function () {
+                    document.getElementById('success').classList.add('d-none')
+                }, 1000)
+            } else {
+                location.href = '/login'
+            }
+        }
+    })
+}
+
+//ADD TO WISHLIST
+function addToWishlist(prodId) {
+    $.ajax({
+        url: '/add-to-wishlist/' + prodId,
+        method: 'get',
+        success: (response) => {
+            if (response.status) {
+                document.getElementById('add' + prodId).classList.add('d-none')
+                document.getElementById('remove' + prodId).classList.remove('d-none')
+
+            } else {
+                document.getElementById('remove' + prodId).classList.add('d-none')
+                document.getElementById('add' + prodId).classList.remove('d-none')
+            }
+        }
+    })
+}
+//ADMIN ORDER STATUS
+function statusChange(proId, orderId) {
+    var status = document.getElementById(proId + orderId).value;
+    swal({
+        title: "Are you sure?",
+        text: "Do you want to " + status + " the order",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, " + status + " it!",
+        cancelButtonText: "No!",
+        closeOnConfirm: true,
+        closeOnCancel: true
+    },
+        function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: '/admin/order-status',
+                    data: {
+                        orderId,
+                        status
+                    },
+                    method: 'post',
+                    success: (response) => {
+                        if (response.status) {
+                            document.getElementById(orderId + proId).innerHTML = status
+                            if (status == 'pending' || status == 'placed' || status == 'shipped' || status == 'delivered' || status == 'canceled') {
+                                location.reload()
+                            }
+                        }
+                    }
+                })
+            } else {
+                location.reload()
+            }
+        }
+    );
+}
+
+//USER ORDER CANCEL
+function cancelOrder(orderId, proId) {
+    swal({
+        title: "Are you sure?",
+        text: "Do you want to cancel the order",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, Cancel my order",
+        cancelButtonText: "No, cancel please!",
+        closeOnConfirm: true,
+        closeOnCancel: true
+    },
+        function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: '/cancel-order/' + orderId,
+                    method: 'get',
+                    success: (response) => {
+                        if (response.status) {
+                            location.reload()
+                            // document.getElementById(orderId + proId).innerHTML = 'canceled'
+                            // document.getElementById("status-button").style.display = 'none'
+                        }
+                    }
+                })
+            }
+        }
+    );
+}
+

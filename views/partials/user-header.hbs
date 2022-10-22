@@ -17,17 +17,15 @@
                             style=" color: #1867C2; font-family:auto; font-size: larger;">Products</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active pe-4" href="#"
-                            style=" color: #1867C2; font-family:auto; font-size: larger;">Categories</a>
+                        <a class="nav-link active pe-4" href="/orders"
+                            style=" color: #1867C2; font-family:auto; font-size: larger;">Orders</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active pe-4" href="#"
                             style=" color: #1867C2; font-family:auto; font-size: larger;">Contact Us</a>
                     </li>
-
                 </ul>
             </div>
-
             <div class="nav-item dropdown me-5" style="font-weight:700;">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
@@ -44,8 +42,11 @@
                         <button class="btn btn-outline-primary" type="submit">Search</button>
                     </form>
                     <li><a class="dropdown-item" href="#">User Profile</a></li>
-                    <li><a class="dropdown-item" href="#">Cart</a></li>
-                    <li><a class="dropdown-item" href="#">Wishlist</a></li>
+
+                    <li><a class="dropdown-item" href="/cart">Cart<span class="badge bg-danger ms-2"
+                                id="cart-count">{{cartCount}}</span></a></li>
+
+                    <li><a class="dropdown-item" href="/wishlist">Wishlist</a></li>
                     {{else}}
                     <p></p>
                     {{/if}}
@@ -53,12 +54,13 @@
                     {{#if user}}
                     <li><a class="dropdown-item" href="/logout">LogOut</a></li>
                     {{else}}
+                    <li><a class="dropdown-item" href="/login">User Profile</a></li>
+                    <li><a class="dropdown-item" href="/login">Cart</a></li>
+                    <li><a class="dropdown-item" href="/login">Wishlist</a></li>
                     <li><a class="dropdown-item" href="/login">Login</a></li>
                     {{/if}}
-
                 </ul>
             </div>
-
         </div>
     </div>
 </nav>

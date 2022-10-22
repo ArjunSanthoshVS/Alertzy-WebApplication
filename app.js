@@ -10,10 +10,22 @@ var fileUpload = require('express-fileupload');
 var db = require('./config/connection')
 var app = express();
 var session = require('express-session')
+var Handlebars = require('handlebars');
+const { handlebars } = require('hbs');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.engine('hbs', hbs.engine({ extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views/layout/', partialsDir: __dirname + '/views/partials/' }))
+
+Handlebars.registerHelper("inc", function (value, options) {
+  return parseInt(value) + 1;
+});
+
+Handlebars.registerHelper('ifCheck',function(arg1,arg2,options){
+  return(arg1==arg2)?options.fn(this):options.inverse(this)
+})
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

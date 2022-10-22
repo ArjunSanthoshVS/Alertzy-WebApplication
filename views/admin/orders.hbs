@@ -1,0 +1,95 @@
+<div class="background pb-3" style="    margin-left: 13%;
+    width: 85%;">
+    <div class="" style=" vh-100">
+
+        <a class="navbar-brand mt-4" style="font-family: none; font-weight: 900; color: black;">
+            <h1 class="text-center pt-5">Orders</h1>
+        </a>
+        <div class="d-flex justify-content-center">
+            <div class="row mb-3 mt-4">
+                <table id="table_id" class="table table-hover table-bordered ms-2 mt-2">
+                    <thead>
+                        <tr>
+                            <th>No:</th>
+                            <th>Image</th>
+                            <th>Product</th>
+                            <th>Brand</th>
+                            <th>Price</th>
+                            <th>Date</th>
+                            <th>Payment</th>
+                            <th>Quantity</th>
+                            <th>Current Status</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    {{#each orderItems}}
+                    <tbody>
+                        <tr>
+                            <td>{{inc @index}}</td>
+                            <td>
+                                <img style="width:70px; height:70px;"
+                                    src="/product-images/{{this.item}}/{{this.item}}_0.png" alt="">
+                            </td>
+                            <td class="align-middle fw-b">{{this.product.product}}</td>
+                            <td class="align-middle fw-b">{{this.product.brand}}</td>
+                            <td class="align-middle fw-b">{{this.totalAmount}}</td>
+                            <td class="align-middle fw-b">{{this.date}}</td>
+                            <td class="align-middle fw-b">{{this.paymentMethod}}</td>
+                            <td class="align-middle fw-b">{{this.quantity}}</td>
+                            <td class="order-data align-middle fw-b" id="{{this._id}}{{this.product._id}}">
+                                {{this.status}}</td>
+                            <td class="align-middle fw-b" id="select">
+                                {{#ifCheck status 'delivered'}}
+                                <option value="delivered">Delivered</option>
+                                {{/ifCheck}}
+                                {{#ifCheck status 'canceled'}}
+                                <option value="canceled">Cancelled</option>
+                                {{/ifCheck}}
+                                {{#ifCheck status 'placed'}}
+                                <select class="form-control" id="{{this.product._id}}{{this._id}}"
+                                    onchange="statusChange('{{this.product._id}}','{{this._id}}')" style="width: 90px;">
+                                    <option selected="true" disabled="disabled"
+                                        style="background-color: blue; color: white;">
+                                        {{this.status}}</option>
+                                    <option value="shipped">Shipped</option>
+                                    <option value="delivered">Delivered</option>
+                                    <option value="canceled">Canceled</option>
+                                </select>
+                                {{/ifCheck}}
+                                {{#ifCheck status 'pending'}}
+                                <select class="form-control" id="{{this.product._id}}{{this._id}}"
+                                    onchange="statusChange('{{this.product._id}}','{{this._id}}')" style="width: 90px;">
+                                    <option selected="true" disabled="disabled"
+                                        style="background-color: blue; color: white;">
+                                        {{this.status}}</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="placed">Placed</option>
+                                    <option value="shipped">Shipped</option>
+                                    <option value="delivered">Delivered</option>
+                                    <option value="canceled">Canceled</option>
+                                </select>
+                                {{/ifCheck}}
+                                {{#ifCheck status 'shipped'}}
+                                <select class="form-control" id="{{this.product._id}}{{this._id}}"
+                                    onchange="statusChange('{{this.product._id}}','{{this._id}}')" style="width: 90px;">
+                                    <option selected="true" disabled="disabled"
+                                        style="background-color: blue; color: white;">
+                                        {{this.status}}</option>
+                                    <option value="delivered">Delivered</option>
+                                    <option value="canceled">Canceled</option>
+                                </select>
+                                {{/ifCheck}}
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                    {{/each}}
+                </table>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $('#table_id').DataTable();
+            });
+        </script>

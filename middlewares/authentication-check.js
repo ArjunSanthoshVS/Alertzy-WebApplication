@@ -21,15 +21,15 @@ module.exports = {
         if (req.session.adminloggedIn) {
             next();
         } else {
-            res.redirect('/admin/adminLogin');
+            res.redirect('/admin/login');
         }
     },
     adminLoginUnchecked: (req, res, next) => {
         console.log(req.session.admin)
         if (req.session.admin) {
-            res.redirect('/admin/view-products');
+            res.redirect('/admin/products');
         } else {
             next();
         }
-    },
+    }
 }

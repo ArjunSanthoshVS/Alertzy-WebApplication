@@ -252,4 +252,26 @@ router.get('/cancel-order/:id', (req, res) => {
     res.json({ status: true })
   })
 })
+
+//USER PROFILE
+router.get('/profile', middleware.loginChecked, (req, res) => {
+  let user = req.session.user
+  res.render('user/profile', { user })
+})
+
+//ADD ADDRESS
+router.post('/add-address', (req, res) => {
+  let userId = req.session.user._id
+  userHelpers.addAddress(req.body, userId).then((response) => {
+    res.redirect('/address')
+  })
+})
+
+//ADDRESS LIST
+router.get('/address', middleware.loginChecked, async (req, res) => {
+  let user = req.session.user
+  let address = await userHelpers.addressDetails(user._id)
+  res.render('user/address', { user, address })
+})
+
 module.exports = router;

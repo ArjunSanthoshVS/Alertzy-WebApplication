@@ -469,5 +469,42 @@ module.exports = {
                 resolve('Success')
             })
         })
+    },
+
+    //ADD ADDRESS
+    addAddress: (data, userId) => {
+        return new Promise((resolve, reject) => {
+            data._id = new objectId()
+            db.get().collection(collection.USER_COLLECTION).updateOne({
+                _id: objectId(userId)
+            }, {
+                $push: {
+                    address: data
+                }
+            }).then(response)
+            resolve(response)
+        })
+    },
+
+    //ADDRESS DETAILS
+    addressDetails: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            let address = await db.get().collection(collection.USER_COLLECTION).aggregate([
+                {
+                    $match: {
+                        _id: objectId(userId)
+                    }
+                },
+                {
+                    $unwind: '$address'
+                }, {
+                    $project: {
+                        address: 1,
+                        email: 1
+                    }
+                }
+            ]).toArray()
+            resolve(address)
+        })
     }
 }

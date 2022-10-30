@@ -94,6 +94,36 @@ function logInValidate() {
     return true;
 }
 
+//VALIDATING ADMIN LOGIN
+function logInValidate() {
+    const email = document.getElementById('email')
+    const password = document.getElementById('password')
+    const error = document.getElementsByClassName('invalid-feedback')
+
+    if (!(email.value.trim().match(/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/))) {
+        error[0].style.display = "block";
+        error[0].innerHTML = "Enter email";
+
+        return false;
+    } else {
+        error[0].innerHTML = ""
+        email.style.border = "2px solid none";
+    }
+
+    if (password.value.trim() === "") {
+        error[1].style.display = "block";
+        error[1].innerHTML = "Enter password";
+
+        return false;
+    } else {
+        error[1].innerHTML = ""
+
+    }
+
+    return true;
+}
+
+
 //VALIDATING OTP DETAILS
 function otpValidation() {
     let otp = document.getElementById('otp');
@@ -227,3 +257,221 @@ function cancelOrder(orderId, proId) {
     );
 }
 
+//DELETE ADDRESS
+// function deleteAddress(addressId) {
+//     $.ajax
+//         ({
+//             url: '/delete-address',
+//             method: 'get',
+//             data: {
+//                 addressId
+//             },
+//             success: (response) => {
+//                 location.reload()
+//             }
+//         })
+// }
+
+//SALES REPORT
+function salesReport(days, buttonId) {
+
+    $.ajax({
+        url: '/admin/sales-report/' + days,
+        method: 'get',
+        success: (response) => {
+            if (response) {
+                const buttons = document.querySelectorAll('button');
+                buttons.forEach(button => {
+                    button.classList.remove('active');
+                });
+                document.getElementById(buttonId).classList.add("active");
+                document.getElementById('days').innerHTML = buttonId
+                document.getElementById('deliveredOrders').innerHTML = response.deliveredOrders
+                document.getElementById('shippedOrders').innerHTML = response.shippedOrders
+                document.getElementById('placedOrders').innerHTML = response.placedOrders
+                document.getElementById('canceledOrders').innerHTML = response.canceledOrders
+                document.getElementById('cashOnDelivery').innerHTML = response.cashOnDelivery
+                document.getElementById('onlinePayment').innerHTML = response.onlinePayment
+                document.getElementById('users').innerHTML = response.users
+            }
+        }
+    })
+}
+
+//PDF AND EXCEL
+$(document).ready(function ($) {
+    $(document).on('click', '.btn_print', function (event) {
+        event.preventDefault();
+        var element = document.getElementById('container_content');
+
+        let randomNumber = Math.floor(Math.random() * (10000000000 - 1)) + 1;
+
+        var opt =
+        {
+            margin: 0,
+            filename: 'pageContent_' + randomNumber + '.pdf',
+            html2canvas: { scale: 10 },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(element).save();
+    });
+});
+
+function export_data() {
+    let data = document.getElementById('container_content');
+    var fp = XLSX.utils.table_to_book(data, { sheet: 'vishal' });
+    XLSX.write(fp, {
+        bookType: 'xlsx',
+        type: 'base64'
+    });
+    XLSX.writeFile(fp, 'test.xlsx');
+}
+
+//DASHBOARD CHART
+// window.addEventListener('load', () => {
+//     histogram(1, 'daily')
+// })
+// function histogram(days, buttonId) {
+//     $.ajax({
+//         url: '/admin/dashboard/' + days,
+//         method: 'get',
+//         success: (data) => {
+//             if (data) {
+//                 const buttons = document.querySelectorAll('button')
+//                 buttons.forEach(button => {
+//                     button.classList.remove('active')
+//                 })
+//                 document.getElementById(buttonId).classList.add('active')
+//                 let totalOrder = data.deliveredOrders + data.shippedOrders + data.placedOrders
+//                 console.log(totalOrder);
+//                 document.getElementById('totalOrders').innerHTML = totalOrder
+//                 document.getElementById('totalAmount').innerHTML = data.totalAmount
+
+//                 var xValues = ["Pending", "Placed", "Shipped", "Delivered", "Cancelled"];
+//                 var yValues = [data.pendingOrders, data.placedOrders, data.shippedOrders, data.deliveredOrders, data.canceledOrders];
+//                 var barColors = ["red", "green", "blue", "orange", "brown"];
+//                 new Chart("order", {
+//                     type: "bar",
+//                     data: {
+//                         labels: xValues,
+//                         datasets: [{
+//                             backgroundColor: barColors,
+//                             data: yValues
+//                         }]
+//                     }, options: {
+//                         legend: { display: false },
+//                         title: {
+//                             display: true,
+//                             text: "Orders"
+//                         }
+//                     }
+//                 });
+
+//             }
+//         }
+//     })
+// }
+
+
+window.addEventListener('load', () => {
+    histogram(1, 'daily')
+})
+
+
+function histogram(days, buttonId) {
+
+    $.ajax({
+        url: '/admin/dashboard/' + days,
+        method: 'get',
+        success: (response) => {
+            if (response) {
+                const buttons = document.querySelectorAll('button');
+                buttons.forEach(button => {
+                    button.classList.remove('active');
+                });
+                document.getElementById(buttonId).classList.add("active");
+
+                let totalOrder = response.deliveredOrders + response.shippedOrders + response.placedOrders
+
+                document.getElementById('totalOrders').innerHTML = totalOrder
+                document.getElementById('totalAmount').innerHTML = response.totalAmount
+
+                var xValues = ["Delivered", "Shipped", "Placed", "Pending", "Canceled"];
+                var yValues = [response.deliveredOrders, response.shippedOrders, response.placedOrders, response.pendingOrders, response.canceledOrders];
+                var barColors = ["green", "blue", "orange", "brown", "red"];
+
+                new Chart("order", {
+                    type: "bar",
+                    data: {
+                        labels: xValues,
+                        datasets: [{
+                            backgroundColor: barColors,
+                            data: yValues
+                        }]
+                    },
+                    options: {
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: "Order Report"
+                        }
+                    }
+                });
+
+                // var xValues = ["COD", "ONLINE"];
+                // var yValues = [response.codTotal, response.onlineTotal];
+
+                // var barColors = [
+                //     "#b91d47",
+                //     "#00aba9",
+                // ];
+
+                // new Chart("payment", {
+                //     type: "pie",
+                //     data: {
+                //         labels: xValues,
+                //         datasets: [{
+                //             backgroundColor: barColors,
+                //             data: yValues
+                //         }]
+                //     },
+                //     options: {
+                //         title: {
+                //             display: true,
+                //             text: "Payment Report"
+                //         }
+                //     }
+                // });
+
+
+
+                // var xValues = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
+                // var yValues = [0, response.users];
+
+                // new Chart("user", {
+                //     type: "line",
+                //     data: {
+                //         // labels: xValues,
+                //         datasets: [{
+                //             fill: true,
+                //             lineTension: 0,
+                //             // backgroundColor: "rgba(0,0,255,1.0)",
+                //             borderColor: "rgba(0,0,255,0.1)",
+                //             data: yValues
+                //         }]
+                //     },
+                //     options: {
+                //         legend: { display: false },
+                //         scales: {
+                //             yAxes: [{ ticks: { min: 0, max: 10 } }],
+                //         },
+                //         title: {
+                //             display: true,
+                //             text: "Users Signed"
+                //         }
+                //     }
+                // });
+            }
+        }
+    })
+}

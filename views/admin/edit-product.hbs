@@ -53,15 +53,45 @@
                         </select>
                     </div>
                 </div>
-                <div class="row mb-3  mt-4">
-                    <label for="" class="col-form-label">Image</label>
-                    <img src="/product-images/{{product._id}}/{{product._id}}_0.png" alt=""
-                        style="width:100px; height:auto;" id="imgView">
-                    <div>
-                        <input class="form-control" type="file" name="image" onchange="viewImage(event)" multiple>
+                <div class="form-row d-flex mt-2">
+                    <div class="form-group col-md-6 d-flex">
+                        <img src="/product-images/{{product._id}}/{{product._id}}_0.png" alt="" width="50" height="50">
+                        <div class="d-none me-3" id="imgView1_1">
+                            <img src="" alt="" width="50" height="50" id="imgView1">
+                        </div>
+                        <input type="file" onchange="viewImage(event,'imgView1',1)" class="form-control-file"
+                            name="image1" id="imgInput">
+                    </div>
+
+                    <div class="form-group col-md-6 d-flex">
+                        <img src="/product-images/{{product._id}}/{{product._id}}_1.png" alt="" width="50" height="50">
+                        <div class="d-none me-3" id="imgView2_2">
+                            <img src="" alt="" width="50" height="50" id="imgView2">
+                        </div>
+                        <input type="file" onchange="viewImage(event,'imgView2',2)" class="form-control-file"
+                            name="image2" id="imgInput">
                     </div>
                 </div>
-                <div class=" d-flex justify-content-center">
+                <div class="form-row d-flex mt-2">
+                    <div class="form-group col-md-6 d-flex">
+                        <img src="/product-images/{{product._id}}/{{product._id}}_2.png" alt="" width="50" height="50">
+                        <div class="d-none me-3" id="imgView3_3">
+                            <img src="" alt="" width="50" height="50" id="imgView3">
+                        </div>
+                        <input type="file" onchange="viewImage(event,'imgView3',3)" class="form-control-file"
+                            name="image3" id="imgInput">
+                    </div>
+
+                    <div class="form-group col-md-6 d-flex">
+                        <img src="/product-images/{{product._id}}/{{product._id}}_3.png" alt="" width="50" height="50">
+                        <div class="d-none me-3" id="imgView4_4">
+                            <img src="" alt="" width="50" height="50" id="imgView4">
+                        </div>
+                        <input type="file" onchange="viewImage(event,'imgView4',4)" class="form-control-file"
+                            name="image4" id="imgInput">
+                    </div>
+                </div>
+                <div class=" d-flex justify-content-center mt-4">
                     <button type="submit" class="btn btn-primary">Save</button>&nbsp;<button type="reset"
                         class="btn btn-danger">Cancel</button>
                 </div>

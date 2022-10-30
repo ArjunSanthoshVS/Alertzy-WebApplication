@@ -1,0 +1,68 @@
+<div class="div d-flex">
+    <div class="col-xl-6 d-flex justify-content-center pt-5 pb-5 ">
+        <div class="btn-group btn-group-toggle w-25 sales">
+            <button id="Daily" class="btn btn-primary active" onclick="salesReport(1,'Daily')">Daily</button>
+            <button id="Weekly" class="btn btn-primary " onclick="salesReport(7,'Weekly')">Weekly</button>
+            <button id="Monthly" class="btn btn-primary " onclick="salesReport(30,'Monthly')">Monthly</button>
+            <button id="Yearly" class="btn btn-primary " onclick="salesReport(365,'Yearly')">Yearly</button>
+        </div>
+
+    </div>
+
+    <div class="col-xl-5 d-flex justify-content-end pt-5 pb-5 ">
+        <input type="button" id="rep" value="Download as Pdf" class="btn btn-primary btn_print me-3">
+        <input type="button" onclick="export_data()" value="Export to excel" class="btn btn-primary btn_print">
+    </div>
+</div>
+{{!-- <div class="col-xl-4 d-flex justify-content-end ms-5 pb-5">
+    <form action="/admin/sales-report" method="get">
+        <label for="">Date</label>
+        <input type="month" name="month">
+        <button type="submit" class="btn btn-sm btn-secondary">Submit</button>
+    </form>
+</div> --}}
+
+<div class="card mb-4" style="margin-left:16%; margin-right: 3%;">
+
+    <div class="card-body container_content" id="container_content">
+        <div class=" container mb-5 mt-3">
+            <div class="row d-flex align-items-baseline">
+                <div class="col-xl-9">
+                    <p style="color: rgb(65, 65, 183);font-size: 30px;"><strong>
+                            <span id="days">Daily</span> Sales Report
+                        </strong>
+                    </p>
+                </div>
+                <hr>
+            </div>
+            <div class="container">
+                <div class="row my-2 mx-1 justify-content-center">
+                    <table class="table table-striped table-borderless">
+                        <thead style="background-color:#097dc1 ;" class="text-white">
+                            <tr>
+                                <th scope="col" class="pe-4">Order Id</th>
+                                <th scope="col" class="pe-4">Product</th>
+                                <th scope="col" class="pe-4">Quantity</th>
+                                <th scope="col" class="pe-4">Date</th>
+                                <th scope="col" class="pe-4">PaymentMethod</th>
+                                <th scope="col" class="pe-4">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each response}}
+                            <tr>
+                                <td class="pe-4">{{this._id}}</td>
+                                <td class="pe-4">{{this.product.product}}</td>
+                                <td class="pe-4 text-center">{{this.quantity}}</td>
+                                <td class="pe-4">{{this.date}}</td>
+                                <td class="pe-4 text-center">{{this.paymentMethod}}</td>
+                                <td class="pe-4 text-center">{{this.totalAmount}}</td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

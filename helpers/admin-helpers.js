@@ -25,6 +25,10 @@ module.exports = {
 
     //ADMIN LOGIN
     adminLogin: (adminData) => {
+        if (adminData == null) {
+            console.log('Login Failed');
+            resolve({ status: false })
+        }
         let response = {};
         return new Promise(async (resolve, reject) => {
             let admin = await db.get().collection(collection.ADMIN_COLLECTION).findOne({ email: adminData.email });
@@ -35,11 +39,13 @@ module.exports = {
                         response.status = true;
                         resolve(response);
                     } else {
-                        reject("Invalid password")
+                        console.log('Login Failed');
+                        resolve({ status: false })
                     }
                 })
             } else {
-                reject("Invalid email");
+                console.log('Login err');
+                resolve({ status: false })
             }
         })
     },
@@ -196,6 +202,145 @@ module.exports = {
                 { $set: { status: status, statusUpdateDate: dateStatus } }).then(() => {
                     resolve()
                 })
+        })
+    },
+
+    //SALES REPORT
+    salesReport: (days) => {
+        days = parseInt(days)
+        return new Promise(async (resolve, reject) => {
+            let startDate = new Date()
+            let endDate = new Date()
+            startDate.setDate(startDate.getDate() - days)
+            // let data = {}
+            // data.placedOrders = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({ date: { $gte: startDate, $lte: endDate }, status: 'placed' })
+            // console.log(data.placedOrders);
+            // data.shippedOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'shipped' }).count()
+            // data.deliveredOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'delivered' }).count()
+            // data.canceledOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'canceled' }).count()
+            // data.cashOnDelivery = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'COD' }).count()
+            // data.onlinePayment = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'ONLINE' }).count()
+            // data.users = await db.get().collection(collection.USER_COLLECTION).countDocuments({ date: { $gte: startDate, $lte: endDate } })
+            // resolve(data)
+
+            let data = db.get().collection(collection.ORDER_COLLECTION)
+                .aggregate([
+                    {
+                        $match: { date: { $gte: startDate, $lte: endDate }, status: 'delivered' }
+
+                    },
+                    {
+                        $unwind: '$products'
+                    },
+                    {
+                        $project: {
+                            item: '$products.item',
+                            quantity: '$products.quantity',
+                            paymentMethod: '$paymentMethod',
+                            totalAmount: '$totalAmount',
+                            status: 'delivered',
+                            date: '$statusUpdateDate'
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: collection.PRODUCT_COLLECTION,
+                            localField: 'item',
+                            foreignField: '_id',
+                            as: 'product'
+                        }
+                    },
+                    {
+                        $project: {
+                            item: 1,
+                            quantity: 1,
+                            product: { $arrayElemAt: ['$product', 0] },
+                            paymentMethod: 1,
+                            totalAmount: 1,
+                            status: 1,
+                            date: 1
+                        }
+                    }
+                ])
+                .toArray()
+            resolve(data)
+        })
+    },
+
+    //DASHBOARD COUNT
+    dashboardCount: (days) => {
+        days = parseInt(days)
+        return new Promise(async (resolve, reject) => {
+            let startDate = new Date();
+            let endDate = new Date();
+            startDate.setDate(startDate.getDate() - days)
+
+            let data = {};
+
+            data.deliveredOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'delivered' }).count()
+            console.log(data.deliveredOrders);
+            data.shippedOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'shipped' }).count()
+            data.placedOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'placed' }).count()
+            data.pendingOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'pending' }).count()
+            data.canceledOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'canceled' }).count()
+            console.log(data);
+            let codTotal = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                {
+                    $match: {
+                        date: {
+                            $gte: startDate, $lte: endDate
+                        },
+                        paymentMethod: 'COD'
+                    },
+                },
+                {
+                    $group: {
+                        _id: null,
+                        totalAmount: {
+                            $sum: "$totalAmount"
+                        }
+                    }
+                }
+            ]).toArray()
+            data.codTotal = codTotal?.[0]?.totalAmount
+            let onlineTotal = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                {
+                    $match: {
+                        date: {
+                            $gte: startDate, $lte: endDate
+                        },
+                        paymentMethod: 'ONLINE'
+                    },
+                },
+                {
+                    $group: {
+                        _id: null,
+                        totalAmount: {
+                            $sum: "$totalAmount"
+                        }
+                    }
+                }
+            ]).toArray()
+            data.onlineTotal = onlineTotal?.[0]?.totalAmount
+            let totalAmount = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                {
+                    $match: {
+                        date: {
+                            $gte: startDate, $lte: endDate
+                        },
+                    },
+                },
+                {
+                    $group: {
+                        _id: null,
+                        totalAmount: {
+                            $sum: "$totalAmount"
+                        }
+                    }
+                }
+            ]).toArray()
+            data.totalAmount = totalAmount?.[0]?.totalAmount
+            resolve(data)
         })
     }
 }

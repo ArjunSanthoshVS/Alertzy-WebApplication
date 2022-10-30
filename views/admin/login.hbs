@@ -9,6 +9,11 @@
                 <h2 class="fw-bold ">Alertzy</h2>
               </div>
               <h2 class="fw-600 mb-2 ">Admin Login</h2>
+              {{#if loginErr}}
+              <p class="h6" style="color: red;">{{loginErr}}</p>
+              {{else}}
+              <p></p>
+              {{/if}}
               <p class="text-white-50 mb-5">Please enter your login and password!</p>
               <form action="/admin/login" method="post">
                 <div class="form-outline form-white mb-4">

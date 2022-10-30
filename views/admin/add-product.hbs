@@ -49,15 +49,99 @@
                         </select>
                     </div>
                 </div>
-                <div class="row mb-3 mt-4">
+                {{!-- <div class="row mb-3 mt-4">
                     <label for="" class="col-form-label">Image</label>
                     <img src="/product-images/{{product._id}}/{{product._id}}_0.png" alt=""
                         style="width:100px; height:auto;" id="imgView">
                     <div>
                         <input class="form-control" type="file" name="image" onchange="viewImage(event)" multiple>
                     </div>
+                </div> --}}
+
+                {{!-- <div class="form-group col-md-12 d-flex">
+                    <div class="d-none me-3" id="imgView1_1">
+                        <img src="" alt="" width="50" height="50" id="imgView1">
+                    </div>
+
+                    <input type="file" name="file" id="file" accept="image/*" multiple />
+                </div> --}}
+
+                <div class="form-row d-flex mt-2">
+                    <div class="form-group col-md-6 d-flex">
+                        <div class="d-none me-3" id="imgView1_1">
+                            <img src="" alt="" width="50" height="50" id="imgView1">
+                        </div>
+
+                        <input type="file" onchange="viewImage(event,'imgView1',1)" class="form-control-file"
+                            name="image1" id="imgInput" multiple required>
+                    </div>
+                    <div class="form-group col-md-6 d-flex">
+                        <div class="d-none me-3" id="imgView2_2">
+                            <img src="" alt="" width="50" height="50" id="imgView2">
+                        </div>
+                        <input type="file" onchange="viewImage(event,'imgView2',2)" class="form-control-file"
+                            name="image2" id="imgInput" multiple required>
+                    </div>
                 </div>
-                <div class="d-flex justify-content-center">
+                <div class="form-row d-flex mt-4">
+                    <div class="form-group col-md-6 d-flex">
+                        <div class="d-none me-3" id="imgView3_3">
+                            <img src="" alt="" width="50" height="50" id="imgView3">
+                        </div>
+                        <input type="file" onchange="viewImage(event,'imgView3',3)" class="form-control-file"
+                            name="image3" id="imgInput" multiple required>
+                    </div>
+                    <div class="form-group col-md-6 d-flex">
+                        <div class="d-none me-3" id="imgView4_4">
+                            <img src="" alt="" width="50" height="50" id="imgView4">
+                        </div>
+                        <input type="file" onchange="viewImage(event,'imgView4',4)" class="form-control-file"
+                            name="image4" id="imgInput" multiple required>
+                    </div>
+                </div>
+
+
+                {{!-- <div class="col-12">
+                    <div id="image-box1" style="width: 500px; height: 500px; display: none;"></div>
+                    <button class="btn btn-primary  mt-3" type="button" style="display: none;"
+                        id="crop-btn1">Crop</button>
+                </div>
+                <div class="mt-5 col-md-6">
+                    <label for="">IMAGE 1</label>
+                    <img src="https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg" alt=""
+                        style="width: 100px; height:auto" id="imgView1">
+                    <input type="file" name="image1" id="id_image1" class="form-control"
+                        onchange=" fileValidation1(event)" accept="image/*">
+                </div> --}}
+
+
+                <div class="d-flex justify-content-center mt-5">
+                    <button type="submit" class="btn btn-primary">Save</button>&nbsp;<button type="reset"
+                        class="btn btn-danger">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="cropperModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form action="/upload-images" method="POST" enctype="multipart/form-data">
+
+
+                <input type="hidden" id="post_img_data" name="image_data_url">
+                <div class="modal-body p-4">
+                    <div class="img-preview"></div>
+                    <div id="galleryImages"></div>
+                    <div id="cropper">
+                        <canvas id="cropperImg" width="0" height="0"></canvas>
+                        <button type="button" class="cropImageBtn btn btn-danger" style="display:none;"
+                            id="cropImageBtn">Crop</button>
+                    </div>
+                    <div id="imageValidate" class="text-danger"></div>
+                </div>
+                <div class="d-flex justify-content-center mt-5">
                     <button type="submit" class="btn btn-primary">Save</button>&nbsp;<button type="reset"
                         class="btn btn-danger">Cancel</button>
                 </div>
@@ -67,8 +151,84 @@
 </div>
 
 
+
 <script>
-    function viewImage(event) {
-        document.getElementById('imgView').src = URL.createObjectURL(event.target.files[0])
-    }
+    function viewImage(event, imgId, idNum) {
+        console.log(event);
+        var fileInput =
+            document.getElementById('imgInput');
+
+        var filePath = fileInput.value;
+
+        console.log(filePath);
+
+        var allowedExtensions =
+            /(\.jpg|\.jpeg|\.png|\.gif|\.jfif|\.webp)$/i;
+
+        if (!allowedExtensions.exec(filePath)) {
+            alert('Invalid file type');
+            fileInput.value = '';
+            return false;
+        }
+        else {
+            document.getElementById(imgId + '_' + idNum).classList.remove("d-none")
+            document.getElementById(imgId).src = URL.createObjectURL(event.target.files[0])
+        }
+
+    } 
 </script>
+{{!--
+<script>
+    const imagebox4 = document.getElementById('image-box1')
+    const crop_btn4 = document.getElementById('crop-btn1')
+    const input4 = document.getElementById('id_image1')
+    function fileValidation4(event) {
+
+
+        var fileInput = document.getElementById('id_image1');
+
+        var filePath = fileInput.value;
+        var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+        if (!allowedExtensions.exec(filePath)) {
+            fileInput.value = '';
+            swal("There is a problem!", "Please choose image file.");
+            return false;
+        } else {
+            document.getElementById('imgView1').src = URL.createObjectURL(event.target.files[0])
+
+        }
+
+    }
+
+    input4.addEventListener('change', () => {
+
+        const img_data1 = input1.files[0]
+        const url1 = URL.createObjectURL(img_data1)
+        imagebox1.innerHTML = <img src="${url1}" id="image1" style="width:100%;">
+            const image1 = document.getElementById('image1')
+            document.getElementById('image-box1').style.display = 'block'
+            document.getElementById('crop-btn1').style.display = 'block'
+            const cropper1 = new Cropper(image1, {
+                autoCropArea: 1,
+            viewMode: 1,
+            scalable: false,
+            zoomable: false,
+            movable: false,
+            minCropBoxWidth: 50,
+            minCropBoxHeight: 50,
+    })
+    crop_btn1.addEventListener('click', () => {
+                cropper1.getCroppedCanvas().toBlob((blob) => {
+                    let fileInputElement1 = document.getElementById('id_image1');
+                    let file1 = new File([blob], img_data1.name, { type: "image/*", lastModified: new Date().getTime() });
+                    let container1 = new DataTransfer();
+                    container1.items.add(file1);
+                    fileInputElement1.files = container1.files;
+                    document.getElementById('imgView1').src = URL.createObjectURL(fileInputElement1.files[0])
+                    document.getElementById('image-box1').style.display = 'none'
+                    document.getElementById('crop-btn1').style.display = 'none'
+                })
+            })
+  })
+
+</script> --}}

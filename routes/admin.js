@@ -4,17 +4,21 @@ const adminHelpers = require('../helpers/admin-helpers');
 const productHelpers = require('../helpers/product-helpers');
 const userHelpers = require('../helpers/user-helpers');
 const middleware = require('../middlewares/authentication-check')
-const mkdirp = require('mkdirp')
+const mkdirp = require('mkdirp');
 
 //ENTERING PAGE
 router.get('/', function (req, res, next) {
-  res.render('admin/login', { not: true });
+  if (req.session.adminloggedIn) {
+    res.redirect('/admin/products')
+  } else {
+    res.render('admin/login', { not: true, "loginErr": req.session.loginErr });
+    req.session.loginErr = false;
+  }
 });
 
 //LOGIN
-router.get('/login', middleware.adminLoginUnchecked, (req, res) => {
-  res.render('admin/login', { "loginErr": req.session.loginErr, not: true });
-  req.session.loginErr = false;
+router.get('/login', (req, res) => {
+  res.render('admin/login', { not: true });
 });
 
 router.post('/login', (req, res) => {
@@ -29,6 +33,13 @@ router.post('/login', (req, res) => {
     }
   });
 });
+
+//ADMIN LOGOUT
+router.get('/logout', (req, res) => {
+  req.session.adminloggedIn = false
+  req.session.admin = null
+  res.redirect('/admin/login');
+})
 
 //ADMIN SIGNUP
 router.get('/signup', middleware.adminLoginUnchecked, (req, res) => {
@@ -63,23 +74,39 @@ router.get('/add-product', middleware.adminLoginChecked, async (req, res) => {
   res.render('admin/add-product', { category, admin: true, admin })
 })
 
-router.post("/add-product", (req, res) => {
+router.post('/add-product', (req, res) => {
   console.log(req.body);
-  console.log(req.files.image);
-  productHelpers.addProduct(req.body, (id) => {
-    let image = req.files?.image;
-    if (Array.isArray(image)) {
-      mkdirp('./public/product-images/' + id).then(() => {
-        image.forEach((element, index) => {
-          element.mv('./public/product-images/' + id + "/" + id + "_" + index + '.png')
-        });
-      })
-      res.redirect('/admin/products')
-    } else {
-      image?.mv('./public/product-images/' + id + '.png')
-    }
+  adminHelpers.addProduct(req.body, (id) => {
+    let image1 = req.files?.image1;
+    let image2 = req.files?.image2;
+    let image3 = req.files?.image3;
+    let image4 = req.files?.image4;
+    mkdirp('./public/product-images/' + id).then(() => {
+      image1.mv('./public/product-images/' + id + "/" + id + "_0" + '.png')
+      image2.mv('./public/product-images/' + id + "/" + id + "_1" + '.png')
+      image3.mv('./public/product-images/' + id + "/" + id + "_2" + '.png')
+      image4.mv('./public/product-images/' + id + "/" + id + "_3" + '.png')
+    })
+    res.redirect('/admin/products')
   })
 })
+
+// router.post("/add-productSample", (req, res) => {
+//   productHelpers.addProduct(req.body, (id) => {
+//     let image = req.files?.image;
+//     if (Array.isArray(image)) {
+//       mkdirp('./public/product-images/' + id).then(() => {
+//         image.forEach((element, index) => {
+//           element.mv('./public/product-images/' + id + "/" + id + "_" + index + '.png')
+//         });
+//       })
+//       res.redirect('/admin/products')
+//     } else {
+//       image?.mv('./public/product-images/' + id + '.png')
+//       res.redirect('/admin/products')
+//     }
+//   })
+// })
 
 //EDIT PRODUCT
 router.get('/edit-product/:id', async (req, res) => {
@@ -91,21 +118,46 @@ router.get('/edit-product/:id', async (req, res) => {
 })
 
 router.post('/edit-product/:id', (req, res) => {
-  let id = req.params.id
   productHelpers.updateProduct(req.params.id, req.body).then(() => {
-    res.redirect('/admin/products')
-    let image = req.files?.image;
-    if (Array.isArray(image)) {
-      mkdirp('./public/product-images/' + id).then(() => {
-        image.forEach((element, index) => {
-          element.mv('./public/product-images/' + id + "/" + id + "_" + index + '.png')
-        });
-      })
-    } else {
-      image?.mv('./public/product-images/' + id + '.png')
+    let id = req.params.id;
+    let image1 = req.files?.image1
+    let image2 = req.files?.image2
+    let image3 = req.files?.image3
+    let image4 = req.files?.image4
+
+    if (image1) {
+      image1.mv('./public/product-images/' + id + "/" + id + "_0" + '.png')
     }
+    if (image2) {
+      image2.mv('./public/product-images/' + id + "/" + id + "_1" + '.png')
+    }
+
+    if (image3) {
+      image3.mv('./public/product-images/' + id + "/" + id + "_2" + '.png')
+    }
+    if (image4) {
+      image4.mv('./public/product-images/' + id + "/" + id + "_3" + '.png')
+    }
+    res.redirect('/admin/products')
   })
 })
+
+// router.post('/edit-product/:id', (req, res) => {
+//   let id = req.params.id
+//   productHelpers.updateProduct(req.params.id, req.body).then(() => {
+//     res.redirect('/admin/products')
+//     let image = req.files?.image;
+//     if (Array.isArray(image)) {
+//       mkdirp('./public/product-images/' + id).then(() => {
+//         image.forEach((element, index) => {
+//           element.mv('./public/product-images/' + id + "/" + id + "_" + index + '.png')
+//         });
+//       })
+//     } else {
+//       image?.mv('./public/product-images/' + id + '.png')
+//     }
+//   })
+// })
 
 //DELETE PRODUCT
 router.get('/delete-product/:id', (req, res) => {
@@ -184,6 +236,31 @@ router.post('/order-status', (req, res) => {
 router.get('cancel-order/:orderId', (req, res) => {
   userHelpers.cancelOrder(req.params.orderId).then(() => {
     res.json({ status: true })
+  })
+})
+
+//SALES REPORT
+router.get('/sales-report', (req, res) => {
+  adminHelpers.salesReport(1).then((response) => {
+    res.render('admin/sales-report', { admin: true, response })
+  })
+})
+
+router.get('/sales-report/:days', (req, res) => {
+  adminHelpers.salesReport(req.params.days).then((response) => {
+    res.json(response)
+  })
+})
+
+//DASHBOARD COUNT
+router.get('/dashboard', (req, res) => {
+  res.render('admin/dashboard', { admin: true })
+})
+
+router.get('/dashboard/:days', (req, res) => {
+  adminHelpers.dashboardCount(req.params.days).then((data) => {
+    console.log('45678uygdejbnoljw', data);
+    res.json(data)
   })
 })
 module.exports = router;

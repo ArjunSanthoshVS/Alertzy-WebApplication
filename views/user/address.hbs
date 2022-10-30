@@ -2,10 +2,8 @@
     <nav class=" nav nav-borders">
         <a class="nav-link active ms-0" href="/profile" style="font-size: large; font-weight: 600;">Profile</a>
         <a class="nav-link" href="/address" style="font-size: large; font-weight: 600;">Address</a>
-        <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-profile-security-page"
-            style="font-size: large; font-weight: 600;">Security</a>
-        <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-edit-notifications-page"
-            style="font-size: large; font-weight: 600;">Notifications</a>
+        <a class="nav-link" href="/password" style="font-size: large; font-weight: 600;">Password</a>
+
     </nav>
     <hr class="mt-0 mb-4">
     <div class="d-flex justify-content-end">
@@ -24,12 +22,12 @@
                         <div class="row gx-3 mb-3">
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputFirstName">First name</label>
-                                <input class="form-control" id="firstName" type="text" name="firstname"
+                                <input class="form-control" id="firstname" type="text" name="firstname"
                                     placeholder="Enter your first name" value="">
                             </div>
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputLastName">Last name</label>
-                                <input class="form-control" id="lastName" type="text" name="lastname"
+                                <input class="form-control" id="lastname" type="text" name="lastname"
                                     placeholder="Enter your last name" value="">
                             </div>
                         </div>
@@ -85,11 +83,91 @@
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
 
+    {{!-EDIT ADDRESS--}}
+    {{#each address}}
+    <div class="modal fade" id="editAddress" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAddress">Edit Existing Address</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/edit-address/{{this.address._id}}" method="post">
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputFirstName">First name</label>
+                                <input class="form-control" id="firstname" type="text" name="firstname"
+                                    placeholder="Enter your first name" value="{{this.address.firstname}}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputLastName">Last name</label>
+                                <input class="form-control" id="lastname" type="text" name="lastname"
+                                    placeholder="Enter your last name" value="{{this.address.lastname}}">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputEmailAddress">Email address</label>
+                            <input class="form-control" id="email" type="email" name="email"
+                                placeholder="Enter your email address" value="{{this.address.email}}">
+                        </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputEmailAddress">Address</label>
+                            <input class="form-control" id="address" type="text" name="address"
+                                placeholder="Enter your Address" value="{{this.address.address}}">
+                        </div>
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputPhone">Phone number</label>
+                                <input class="form-control" id="mobile" type="tel" name="mobile"
+                                    placeholder="Enter your phone number" value="{{this.address.mobile}}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputCountry">Country</label>
+                                <input class="form-control" id="country" type="text" name="country"
+                                    placeholder="Enter your Country" value="{{this.address.country}}">
+                            </div>
+                        </div>
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputState">State</label>
+                                <input class="form-control" id="state" type="text" name="state"
+                                    placeholder="Enter your State" value="{{this.address.state}}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputDistrict">District</label>
+                                <input class="form-control" id="district" type="text" name="district"
+                                    placeholder="Enter your District" value="{{this.address.district}}">
+                            </div>
+                        </div>
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputCity">City</label>
+                                <input class="form-control" id="city" type="text" name="city"
+                                    placeholder="Enter your City" value="{{this.address.city}}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputPin">Pincode</label>
+                                <input class="form-control" id="pincode" type="number" name="pincode"
+                                    placeholder="Enter your Pincode" value="{{this.address.pincode}}">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            {{!-- <input type="hidden" name="userId" value="{{user._id}}"> --}}
+                            <input type="hidden" name="_id" value="{{this.address._id}}">
+                            <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/each}}
 
     <div class="row justify-content-center">
         <div class="col-xl-8 w-100">
@@ -98,16 +176,21 @@
                 <div class="card-header">
                     Address
                     <div class="float-end">
-                        <button style="border: 0;color: blue;"><i class="fa-solid fa-file-pen"></i></button>
-                        <button style="border: 0;color: red;"><i class="fa-solid fa-trash"></i></button>
+                        {{!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#editAddress" data-bs-whatever="@mdo">Edit</button>--}}
+                        <button class="btn btn-danger">
+                            <a style="text-decoration:none; color: white;"
+                                href="/delete-address/{{this.address._id}}">Delete</a>
+                        </button>
                     </div>
                 </div>
                 <div class="card-body">
-                    <strong>{{this.address.firstname}}</strong> <br>
-                    Address <br>
-                    streetname,city <br>
-                    state,country <br>
-                    pincode
+                    <strong>{{this.address.firstname}} {{this.address.lastname}}</strong> <br>
+                    {{this.address.mobile}} <br>
+                    {{this.address.email}}<br>
+                    {{this.address.address}} <br>
+                    {{this.address.country}}, {{this.address.state}}, {{this.address.city}} <br>
+                    {{this.address.pincode}}
                 </div>
             </div>
             {{/each}}
@@ -116,7 +199,6 @@
 </div>
 
 
-</div>
 <style>
     :root {
         --card-line-height: 1.2em;

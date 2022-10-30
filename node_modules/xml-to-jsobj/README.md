@@ -1,0 +1,1 @@
+XML from/to JavaScript object

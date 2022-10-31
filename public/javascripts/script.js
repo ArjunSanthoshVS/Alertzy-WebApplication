@@ -418,30 +418,31 @@ function histogram(days, buttonId) {
                     }
                 });
 
-                // var xValues = ["COD", "ONLINE"];
-                // var yValues = [response.codTotal, response.onlineTotal];
 
-                // var barColors = [
-                //     "#b91d47",
-                //     "#00aba9",
-                // ];
+                var xValues = ["COD", "ONLINE"];
+                var yValues = [response.codTotal, response.onlineTotal];
 
-                // new Chart("payment", {
-                //     type: "pie",
-                //     data: {
-                //         labels: xValues,
-                //         datasets: [{
-                //             backgroundColor: barColors,
-                //             data: yValues
-                //         }]
-                //     },
-                //     options: {
-                //         title: {
-                //             display: true,
-                //             text: "Payment Report"
-                //         }
-                //     }
-                // });
+                var barColors = [
+                    "#b91d47",
+                    "#00aba9",
+                ];
+
+                new Chart("payment", {
+                    type: "pie",
+                    data: {
+                        labels: xValues,
+                        datasets: [{
+                            backgroundColor: barColors,
+                            data: yValues
+                        }]
+                    },
+                    options: {
+                        title: {
+                            display: true,
+                            text: "Payment Report"
+                        }
+                    }
+                });
 
 
 

@@ -5,15 +5,16 @@ const productHelpers = require('../helpers/product-helpers');
 const userHelpers = require('../helpers/user-helpers');
 const adminHelpers = require('../helpers/admin-helpers');
 const otp = require('../otp-token');
-const client = require('twilio')(otp.accountSID, otp.authToken)
+require('dotenv').config()
+const client = require('twilio')(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN)
 const paypal = require('paypal-rest-sdk')
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
-  'client_id': 'ATQWD1odD_lu8HyIcyd-p0kcA5rP77gMH4iK64luYVz-6EW1noX0gmH79vzC4ory-2Sn4pP51r4faW5B',
-  'client_secret': 'ED-uS1WIQBKnlVDV5jrk1FmvxkczS-OLyILKNNCnxsQ-EJ6FX8UbjENXFjsrUWG91tE0tULCh1b61IPx'
+  'client_id': process.env.CLIENT_ID,
+  'client_secret': process.env.CLIENT_SECRET
 });
 
-console.log(process.env);
+
 
 //ENTERING PAGE
 router.get('/', async function (req, res, next) {
@@ -60,7 +61,7 @@ router.post('/otp-login', (req, res) => {
     let phone = response.user.mobile
     client
       .verify
-      .services(otp.serviceID)
+      .services(process.env.SERVICE_ID)
       .verifications
       .create({
         to: `+91${phone}`,
@@ -86,7 +87,7 @@ router.post('/otp-verification', (req, res) => {
   console.log(req.body.mobile);
   client
     .verify
-    .services(otp.serviceID)
+    .services(process.env.SERVICE_ID)
     .verificationChecks
     .create({
       to: `+91${req.body.mobile}`,
@@ -233,7 +234,7 @@ router.post('/place-order', async (req, res) => {
       res.json({ codSuccess: true })
     } else if (req.body['paymentMethod'] === 'ONLINE') {
       userHelpers.generateRazorpay(orderId, totalPrice).then((response) => {
-        res.json({ razorpaySuccess: true })
+        res.json({ razorpay: true, response })
       })
     } else {
       req.session.orderId = orderId
@@ -328,7 +329,7 @@ router.post('/profile', (req, res) => {
 //ADD ADDRESS IN PROFILE
 router.post('/add-address', (req, res) => {
   let userId = req.session.user._id
-  userHelpers.addAddress(req.body, userId).then((response) => {
+  userHelpers.addAddress(req.body, userId).then(() => {
     res.redirect('/address')
   })
 })
@@ -336,7 +337,7 @@ router.post('/add-address', (req, res) => {
 //ADD ADDRESS IN CHECKOUT PAGE
 router.post('/add-address-checkout', (req, res) => {
   let userId = req.session.user._id
-  userHelpers.addAddress(req.body, userId).then((response) => {
+  userHelpers.addAddress(req.body, userId).then(() => {
     res.redirect('/place-order')
   })
 })

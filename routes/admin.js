@@ -9,7 +9,7 @@ const mkdirp = require('mkdirp');
 //ENTERING PAGE
 router.get('/', function (req, res, next) {
   if (req.session.adminloggedIn) {
-    res.redirect('/admin/products')
+    res.redirect('/admin/dashboard')
   } else {
     res.render('admin/login', { not: true, "loginErr": req.session.loginErr });
     req.session.loginErr = false;
@@ -26,7 +26,7 @@ router.post('/login', (req, res) => {
     if (response.status) {
       req.session.adminloggedIn = true;
       req.session.admin = response.admin;
-      res.redirect('/admin/products');
+      res.redirect('/admin/dashboard');
     } else {
       req.session.loginErr = "Incorrect email or Password";
       res.redirect('/admin/login')
@@ -240,16 +240,18 @@ router.get('cancel-order/:orderId', (req, res) => {
 })
 
 //SALES REPORT
-router.get('/sales-report', (req, res) => {
-  adminHelpers.salesReport(1).then((response) => {
-    res.render('admin/sales-report', { admin: true, response })
-  })
-})
+router.get('/sales-report', async (req, res) => {
+  if (req.query?.month) {
+    let month = req.query?.month.split("-")
+    let [yy, mm] = month;
 
-router.get('/sales-report/:days', (req, res) => {
-  adminHelpers.salesReport(req.params.days).then((response) => {
-    res.json(response)
-  })
+    deliveredOrders = await adminHelpers.deliveredOrderList(yy, mm)
+  } else if (req.query?.daterange) {
+    deliveredOrders = await adminHelpers.deliveredOrderList(req.query);
+  } else {
+    deliveredOrders = await adminHelpers.deliveredOrderList();
+  }
+  res.render('admin/sales-report', { admin: true, deliveredOrders })
 })
 
 //DASHBOARD COUNT

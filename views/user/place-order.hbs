@@ -196,10 +196,10 @@
                             }
                         });
                 }
-                else if (response.razorpaySuccess) {
-                    razorpayPayment(response)
+                else if (response.razorpay) {
+                    razorpayPayment(response.response)
                 }
-                else {
+                else if (response.paypal) {
                     location.href = response.url
                 }
             }

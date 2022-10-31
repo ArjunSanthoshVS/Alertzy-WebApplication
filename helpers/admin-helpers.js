@@ -206,64 +206,75 @@ module.exports = {
     },
 
     //SALES REPORT
-    salesReport: (days) => {
-        days = parseInt(days)
+    deliveredOrderList: (yy, mm) => {
         return new Promise(async (resolve, reject) => {
-            let startDate = new Date()
-            let endDate = new Date()
-            startDate.setDate(startDate.getDate() - days)
-            // let data = {}
-            // data.placedOrders = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({ date: { $gte: startDate, $lte: endDate }, status: 'placed' })
-            // console.log(data.placedOrders);
-            // data.shippedOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'shipped' }).count()
-            // data.deliveredOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'delivered' }).count()
-            // data.canceledOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'canceled' }).count()
-            // data.cashOnDelivery = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'COD' }).count()
-            // data.onlinePayment = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'ONLINE' }).count()
-            // data.users = await db.get().collection(collection.USER_COLLECTION).countDocuments({ date: { $gte: startDate, $lte: endDate } })
-            // resolve(data)
+            let agg = [{
+                $match: {
+                    status: 'delivered'
+                }
+            }, {
+                $unwind: {
+                    path: '$products'
+                }
+            }, {
+                $project: {
+                    totalAmount: '$totalAmount',
+                    paymentMethod: 1,
+                    statusUpdateDate: 1,
+                    status: 1
+                }
+            }]
 
-            let data = db.get().collection(collection.ORDER_COLLECTION)
-                .aggregate([
-                    {
-                        $match: { date: { $gte: startDate, $lte: endDate }, status: 'delivered' }
+            if (mm) {
+                let start = "1"
+                let end = "30"
+                let fromDate = mm.concat("/" + start + "/" + yy)
+                let fromD = new Date(new Date(fromDate).getTime() + 3600 * 24 * 1000)
 
-                    },
-                    {
-                        $unwind: '$products'
-                    },
-                    {
-                        $project: {
-                            item: '$products.item',
-                            quantity: '$products.quantity',
-                            paymentMethod: '$paymentMethod',
-                            totalAmount: '$totalAmount',
-                            status: 'delivered',
-                            date: '$statusUpdateDate'
-                        }
-                    },
-                    {
-                        $lookup: {
-                            from: collection.PRODUCT_COLLECTION,
-                            localField: 'item',
-                            foreignField: '_id',
-                            as: 'product'
-                        }
-                    },
-                    {
-                        $project: {
-                            item: 1,
-                            quantity: 1,
-                            product: { $arrayElemAt: ['$product', 0] },
-                            paymentMethod: 1,
-                            totalAmount: 1,
-                            status: 1,
-                            date: 1
+                let endDate = mm.concat("/" + end + "/" + yy)
+                let endD = new Date(new Date(endDate).getTime() + 3600 * 24 * 1000)
+                dbQuery = {
+                    $match: {
+                        statusUpdateDate: {
+                            $gte: fromD,
+                            $lte: endD
                         }
                     }
-                ])
-                .toArray()
-            resolve(data)
+                }
+                agg.unshift(dbQuery)
+                let deliveredOrders = await db
+                    .get()
+                    .collection(collection.ORDER_COLLECTION)
+                    .aggregate(agg).toArray()
+                resolve(deliveredOrders)
+            } else if (yy) {
+                let dateRange = yy.daterange.split("-")
+                let [from, to] = dateRange
+                from = from.trim("")
+                to = to.trim("")
+                fromDate = new Date(new Date(from).getTime() + 3600 * 24 * 1000)
+                toDate = new Date(new Date(to).getTime() + 3600 * 24 * 1000)
+                dbQuery = {
+                    $match: {
+                        statusUpdateDate: {
+                            $gte: fromDate,
+                            $lte: toDate
+                        }
+                    }
+                }
+                agg.unshift(dbQuery)
+                let deliveredOrders = await db
+                    .get()
+                    .collection(collection.ORDER_COLLECTION)
+                    .aggregate(agg).toArray()
+                resolve(deliveredOrders)
+            } else {
+                let deliveredOrders = await db
+                    .get()
+                    .collection(collection.ORDER_COLLECTION)
+                    .aggregate(agg).toArray()
+                resolve(deliveredOrders)
+            }
         })
     },
 

@@ -22,6 +22,7 @@
                 {{!-- <li class="subtotal">Subtotal</li> --}}
               </ul>
             </div>
+            {{#if cartCount}}
             {{#each products}}
             <div class="basket-product">
               <div class="item">
@@ -47,7 +48,11 @@
               </div>
             </div>
             {{/each}}
+
           </div>
+          {{else}}
+          <img class="" src="/images/empty-cart-2130356-1800917.webp" alt="">
+          {{/if}}
         </main>
       </body>
       <div class="ibox-content pb-3">

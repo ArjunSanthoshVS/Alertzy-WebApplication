@@ -1,19 +1,19 @@
 var db = require('../config/connection')
 var collection = require('../config/collection')
 const bcrypt = require('bcrypt');
-const { response } = require('express');
 var objectId = require('mongodb').ObjectId
 const Razorpay = require('razorpay');
 const paypal = require('paypal-rest-sdk');
-const { resolve } = require('path');
+require('dotenv').config()
+
 var instance = new Razorpay({
-    key_id: 'rzp_test_rS0416zn7MfL67',
-    key_secret: 'm4Q41niB09EATCGA7gVBcSU4',
+    key_id: process.env.KEY_ID,
+    key_secret: process.env.KEY_SECRET,
 })
 paypal.configure({
     'mode': 'sandbox', //sandbox or live
-    'client_id': 'ATQWD1odD_lu8HyIcyd-p0kcA5rP77gMH4iK64luYVz-6EW1noX0gmH79vzC4ory-2Sn4pP51r4faW5B',
-    'client_secret': 'ED-uS1WIQBKnlVDV5jrk1FmvxkczS-OLyILKNNCnxsQ-EJ6FX8UbjENXFjsrUWG91tE0tULCh1b61IPx'
+    'client_id': process.env.CLIENT_ID,
+    'client_secret': process.env.CLIENT_SECRET
 });
 
 
@@ -497,8 +497,8 @@ module.exports = {
                 $push: {
                     address: data
                 }
-            }).then(response)
-            resolve(response)
+            }).then()
+            resolve()
         })
     },
 

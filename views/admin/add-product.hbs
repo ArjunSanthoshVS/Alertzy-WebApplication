@@ -7,46 +7,57 @@
 
         <div class="d-flex justify-content-center">
             <form action="/admin/add-product" method="post" enctype="multipart/form-data">
-                <div class="row mb-3 mt-4">
-                    <label for="" class="col-form-label">Product</label>
-                    <div>
-                        <input type="text" class="form-control" id="inputEmail3" name="product" required>
+                <div class="form-row d-flex">
+                    <div class="row me-2 w-50">
+                        <label for="" class="col-form-label">Product</label>
+                        <div>
+                            <input type="text" class="form-control" id="inputEmail3" name="product" required>
+                        </div>
+                    </div>
+                    <div class="row w-50">
+                        <label for="" class="col-form-label">Brand</label>
+                        <div>
+                            <input type="text" class="form-control" id="inputEmail3" name="brand" required>
+                        </div>
                     </div>
                 </div>
-                <div class="row mb-3 mt-4">
-                    <label for="" class="col-form-label">Brand</label>
-                    <div>
-                        <input type="text" class="form-control" id="inputEmail3" name="brand" required>
+                <div class="form-row d-flex">
+                    <div class="row me-2 w-50">
+                        <label for="" class="col-form-label">Stock</label>
+                        <div>
+                            <input type="number" class="form-control" name="stock" required>
+                        </div>
+                    </div>
+                    <div class="row w-50">
+                        <label for="" class="col-form-label">Actual Price</label>
+                        <div>
+                            <input type="number" class="form-control" name="actualprice" required>
+                        </div>
                     </div>
                 </div>
-
-                <div class="row mb-3 mt-4">
-                    <label for="" class="col-form-label">Stock</label>
-                    <div>
-                        <input type="number" class="form-control" id="inputEmail3" name="stock" required>
+                <div class="form-row d-flex">
+                    <div class="row me-2 w-50">
+                        <label for="" class="col-form-label">Offer Price</label>
+                        <div>
+                            <input type="number" class="form-control" name="offerprice" required>
+                        </div>
+                    </div>
+                    <div class="row w-50">
+                        <label for="" class="col-form-label">Category</label>
+                        <div>
+                            <select id="inputState" class="form-select" name="category" required>
+                                <option selected>Choose the Category...</option>
+                                {{#each category}}
+                                <option>{{this.category}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <div class="row mb-3 mt-4">
-                    <label for="" class="col-form-label">Actual Price</label>
+                <div class="row me-2 w-100">
+                    <label for="" class="col-form-label">Description</label>
                     <div>
-                        <input type="number" class="form-control" name="actualprice" required>
-                    </div>
-                </div>
-                <div class="row mb-3 mt-4  ">
-                    <label for="" class="col-form-label">Offer Price</label>
-                    <div>
-                        <input type="number" class="form-control" name="offerprice" required>
-                    </div>
-                </div>
-                <div class="row mb-3 mt-4">
-                    <label for="" class="col-form-label">Category</label>
-                    <div>
-                        <select id="inputState" class="form-select" name="category" required>
-                            <option selected>Choose the Category...</option>
-                            {{#each category}}
-                            <option>{{this.category}}</option>
-                            {{/each}}
-                        </select>
+                        <textarea class="form-control mb-4" name="description" rows="4" required></textarea>
                     </div>
                 </div>
                 {{!-- <div class="row mb-3 mt-4">

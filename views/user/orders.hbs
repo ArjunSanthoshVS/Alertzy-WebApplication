@@ -1,7 +1,7 @@
 <section class="h-100 gradient-custom">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100 mt-5">
-            <div class="col-lg-10 col-xl-8">
+            <div class="col-lg-12 col-xl-12">
                 <div class="card" style="border-radius: 10px;">
                     <div class="card-header px-4 py-5">
                         <h5 class="text-muted mb-0">Thanks for your Order, <span
@@ -17,26 +17,46 @@
                         <div class="card shadow-0 border mb-4">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-2">
-                                        <img src="/product-images/{{this.item}}/{{this.item}}_0.png" class="img-fluid"
+                                    <div class="col-md-1">
+                                        <img style="width:100px; height:130px;"
+                                            src="/product-images/{{this.item}}/{{this.item}}_0.png" class="img-fluid"
                                             alt="Phone">
                                     </div>
-                                    <div class="col-md-4 text-center d-flex justify-content-center align-items-center">
+                                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
 
                                         <h5 class="text mb-0">{{this.product.product}}</h5>
                                     </div>
-                                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                    <div class="col-md-1 text-center d-flex justify-content-center align-items-center">
                                         <p class="text mb-0 small"><b>Brand: <br> {{this.product.brand}}</b></p>
                                     </div>
-                                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                    <div class="col-md-1 text-center d-flex justify-content-center align-items-center">
                                         <p class="text mb-0 small"><b>Quantity: <br>{{this.quantity}}</b></p>
                                     </div>
 
 
-                                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                    <div class="col-md-1 text-center d-flex justify-content-center align-items-center">
                                         <p class="text mb-0 small"><b>Amount: <br>{{this.totalAmount}}</b></p>
                                     </div>
+                                    <div class="col-md-3 d-flex justify-content-center align-items-center">
+                                        <div class="col-md-12">
+                                            <p>{{this.deliveryDetails.fullname}}</p>
+                                            <p>{{this.deliveryDetails.address}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 justify-content-center align-items-center">
+                                        <p class="text mb-0 small">Date :</p>
+                                        <p>{{this.displayDate}}</p>
+                                    </div>
+                                    <div class="col-md-1 justify-content-center align-items-center">
+                                        <p class="text mb-0 small">Payment :</p>
+                                        <p>{{this.paymentMethod}}</p>
+                                    </div>
+                                    <div class="col-md-1 justify-content-center align-items-center">
+                                        <p class="text mb-0 small">Status :</p>
+                                        <p>{{this.status}}</p>
+                                    </div>
                                 </div>
+                                {{!--
                                 <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
                                 <div class="row d-flex align-items-center">
                                     <div class="col-md-6">
@@ -56,8 +76,8 @@
                                         <p class="text mb-0 small">Status</p>
                                         <p>{{this.status}}</p>
                                     </div>
-                                </div>
-                                <div class="buttons d-flex justify-content-end">
+                                </div> --}}
+                                <div class="buttons d-flex justify-content-end mt-0">
                                     {{#ifCheck status 'delivered'}}
                                     {{/ifCheck}}
                                     {{#ifCheck status 'canceled'}}
@@ -80,6 +100,41 @@
                                 </div>
                             </div>
                         </div>
+                        {{!-- <div class="card mb-4">
+                            <div class="card-header">
+                                {{this.product.product}}
+                            </div>
+                            <div class="card-body d-flex">
+                                <div class="col-md-2">
+                                    <img style="width:100px; height:130px;"
+                                        src="/product-images/{{this.item}}/{{this.item}}_0.png" class="img-fluid"
+                                        alt="Phone">
+                                </div>
+                                <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                    <p class="text mb-0 small"><b>Quantity: <br>{{this.quantity}}</b></p>
+                                </div>
+                                <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                    <p class="text mb-0 small"><b>Amount: <br>{{this.totalAmount}}</b></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="text mb-3 small">Address</p>
+                                    <p>{{this.deliveryDetails.fullname}}</p>
+                                    <p>{{this.deliveryDetails.address}}</p>
+                                </div>
+                                <div class="col-md-2">
+                                    <p class="text mb-0 small">Date</p>
+                                    <p>{{this.displayDate}}</p>
+                                </div>
+                                <div class="col-md-2">
+                                    <p class="text mb-0 small">Payment :</p>
+                                    <p>{{this.paymentMethod}}</p>
+                                </div>
+                                <div class="col-md-2">
+                                    <p class="text mb-0 small">Status</p>
+                                    <p>{{this.status}}</p>
+                                </div>
+                            </div>
+                        </div> --}}
                         {{/each}}
                         {{else}}
                         <h2 class="fw-bold text-danger">Order list is Empty...!</h2>

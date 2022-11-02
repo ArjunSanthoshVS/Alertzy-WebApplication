@@ -50,7 +50,8 @@ module.exports = {
                         stock: prodDetails.stock,
                         actualprice: prodDetails.actualprice,
                         offerprice: prodDetails.offerprice,
-                        category: prodDetails.category
+                        category: prodDetails.category,
+                        description: prodDetails.description
                     }
                 }).then((response) => {
                     resolve()

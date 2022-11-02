@@ -1,6 +1,7 @@
 var db = require('../config/connection')
 var collection = require('../config/collection')
 var bcrypt = require('bcrypt');
+const { response } = require('express');
 var objectId = require('mongodb').ObjectId
 //ADMIN SIGNUP
 module.exports = {
@@ -275,6 +276,27 @@ module.exports = {
                     .aggregate(agg).toArray()
                 resolve(deliveredOrders)
             }
+        })
+    },
+
+    //TOTAL AMOUNT OF DELIVERED PRODUCTS
+    totalAmountOfdelivered: () => {
+        return new Promise(async (resolve, reject) => {
+            let amount = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                {
+                    '$match': {
+                        'status': 'delivered'
+                    }
+                }, {
+                    '$group': {
+                        '_id': null,
+                        'total': {
+                            '$sum': '$totalAmount'
+                        }
+                    }
+                }
+            ]).toArray()
+            resolve(amount[0]?.total)
         })
     },
 

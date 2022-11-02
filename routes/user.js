@@ -4,10 +4,11 @@ const middleware = require('../middlewares/authentication-check')
 const productHelpers = require('../helpers/product-helpers');
 const userHelpers = require('../helpers/user-helpers');
 const adminHelpers = require('../helpers/admin-helpers');
-const otp = require('../otp-token');
+// const otp = require('../otp-token');
 require('dotenv').config()
 const client = require('twilio')(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN)
-const paypal = require('paypal-rest-sdk')
+const paypal = require('paypal-rest-sdk');
+const { response } = require('express');
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
   'client_id': process.env.CLIENT_ID,
@@ -50,6 +51,20 @@ router.post('/login', (req, res) => {
     }
   });
 });
+
+//LOGIN MODAL
+router.post('/modal-login', (req, res) => {
+  userHelpers.doLogin(req.body).then((response) => {
+    if (response.status) {
+      req.session.loggedIn = true;
+      req.session.user = response.user;
+      res.json(response)
+    } else {
+      req.session.loginErr = "Incorrect email or Password";
+      res.redirect('/login')
+    }
+  });
+})
 
 //OTP LOGIN
 router.get('/otp-login', (req, res) => {
@@ -156,6 +171,7 @@ router.get('/product-details/:id', async (req, res) => {
   }
   productHelpers.getProductDetails(req.params.id).then((response) => {
     res.render('user/product-details', { response, user: true, user, cartCount })
+    console.log(response.description);
   })
 })
 
@@ -188,7 +204,7 @@ router.post('/change-product-quantity', (req, res) => {
 //DELETE CART PRODUCT
 router.get('/delete-cart-product/:id', (req, res) => {
   userHelpers.deleteProductFromCart(req.params.id, req.session.user._id).then(() => {
-    res.redirect('/cart')
+    res.json(response)
   })
 })
 

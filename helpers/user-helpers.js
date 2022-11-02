@@ -78,8 +78,8 @@ module.exports = {
             }
         }
         )
-    }
-    ,
+    },
+
     //ADD TO CART
     addToCart: (prodId, userId) => {
         let prodObj = {

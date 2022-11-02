@@ -7,50 +7,62 @@
 
         <div class="d-flex justify-content-center">
             <form action="/admin/edit-product/{{product._id}}" method="post" enctype="multipart/form-data">
-                <div class="row mb-3 mt-4">
-                    <label for="" class="col-form-label">Product</label>
-                    <div>
-                        <input type="text" class="form-control" id="inputEmail3" name="product"
-                            value="{{product.product}}">
+                <div class="form-row d-flex">
+                    <div class="row me-2 w-50">
+                        <label for="" class="col-form-label">Product</label>
+                        <div>
+                            <input type="text" class="form-control" id="inputEmail3" name="product"
+                                value="{{product.product}}">
+                        </div>
+                    </div>
+                    <div class="row w-50">
+                        <label for="" class="col-form-label">Brand</label>
+                        <div>
+                            <input type="text" class="form-control" id="inputEmail3" name="brand"
+                                value="{{product.brand}}">
+                        </div>
                     </div>
                 </div>
-                <div class="row mb-3 mt-4">
-                    <label for="" class="col-form-label">Brand</label>
-                    <div>
-                        <input type="text" class="form-control" id="inputEmail3" name="brand" value="{{product.brand}}">
+                <div class="form-row d-flex">
+                    <div class="row me-2 w-50">
+                        <label for="" class=" col-form-label">Stock</label>
+                        <div>
+                            <input type="number" class="form-control" id="inputEmail3" name="stock"
+                                value="{{product.stock}}">
+                        </div>
+                    </div>
+                    <div class="row w-50">
+                        <label for="" class=" col-form-label">Actual Price</label>
+                        <div>
+                            <input type="number" class="form-control" id="inputEmail3" name="actualprice"
+                                value="{{product.actualprice}}">
+                        </div>
                     </div>
                 </div>
-
-                <div class="row mb-3 mt-4">
-                    <label for="" class=" col-form-label">Stock</label>
-                    <div>
-                        <input type="number" class="form-control" id="inputEmail3" name="stock"
-                            value="{{product.stock}}">
+                <div class="form-row d-flex">
+                    <div class="row me-2 w-50">
+                        <label for="" class=" col-form-label">Offer Price</label>
+                        <div>
+                            <input type="number" class="form-control" id="inputEmail3" name="offerprice"
+                                value="{{product.offerprice}}">
+                        </div>
+                    </div>
+                    <div class="row w-50">
+                        <label for="" class="col-form-label">Category</label>
+                        <div>
+                            <select id="inputState" class="form-select" name="category" value="{{product.category}}">
+                                <option selected>{{product.category}}</option>
+                                {{#each category}}
+                                <option>{{this.category}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <div class="row mb-3 mt-4">
-                    <label for="" class=" col-form-label">Actual Price</label>
+                <div class="row me-2 mb-4 w-100">
+                    <label for="" class="col-form-label">Description</label>
                     <div>
-                        <input type="number" class="form-control" id="inputEmail3" name="actualprice"
-                            value="{{product.actualprice}}">
-                    </div>
-                </div>
-                <div class="row mb-3 mt-4  ">
-                    <label for="" class=" col-form-label">Offer Price</label>
-                    <div>
-                        <input type="number" class="form-control" id="inputEmail3" name="offerprice"
-                            value="{{product.offerprice}}">
-                    </div>
-                </div>
-                <div class="row mb-3 mt-4">
-                    <label for="" class="col-form-label">Category</label>
-                    <div>
-                        <select id="inputState" class="form-select" name="category" value="{{product.category}}">
-                            <option selected>{{product.category}}</option>
-                            {{#each category}}
-                            <option>{{this.category}}</option>
-                            {{/each}}
-                        </select>
+                        <input type="text" class="form-control" name="description" value="{{product.description}}">
                     </div>
                 </div>
                 <div class="form-row d-flex mt-2">

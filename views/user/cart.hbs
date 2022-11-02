@@ -36,19 +36,22 @@
               </div>
               <div class="price" style="font-size: 20px; font-weight: 600;">₹{{this.product.offerprice}}</div>
               <div class="quantity" style=" font-size: 20px; font-weight: 600;">
-                <button class="cart-item-count"
+
+                <button class="cart-item-count" id="minus{{this.product._id}}"
                   onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../userId}}',-1)">-</button>
                 <span id="{{this.product._id}}">{{this.quantity}}</span>
+
                 <button class="cart-item-count"
                   onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../userId}}',1)">+</button>
-                <div class="remove"><a href="/delete-cart-product/{{this.product._id}}?_method=DELETE"
-                    data-mdb-toggle="tooltip" title="Remove item">
-                    <button><i class="fa-solid fa-trash"></i></button></a>
+                <div class="remove">
+                  {{!-- <a href="/delete-cart-product/{{this.product._id}}?_method=DELETE" data-mdb-toggle="tooltip"
+                    title="Remove item"> --}}
+                    <button onclick="deleteCart('{{this.product._id}}')"><i class="fa-solid fa-trash"></i></button>
+                  </a>
                 </div>
               </div>
             </div>
             {{/each}}
-
           </div>
           {{else}}
           <img class="" src="/images/empty-cart-2130356-1800917.webp" alt="">
@@ -548,7 +551,36 @@
           document.getElementById(prodId).innerHTML = quantity + count
           document.getElementById('total').innerHTML = response.total
         }
+
       }
     })
+  }
+
+
+  function deleteCart(prodId) {
+    swal({
+      title: "Are you sure?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "red",
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      closeOnConfirm: false,
+      closeOnCancel: false
+    },
+      function (isConfirm) {
+        if (isConfirm) {
+          $.ajax({
+            url: '/delete-cart-product/' + prodId,
+            method: 'get',
+            success: (response) => {
+              if (response) {
+                location.reload()
+              }
+            }
+          })
+        }
+      }
+    );
   }
 </script>

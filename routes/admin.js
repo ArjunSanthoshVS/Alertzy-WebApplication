@@ -5,6 +5,7 @@ const productHelpers = require('../helpers/product-helpers');
 const userHelpers = require('../helpers/user-helpers');
 const middleware = require('../middlewares/authentication-check')
 const mkdirp = require('mkdirp');
+const { response } = require('express');
 
 //ENTERING PAGE
 router.get('/', function (req, res, next) {
@@ -251,8 +252,11 @@ router.get('/sales-report', async (req, res) => {
   } else {
     deliveredOrders = await adminHelpers.deliveredOrderList();
   }
-  res.render('admin/sales-report', { admin: true, deliveredOrders })
+  let amount = await adminHelpers.totalAmountOfdelivered()
+  console.log(amount);
+  res.render('admin/sales-report', { admin: true, deliveredOrders, amount })
 })
+
 
 //DASHBOARD COUNT
 router.get('/dashboard', (req, res) => {

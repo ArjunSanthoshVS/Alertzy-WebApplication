@@ -1,3 +1,4 @@
+const { response } = require("express")
 
 
 //SIGNUP DATA VALIDATING
@@ -472,6 +473,20 @@ function histogram(days, buttonId) {
                 //         }
                 //     }
                 // });
+            }
+        }
+    })
+}
+
+//MODAL LOGIN
+function modalLogin(data) {
+    $.ajax({
+        url: '/modal-login',
+        method: 'post',
+        data: data,
+        success: (response) => {
+            if (response.status) {
+                location.reload()
             }
         }
     })

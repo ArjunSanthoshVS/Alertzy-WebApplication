@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 var objectId = require('mongodb').ObjectId
 const Razorpay = require('razorpay');
 const paypal = require('paypal-rest-sdk');
+const { response } = require('express');
 require('dotenv').config()
 
 var instance = new Razorpay({
@@ -41,7 +42,9 @@ module.exports = {
     doLogin: (userData) => {
         let response = {};
         return new Promise(async (resolve, reject) => {
-            let user = await db.get().collection(collection.USER_COLLECTION).findOne({ email: userData.email })
+            let user = await db.get().collection(collection.USER_COLLECTION).findOne({
+                email: userData.email, status: true
+            })
             if (user) {
                 bcrypt.compare(userData.password, user.password).then((status) => {
                     if (status) {
@@ -207,7 +210,7 @@ module.exports = {
                     $pull: { products: { item: objectId(prodId) } }
                 }
             ).then(() => {
-                resolve()
+                resolve(response)
             })
         })
     },

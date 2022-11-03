@@ -269,4 +269,30 @@ router.get('/dashboard/:days', (req, res) => {
     res.json(data)
   })
 })
+
+//OFFER MANAGEMENT
+router.get('/offer-management', async (req, res) => {
+  let products = await productHelpers.getAllProducts()
+  let category = await adminHelpers.getCategory()
+  let productOffer = await productHelpers.getProductOffer()
+  let categoryOffer = await productHelpers.getCategoryOffer()
+  res.render('admin/offer', { admin: true, products, category, productOffer, categoryOffer })
+})
+
+//PRODUCT OFFER
+router.post('/offer-management/product-offer', (req, res) => {
+  productHelpers.addProductOffer(req.body).then((response) => {
+    res.redirect('/admin/offer-management')
+    //res.json(response)
+  })
+})
+
+//CATEGORY OFFER
+router.post('/offer-management/category-offer', (req, res) => {
+  productHelpers.addCategoryOffer(req.body).then((response) => {
+    console.log(req.body);
+    res.redirect('/admin/offer-management')
+  })
+})
+
 module.exports = router;

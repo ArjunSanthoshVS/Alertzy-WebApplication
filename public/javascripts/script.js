@@ -1,4 +1,3 @@
-const { response } = require("express")
 
 
 //SIGNUP DATA VALIDATING
@@ -94,6 +93,50 @@ function logInValidate() {
 
     return true;
 }
+
+//MODAL LOGIN
+$("#login-form").submit((e) => {
+    e.preventDefault();
+    const email = document.getElementById('email');
+    const pass = document.getElementById('password');
+    const error = document.getElementsByClassName('invalid-feedback');
+
+    if (!(email.value.trim().match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/))) {
+        error[0].style.display = "block";
+        error[0].innerHTML = "Enter email";
+        email.style.border = "2px solid red";
+        return false;
+    } else {
+        error[0].innerHTML = ""
+        email.style.border = "2px solid none";
+    }
+
+    if (pass.value.trim() === "") {
+        error[1].style.display = "block";
+        error[1].innerHTML = "Enter password";
+        pass.style.border = "2px solid red";
+        return false;
+    } else {
+        error[1].innerHTML = ""
+        pass.style.border = "2px solid none";
+    }
+    console.log('Its not workinggggggggggggggg.............');
+    $.ajax({
+        url: '/modal-login',
+        type: 'post',
+        data: $('#login-form').serialize(),
+        success: (response) => {
+            console.log(response);
+            if (response.status) {
+                location.reload()
+            } else {
+                error[0].style.display = "block";
+                error[0].innerHTML = "No user found! Enter valid email & password";
+                email.style.border = "2px solid red";
+            }
+        }
+    })
+})
 
 //VALIDATING ADMIN LOGIN
 function logInValidate() {
@@ -478,16 +521,16 @@ function histogram(days, buttonId) {
     })
 }
 
-//MODAL LOGIN
-function modalLogin(data) {
-    $.ajax({
-        url: '/modal-login',
-        method: 'post',
-        data: data,
-        success: (response) => {
-            if (response.status) {
-                location.reload()
-            }
-        }
-    })
-}
+//PRODUCT OFFER
+// $("#product-offer").submit((e) => {
+//     e.preventDefault();
+//     $.ajax({
+//         url: '/admin/offer-management/product-offer',
+//         type: 'post',
+//         data: $('#product-offer').serialize(),
+//         success: (response) => {
+//             console.log(response);
+//             location.reload()
+//         }
+//     })
+// })

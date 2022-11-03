@@ -8,7 +8,7 @@ const adminHelpers = require('../helpers/admin-helpers');
 require('dotenv').config()
 const client = require('twilio')(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN)
 const paypal = require('paypal-rest-sdk');
-const { response } = require('express');
+const { Router } = require('express');
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
   'client_id': process.env.CLIENT_ID,
@@ -55,16 +55,13 @@ router.post('/login', (req, res) => {
 //LOGIN MODAL
 router.post('/modal-login', (req, res) => {
   userHelpers.doLogin(req.body).then((response) => {
-    if (response.status) {
-      req.session.loggedIn = true;
-      req.session.user = response.user;
-      res.json(response)
-    } else {
-      req.session.loginErr = "Incorrect email or Password";
-      res.redirect('/login')
-    }
-  });
-})
+    req.session.loggedIn = true;
+    req.session.user = response.user;
+    res.json({ status: true })
+  }).catch((response) => {
+    res.json({ status: false })
+  })
+});
 
 //OTP LOGIN
 router.get('/otp-login', (req, res) => {
@@ -203,7 +200,7 @@ router.post('/change-product-quantity', (req, res) => {
 
 //DELETE CART PRODUCT
 router.get('/delete-cart-product/:id', (req, res) => {
-  userHelpers.deleteProductFromCart(req.params.id, req.session.user._id).then(() => {
+  userHelpers.deleteProductFromCart(req.params.id, req.session.user._id).then((response) => {
     res.json(response)
   })
 })

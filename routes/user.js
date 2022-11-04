@@ -160,13 +160,13 @@ router.get('/products', async function (req, res, next) {
 
 //PRODUCTS DETAILS
 router.get('/product-details/:id', async (req, res) => {
-
   let user = req.session.user
   let cartCount = null
   if (user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   }
   productHelpers.getProductDetails(req.params.id).then((response) => {
+    console.log(response);
     res.render('user/product-details', { response, user: true, user, cartCount })
     console.log(response.description);
   })
@@ -210,6 +210,7 @@ router.get('/wishlist', middleware.loginChecked, async (req, res) => {
   let userId = req.session.user._id
   let products = await userHelpers.getWishProducts(userId)
   let user = req.session.user
+  console.log(products);
   res.render('user/wishlist', { products, user, userId })
 })
 

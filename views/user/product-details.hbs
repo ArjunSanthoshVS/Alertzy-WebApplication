@@ -53,8 +53,13 @@
 
     <h4 class="mb-3">{{response.brand}}</h4>
     <h2 class="mb-3" style="font-family: none;">{{response.product}}</h2>
+    {{#if response.offerPrice}}
     <h5 class="mb-3" style="text-decoration:line-through ;">₹{{response.actualPrice}}</h5>
     <h3 class="mb-3" style="font-weight:600;">₹{{response.offerPrice}}</h3>
+    {{else}}
+    {{!-- <h5 class="mb-3" style="text-decoration:line-through ;">₹{{response.actualPrice}}</h5> --}}
+    <h3 class="mb-3" style="font-weight:600;">₹{{response.actualPrice}}</h3>
+    {{/if}}
     <h6 class="mb-3">{{response.description}}</h6>
     {{!-- <select>
       <option>Select Size</option>
@@ -177,8 +182,8 @@
         <div class="card-body" style="font-family:none;">
           <h6>{{response.brand}}</h6>
           <h4>{{response.product}}</h4>
-          <p class="mb-1" style="text-decoration: line-through;">₹{{response.actualprice}}</p>
-          <h4>₹{{response.offerprice}}</h4>
+          <p class="mb-1" style="text-decoration: line-through;">₹{{response.actualPrice}}</p>
+          <h4>₹{{response.offerPrice}}</h4>
         </div>
       </div>
     </div>
@@ -189,8 +194,8 @@
         <div class="card-body" style="font-family:none;">
           <h6>{{response.brand}}</h6>
           <h4>{{response.product}}</h4>
-          <p class="mb-1" style="text-decoration: line-through;">₹{{response.actualprice}}</p>
-          <h4>₹{{response.offerprice}}</h4>
+          <p class="mb-1" style="text-decoration: line-through;">₹{{response.actualPrice}}</p>
+          <h4>₹{{response.offerPrice}}</h4>
         </div>
       </div>
     </div>
@@ -201,8 +206,8 @@
         <div class="card-body" style="font-family:none;">
           <h6>{{response.brand}}</h6>
           <h4>{{response.product}}</h4>
-          <p class="mb-1" style="text-decoration: line-through;">₹{{response.actualprice}}</p>
-          <h4>₹{{response.offerprice}}</h4>
+          <p class="mb-1" style="text-decoration: line-through;">₹{{response.actualPrice}}</p>
+          <h4>₹{{response.offerPrice}}</h4>
         </div>
       </div>
     </div>
@@ -213,8 +218,8 @@
         <div class="card-body" style="font-family:none;">
           <h6>{{response.brand}}</h6>
           <h4>{{response.product}}</h4>
-          <p class="mb-1" style="text-decoration: line-through;">₹{{response.actualprice}}</p>
-          <h4>₹{{response.offerprice}}</h4>
+          <p class="mb-1" style="text-decoration: line-through;">₹{{response.actualPrice}}</p>
+          <h4>₹{{response.offerPrice}}</h4>
         </div>
       </div>
     </div>

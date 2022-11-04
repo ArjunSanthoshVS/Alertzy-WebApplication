@@ -5,7 +5,6 @@ const productHelpers = require('../helpers/product-helpers');
 const userHelpers = require('../helpers/user-helpers');
 const middleware = require('../middlewares/authentication-check')
 const mkdirp = require('mkdirp');
-const { response } = require('express');
 
 //ENTERING PAGE
 router.get('/', function (req, res, next) {
@@ -110,9 +109,10 @@ router.post('/add-product', (req, res) => {
 // })
 
 //EDIT PRODUCT
-router.get('/edit-product/:id', async (req, res) => {
+router.get('/edit-product/:prodId', async (req, res) => {
   let admin = req.session.admin;
-  let product = await productHelpers.getProductDetails(req.params.id)
+  console.log('###################', req.params.prodId, ' &&&&&&&&&&&&&&& ');
+  let product = await productHelpers.getProductDetails(req.params.prodId)
   let category = await adminHelpers.getCategory()
   console.log(product);
   res.render('admin/edit-product', { product, category, admin: true, admin })
@@ -164,7 +164,8 @@ router.post('/edit-product/:id', (req, res) => {
 router.get('/delete-product/:id', (req, res) => {
   let prodId = req.params.id
   productHelpers.deleteProduct(prodId).then((response) => {
-    res.redirect('/admin/products')
+    //res.redirect('/admin/products')
+    res.json(response)
   })
 })
 
@@ -287,6 +288,14 @@ router.post('/offer-management/product-offer', (req, res) => {
   })
 })
 
+//DELETE PRODUCT OFFER
+router.post('/offer-management/delete-product-offer/:id', (req, res) => {
+  console.log(req.body);
+  productHelpers.deleteProductOffer(req.params.id).then((response) => {
+    res.json({ status: true })
+  })
+})
+
 //CATEGORY OFFER
 router.post('/offer-management/category-offer', (req, res) => {
   productHelpers.addCategoryOffer(req.body).then((response) => {
@@ -295,4 +304,11 @@ router.post('/offer-management/category-offer', (req, res) => {
   })
 })
 
+//DELETE CATEGORY OFFER
+router.post('/offer-management/delete-category-offer', (req, res) => {
+  console.log(req.body);
+  productHelpers.deleteCategoryOffer(req.body.category).then((response) => {
+    res.json({ status: true })
+  })
+})
 module.exports = router;

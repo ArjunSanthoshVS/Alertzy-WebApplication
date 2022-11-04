@@ -23,6 +23,7 @@
     <div class="container mt-3">
         <div class="row">
             {{#each products}}
+            {{#if this.offerPrice}}
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="card" style="width: 18rem; margin-top:25px;">
 
@@ -45,6 +46,30 @@
                     </div>
                 </div>
             </div>
+            {{else}}
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="card" style="width: 18rem; margin-top:25px;">
+
+                    <img style="width:100px; height:180px;" src="/product-images/{{this._id}}/{{this._id}}_0.png"
+                        class="card-img-top mx-auto mt-3" alt="...">
+
+                    <div class="card-body">
+                        <h6>{{this.brand}}</h6>
+                        <a style="text-decoration: none;" href="/product-details/{{this._id}}">
+                            <h5>{{this.product}}</h5>
+                        </a>
+                        <p class="mb-0">No Offer</p>
+                        <h5>₹{{this.actualPrice}}</h5>
+
+                        <button type="button" class="btn btn-primary" style="border-radius: 10px;"
+                            onclick="addToCart('{{this._id}}')">Add to Cart</button>
+
+                        <i class="fa-solid fa-heart float-end" style="font-size: xx-large; color: red;"
+                            onclick="addToWishlist('{{this._id}}')"></i>
+                    </div>
+                </div>
+            </div>
+            {{/if}}
             {{/each}}
         </div>
     </div>

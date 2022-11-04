@@ -1,5 +1,5 @@
-<div class="background pb-3" style="    margin-left: 13%;
-    width: 85%;">
+<div class="background pb-3" style="    margin-left: 7%;
+    width: 90%;">
   <div class="" style=" vh-100">
 
     <a class="navbar-brand mt-4" style="font-family: none; font-weight: 900; color: black;">
@@ -28,7 +28,7 @@
           <tbody>
             {{#each users}}
             <tr>
-              <th scope="row"  class="align-middle fw-b">{{inc @index}}</th>
+              <th scope="row" class="align-middle fw-b">{{inc @index}}</th>
               <td class="align-middle fw-b">{{this.firstname}}</td>
               <td class="align-middle fw-b">{{this.email}}</td>
               <td class="align-middle fw-b">{{this.mobile}}</td>
@@ -41,11 +41,15 @@
               </td>
               <td>
                 {{#if this.status}}
-                <a class="btn btn-danger" href="/admin/users/{{this._id}}"
-                  onclick="return confirm('Do you want to deactivate the user')">Block</a>
+                <button class="btn btn-danger" onclick="blockUser('{{this._id}}')">
+                  Block</button>
+                {{!-- <a class="btn btn-danger" href="/admin/users/{{this._id}}"
+                  onclick="return confirm('Do you want to deactivate the user')">Block</a> --}}
                 {{else}}
-                <a class="btn btn-success" href="/admin/users/{{this._id}}"
-                  onclick="return confirm('Do you want to activate the user')">Unblock</a>
+                <button class="btn btn-success" onclick="unblockUser('{{this._id}}')">
+                  Unblock</button>
+                {{!-- <a class="btn btn-success" href="/admin/users/{{this._id}}"
+                  onclick="return confirm('Do you want to activate the user')">Unblock</a> --}}
                 {{/if}}
               </td>
             </tr>
@@ -55,9 +59,9 @@
       </div>
     </div>
   </div>
-  
-<script>
-  $(document).ready(function () {
-    $('#example').DataTable();
-  });
-</script>
+
+  <script>
+    $(document).ready(function () {
+      $('#example').DataTable();
+    });
+  </script>

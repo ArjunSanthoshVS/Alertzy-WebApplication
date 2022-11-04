@@ -1,5 +1,5 @@
-<div class="background pb-3" style="    margin-left: 13%;
-    width: 85%;">
+<div class="background pb-3" style=" margin-left: 6%;
+    width: 90%;">
     <div>
         <a class="navbar-brand mt-4" style="font-family: none; font-weight: 900; color: black;">
             <h1 class="text-center pt-5">Offers</h1>
@@ -28,8 +28,9 @@
                     <tr>
                         <td class="text-center">{{this.product}}</td>
                         <td class="text-center">{{this.productOffer}}</td>
-                        <td class="text-center"><a href=""><i class="fa-solid fa-trash"
-                                    style="color: red; font-size:20px;"></i></a>
+                        <td class="text-center">
+                            <button type="button" style="border:0;" onclick="deleteProductOffer('{{this._id}}')"><i
+                                    class="fa-solid fa-trash" style="color: red; font-size:20px;"></i></button>
                         </td>
                     </tr>
                     {{/each}}
@@ -59,7 +60,10 @@
                     <tr>
                         <td class="text-center">{{this.category}}</td>
                         <td class="text-center">{{this.categoryOffer}}</td>
-                        <td class="text-center"><i class="fa-solid fa-trash" style="color: red; font-size:20px;"></i>
+                        <td class="text-center">
+                            <button type="button" style="border:0;"
+                                onclick="deleteCategoryOffer('{{this.category}}')"><i class="fa-solid fa-trash"
+                                    style="color: red; font-size:20px;"></i></button>
                     </tr>
                     {{/each}}
                 </tbody>

@@ -39,7 +39,9 @@ module.exports = {
     //PRODUCT DETAILS
     getProductDetails: (prodId) => {
         return new Promise((resolve, reject) => {
+            console.log('888888888888888', prodId, ' *********************** ');
             db.get().collection(collection.PRODUCT_COLLECTION).findOne({ _id: objectId(prodId) }).then((product) => {
+                console.log('!!!!!!!!!!!!!!!!!!!', product, '^^^^^^^^^^^^^^');
                 resolve(product)
             })
 
@@ -55,8 +57,10 @@ module.exports = {
                         product: prodDetails.product,
                         brand: prodDetails.brand,
                         stock: prodDetails.stock,
-                        actualprice: prodDetails.actualprice,
-                        offerprice: prodDetails.offerprice,
+                        actualPrice: prodDetails.actualPrice,
+                        offerPrice: prodDetails.offerPrice,
+                        productOffer: prodDetails.productOffer,
+                        categoryOffer: prodDetails.categoryOffer,
                         category: prodDetails.category,
                         description: prodDetails.description
                     }
@@ -122,14 +126,25 @@ module.exports = {
     },
 
     //DELETE PORDUCT OFFER
-    deleteProductOffer: () => {
+    deleteProductOffer: (prodId) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(collection.PRODUCT_COLLECTION).deleteOne({ _id: objectId(prodId) },
+            db.get().collection(collection.PRODUCT_COLLECTION).updateOne({ _id: objectId(prodId) },
                 {
-                    productOffer
+                    $set: { productOffer: 0 }
                 }
-            )
-            resolve()
+            ).then((response) => {
+                db.get().collection(collection.PRODUCT_COLLECTION).findOne({ _id: objectId(prodId) }).then((response) => {
+                    if (response.productOffer == 07 && response.categoryOffer == 0) {
+                        response.offerPrice = response.actualPrice
+                        db.get().collection(collection.PRODUCT_COLLECTION).updateOne({ _id: objectId(prodId) }, {
+                            $set: {
+                                offerPrice: response.offerPrice
+                            }
+                        })
+                    }
+                })
+                resolve()
+            })
         })
     },
 
@@ -191,6 +206,22 @@ module.exports = {
             ).toArray()
             resolve(categoryOffer)
         })
+    },
 
+    //DELTE CATEGORY OFFER
+    deleteCategoryOffer: (category) => {
+        return new Promise(async (resolve, reject) => {
+            db.get().collection(collection.CATEGORY_COLLECTION).updateOne({ category: category }, { $set: { categoryOffer: 0 } })
+            db.get().collection(collection.PRODUCT_COLLECTION).updateMany({ category: category }, { $set: { categoryOffer: 0 } }).then(async (response) => {
+                let product = await db.get().collection(collection.PRODUCT_COLLECTION).find({ category: category }).toArray()
+                for (i = 0; i < product.length; i++) {
+                    if (product[i].productOffer == 0 && product[i].categoryOffer == 0) {
+                        product[i].offerPrice = product[i].actualPrice
+                        db.get().collection(collection.PRODUCT_COLLECTION).updateMany({ category: category }, { $set: { offerPrice: product[i].offerPrice } })
+                    }
+                }
+            })
+            resolve()
+        })
     }
 }

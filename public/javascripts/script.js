@@ -1,3 +1,4 @@
+const { response } = require("express")
 
 
 //SIGNUP DATA VALIDATING
@@ -534,3 +535,148 @@ function histogram(days, buttonId) {
 //         }
 //     })
 // })
+// //EDIT PRODUCT
+// function editProduct(prodId) {
+//     $.ajax({
+//         url: '/admin/edit-product/' + prodId,
+//         method: 'get',
+//         success: (response) => {
+//             if (response) {
+//                 location.reload()
+//             }
+//         }
+//     })
+// }
+
+//DELETE PRODUCT
+function deleteProduct(prodId) {
+    swal({
+        title: "Are you sure?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "red",
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        closeOnConfirm: false,
+        closeOnCancel: true
+    },
+        function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: '/admin/delete-product/' + prodId,
+                    method: 'get',
+                    success: (response) => {
+                        if (response) {
+                            location.reload()
+                        }
+                    }
+                })
+            }
+        }
+    );
+}
+
+//DELETE PRODUCT OFFER
+function deleteProductOffer(prodId) {
+    $.ajax({
+        url: '/admin/offer-management/delete-product-offer/' + prodId,
+        type: 'post',
+        success: (response) => {
+            swal({
+                title: "Are you sure?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "red",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        location.reload()
+                    }
+                }
+            )
+        }
+    })
+}
+
+//DELETE CATEGORY OFFER
+function deleteCategoryOffer(category) {
+    $.ajax({
+        url: '/admin/offer-management/delete-category-offer/',
+        type: 'post',
+        data: ({ category }),
+        success: (response) => {
+            swal({
+                title: "Are you sure?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "red",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        location.reload()
+                    }
+                }
+            )
+        }
+    })
+}
+
+//BLOCK USER
+function blockUser(userId) {
+    $.ajax({
+        url: '/admin/users/' + userId,
+        method: 'get',
+        success: (response) => {
+            swal({
+                title: "Are you sure?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "red",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        location.reload()
+                    }
+                }
+            )
+        }
+    })
+}
+
+//UNBLOCK USER
+function unblockUser(userId) {
+    $.ajax({
+        url: '/admin/users/' + userId,
+        method: 'get',
+        success: (response) => {
+            swal({
+                title: "Are you sure?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "green",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        location.reload()
+                    }
+                }
+            )
+        }
+    })
+}

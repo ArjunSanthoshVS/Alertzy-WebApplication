@@ -34,7 +34,7 @@
                   <h1 style="font-size:27px;"><strong>{{this.product.product}}</strong></h1>
                 </div>
               </div>
-              <div class="price" style="font-size: 20px; font-weight: 600;">₹{{this.product.offerprice}}</div>
+              <div class="price" style="font-size: 20px; font-weight: 600;">₹{{this.product.offerPrice}}</div>
               <div class="quantity" style=" font-size: 20px; font-weight: 600;">
 
                 <button class="cart-item-count" id="minus{{this.product._id}}"
@@ -565,7 +565,7 @@
       confirmButtonText: "Yes",
       cancelButtonText: "No",
       closeOnConfirm: false,
-      closeOnCancel: false
+      closeOnCancel: true
     },
       function (isConfirm) {
         if (isConfirm) {

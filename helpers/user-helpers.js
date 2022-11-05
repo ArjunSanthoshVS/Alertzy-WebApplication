@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt');
 var objectId = require('mongodb').ObjectId
 const Razorpay = require('razorpay');
 const paypal = require('paypal-rest-sdk');
-const { response } = require('express');
 require('dotenv').config()
 
 var instance = new Razorpay({
@@ -25,16 +24,44 @@ module.exports = {
         userData.status = true
         return new Promise(async (resolve, reject) => {
             let emailChecking = await db.get().collection(collection.USER_COLLECTION).find({ email: userData.email }).toArray()
-            if (emailChecking.length !== 0) {
-                console.log(emailChecking)
-                resolve({ data: false, message: "Email is already used" })
-            } else {
+            if (emailChecking.length == null) {
                 userData.password = await bcrypt.hash(userData.password, 10);
-                userData.date = new Date()
-                db.get().collection(collection.USER_COLLECTION).insertOne(userData).then((result) => {
-                    resolve({ data: true });
+                userData.address = [] //creating an array for future use
+                userData.signupDate = new Date()
+                userData.referralCode = userData.firstname + new objectId().toString().slice(1, 7)
+                console.log(userData.referralCode);
+
+                userData.status = true
+                db.get().collection(collection.USER_COLLECTION).insertOne(userData).then((data) => {
+                    db.get().collection(collection.WALLET_COLLECTION).insertOne({
+                        userId: userData._id,
+                        walletBalance: 0,
+                        referralCode: userData.referralCode,
+                        transaction: []
+                    })
+                    resolve('Success')
+                })
+            } else {
+                reject("This email is Already Existing")
+            }
+            if (userData.referralCode) {
+                db.get().collection(collection.USER_COLLECTION).findOne({ referralCode: userData.referralCode }).then((response) => {
+                    if (response != null) {
+                        db.get().collection(collection.WALLET_COLLECTION).updateOne({ userId: objectId(userData._id) }, { $set: { walletBalance: 100 } })
+                        db.get().collection(collection.WALLET_COLLECTION).updateOne({ referralCode: userData.referralCode }, { $inc: { walletBalance: 100 } })
+                    }
                 })
             }
+        })
+    },
+
+    //GET WALLET
+    getWallet: (userId) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.WALLET_COLLECTION).findOne({ userId: objectId(userId) }).then((response) => {
+                resolve(response)
+                console.log(response, 'respooooooooooooooonse');
+            })
         })
     },
 
@@ -249,7 +276,7 @@ module.exports = {
                 {
                     $group: {
                         _id: null,
-                        total: { $sum: { $multiply: [{ $toInt: '$quantity' }, { $toInt: '$product.offerprice' }] } }
+                        total: { $sum: { $multiply: [{ $toInt: '$quantity' }, { $toInt: '$product.offerPrice' }] } }
                     }
                 }
             ]).toArray()
@@ -283,7 +310,6 @@ module.exports = {
             }
             db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response) => {
                 db.get().collection(collection.CART_COLLECTION).deleteOne({ user: objectId(userId) })
-                console.log(response.insertedId);
                 resolve(response.insertedId)
             })
         })
@@ -696,4 +722,19 @@ module.exports = {
         })
     },
 
+    //REDEEM COUPON
+    redeemCoupon: (couponDetails) => {
+        let couponName = couponDetails.coupon.toUpperCase()
+        console.log(couponName);
+        return new Promise(async (resolve, reject) => {
+            currentDate = new Date()
+            let couponCheck = await db.get().collection(collection.COUPON_COLLECTION).findOne({ $and: [{ coupon: couponName }, { expDate: { $gte: currentDate } }] })
+            console.log(couponCheck);
+            if (couponCheck !== null) {
+                resolve(couponCheck)
+            } else {
+                reject()
+            }
+        })
+    }
 }

@@ -49,7 +49,6 @@ router.get('/signup', middleware.adminLoginUnchecked, (req, res) => {
 
 router.post('/signup', (req, res) => {
   adminHelpers.adminSignUp(req.body).then((resolve) => {
-    console.log(resolve)
     if (resolve.data) {
       res.redirect('/admin/login')
     } else {
@@ -75,7 +74,6 @@ router.get('/add-product', middleware.adminLoginChecked, async (req, res) => {
 })
 
 router.post('/add-product', (req, res) => {
-  console.log(req.body);
   adminHelpers.addProduct(req.body, (id) => {
     let image1 = req.files?.image1;
     let image2 = req.files?.image2;
@@ -111,10 +109,8 @@ router.post('/add-product', (req, res) => {
 //EDIT PRODUCT
 router.get('/edit-product/:prodId', async (req, res) => {
   let admin = req.session.admin;
-  console.log('###################', req.params.prodId, ' &&&&&&&&&&&&&&& ');
   let product = await productHelpers.getProductDetails(req.params.prodId)
   let category = await adminHelpers.getCategory()
-  console.log(product);
   res.render('admin/edit-product', { product, category, admin: true, admin })
 })
 
@@ -194,7 +190,6 @@ router.get('/category', middleware.adminLoginChecked, (req, res) => {
 })
 
 router.post('/category', (req, res) => {
-  console.log(req.body);
   adminHelpers.addCategory(req.body).then(() => {
     if (!err) {
       let successmsg = encodeURIComponent('Category added successfully');
@@ -254,7 +249,6 @@ router.get('/sales-report', async (req, res) => {
     deliveredOrders = await adminHelpers.deliveredOrderList();
   }
   let amount = await adminHelpers.totalAmountOfdelivered()
-  console.log(amount);
   res.render('admin/sales-report', { admin: true, deliveredOrders, amount })
 })
 
@@ -266,7 +260,6 @@ router.get('/dashboard', (req, res) => {
 
 router.get('/dashboard/:days', (req, res) => {
   adminHelpers.dashboardCount(req.params.days).then((data) => {
-    console.log('45678uygdejbnoljw', data);
     res.json(data)
   })
 })
@@ -290,7 +283,6 @@ router.post('/offer-management/product-offer', (req, res) => {
 
 //DELETE PRODUCT OFFER
 router.post('/offer-management/delete-product-offer/:id', (req, res) => {
-  console.log(req.body);
   productHelpers.deleteProductOffer(req.params.id).then((response) => {
     res.json({ status: true })
   })
@@ -299,16 +291,38 @@ router.post('/offer-management/delete-product-offer/:id', (req, res) => {
 //CATEGORY OFFER
 router.post('/offer-management/category-offer', (req, res) => {
   productHelpers.addCategoryOffer(req.body).then((response) => {
-    console.log(req.body);
     res.redirect('/admin/offer-management')
   })
 })
 
 //DELETE CATEGORY OFFER
 router.post('/offer-management/delete-category-offer', (req, res) => {
-  console.log(req.body);
   productHelpers.deleteCategoryOffer(req.body.category).then((response) => {
     res.json({ status: true })
   })
 })
+
+//COUPON
+router.get('/coupon', async (req, res) => {
+  let coupon = await adminHelpers.getCoupon()
+  res.render('admin/coupon', { admin: true, coupon })
+})
+
+//ADD COUPON
+router.post('/add-coupon', (req, res) => {
+  adminHelpers.addCoupon(req.body).then(() => {
+    res.json({ status: true })
+  }).catch(() => {
+    console.log('Failed');
+    res.json({ status: false })
+  })
+})
+
+//DELETE COUPON
+router.post('/delete-coupon', (req, res) => {
+  adminHelpers.deleteCoupon(req.body.coupon).then((response) => {
+    res.json({ response })
+  })
+})
+
 module.exports = router;

@@ -1,6 +1,3 @@
-const { response } = require("express")
-
-
 //SIGNUP DATA VALIDATING
 function signUpValidate() {
     // const userName=document.getElementById('username')
@@ -680,3 +677,76 @@ function unblockUser(userId) {
         }
     })
 }
+
+//ADD COUPON
+$("#addCoupon").submit((e) => {
+    e.preventDefault();
+    $.ajax({
+        url: '/admin/add-coupon',
+        method: 'post',
+        data: $("#addCoupon").serialize(),
+        success: (response) => {
+            if (response.status) {
+                location.reload()
+            } else {
+                swal({
+                    title: 'There is Already a coupon with this code',
+                    icon: 'warning',
+                    timer: 1000,
+                })
+            }
+        }
+    })
+})
+
+//DELETE COUPON
+function deleteCoupon(coupon) {
+    $.ajax({
+        url: '/admin/delete-coupon/',
+        type: 'post',
+        data: ({ coupon }),
+        success: (response) => {
+            swal({
+                title: "Are you sure?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "red",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        location.reload()
+                    }
+                }
+            )
+        }
+    })
+}
+
+//REDEEM COUPON
+$('#redeem-coupon').submit((e) => {
+    e.preventDefault()
+    $.ajax({
+        url: '/redeem-coupon',
+        method: 'post',
+        data: $('#redeem-coupon').serialize(),
+        success: (response) => {
+            if (!response.msg) {
+                $('#coupon-condition').text("")
+                $('#coupon-form').css('border-color', 'green')
+                $('#final-amount').text(response.total)
+                $('#coupon-offer').text(response.offer)
+                $('#totalCheckoutAmount').val(response.total)
+            } else {
+                $('#coupon-condition').text(response.msg)
+                $('#coupon-form').css('border-color', 'red')
+                $('#final-amount').text(response.total)
+                $('#coupon-offer').text(response.offer)
+                $('#totalCheckoutAmount').val(response.total)
+            }
+        }
+    })
+})

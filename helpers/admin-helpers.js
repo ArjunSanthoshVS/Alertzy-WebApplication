@@ -316,7 +316,6 @@ module.exports = {
             data.placedOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'placed' }).count()
             data.pendingOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'pending' }).count()
             data.canceledOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'canceled' }).count()
-            console.log(data);
             let codTotal = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
                 {
                     $match: {
@@ -374,6 +373,43 @@ module.exports = {
             ]).toArray()
             data.totalAmount = totalAmount?.[0]?.totalAmount
             resolve(data)
+        })
+    },
+
+    //ADD COUPON
+    addCoupon: (data) => {
+        data.coupon = data.coupon.toUpperCase()
+        data.couponOffer = Number(data.couponOffer)
+        data.minPrice = Number(data.minPrice)
+        data.maxPrice = Number(data.maxPrice)
+        data.expDate = new Date(data.expDate)
+        data.user = []
+        return new Promise(async (resolve, reject) => {
+            let couponCheck = await db.get().collection(collection.COUPON_COLLECTION).findOne({ coupon: data.coupon })
+            if (couponCheck == null) {
+                db.get().collection(collection.COUPON_COLLECTION).insertOne(data).then((response) => {
+                    resolve()
+                })
+            } else {
+                console.log('Rejected');
+                reject()
+            }
+        })
+    },
+
+    //GET COUPONS
+    getCoupon: () => {
+        return new Promise(async (resolve, reject) => {
+            let coupons = await db.get().collection(collection.COUPON_COLLECTION).find({}).toArray()
+            resolve(coupons)
+        })
+    },
+
+    //DELETE COUPON
+    deleteCoupon: (data) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.COUPON_COLLECTION).deleteOne({ coupon: data })
+            resolve(response)
         })
     }
 }

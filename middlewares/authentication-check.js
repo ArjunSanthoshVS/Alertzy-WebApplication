@@ -1,6 +1,5 @@
 module.exports = {
     loginChecked: (req, res, next) => {
-        console.log(req.session.user)
         if (req.session.loggedIn) {
             next()
         } else {
@@ -8,7 +7,6 @@ module.exports = {
         }
     },
     loginUnchecked: (req, res, next) => {
-        console.log(req.session.user)
         if (req.session.user) {
             res.redirect('/');
         } else {
@@ -17,7 +15,6 @@ module.exports = {
     },
 
     adminLoginChecked: (req, res, next) => {
-        console.log(req.session.admin)
         if (req.session.adminloggedIn) {
             next();
         } else {
@@ -25,7 +22,6 @@ module.exports = {
         }
     },
     adminLoginUnchecked: (req, res, next) => {
-        console.log(req.session.admin)
         if (req.session.admin) {
             res.redirect('/admin/products');
         } else {

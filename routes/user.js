@@ -8,7 +8,6 @@ const adminHelpers = require('../helpers/admin-helpers');
 require('dotenv').config()
 const client = require('twilio')(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN)
 const paypal = require('paypal-rest-sdk');
-const { Router } = require('express');
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
   'client_id': process.env.CLIENT_ID,
@@ -96,7 +95,6 @@ router.get('/otp-verification', (req, res) => {
 })
 
 router.post('/otp-verification', (req, res) => {
-  console.log(req.body.mobile);
   client
     .verify
     .services(process.env.SERVICE_ID)
@@ -128,7 +126,6 @@ router.get('/signup', middleware.loginUnchecked, (req, res) => {
 
 router.post('/signup', (req, res) => {
   userHelpers.doSignUp(req.body).then((resolve) => {
-    console.log(resolve)
     if (resolve.data) {
       res.render('user/login')
     } else {
@@ -166,9 +163,7 @@ router.get('/product-details/:id', async (req, res) => {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   }
   productHelpers.getProductDetails(req.params.id).then((response) => {
-    console.log(response);
     res.render('user/product-details', { response, user: true, user, cartCount })
-    console.log(response.description);
   })
 })
 
@@ -200,6 +195,7 @@ router.post('/change-product-quantity', (req, res) => {
 
 //DELETE CART PRODUCT
 router.get('/delete-cart-product/:id', (req, res) => {
+  console.log(req.params.id);
   userHelpers.deleteProductFromCart(req.params.id, req.session.user._id).then((response) => {
     res.json(response)
   })
@@ -210,7 +206,6 @@ router.get('/wishlist', middleware.loginChecked, async (req, res) => {
   let userId = req.session.user._id
   let products = await userHelpers.getWishProducts(userId)
   let user = req.session.user
-  console.log(products);
   res.render('user/wishlist', { products, user, userId })
 })
 
@@ -241,7 +236,8 @@ router.get('/place-order', middleware.loginChecked, async (req, res) => {
 
 router.post('/place-order', async (req, res) => {
   let products = await userHelpers.getCartProductList(req.session.user._id)
-  let totalPrice = await userHelpers.getTotalAmount(req.session.user._id)
+  // let totalPrice = await userHelpers.getTotalAmount(req.session.user._id)
+  let totalPrice = req.body.total
   let userAddress = await userHelpers.getOrderAddress(req.session.user._id, req.body.addressId)
   userHelpers.placeOrder(userAddress, products, totalPrice, req.body['paymentMethod'], req.session.user._id).then((orderId) => {
     if (req.body['paymentMethod'] === 'COD') {
@@ -304,6 +300,30 @@ router.get('/success', (req, res) => {
   })
 })
 
+//REDEEM COUPON 
+router.post('/redeem-coupon', async (req, res) => {
+  console.log(req.body);
+  let userId = req.session.user._id
+  let totalAmount = await userHelpers.getTotalAmount(userId)
+  console.log(totalAmount);
+  await userHelpers.redeemCoupon(req.body).then((couponData) => {
+    let minMsg = "This coupen is only valid for purchase above ₹" + couponData.minPrice
+    let maxMsg = "This coupen is only valid for purchase below ₹" + couponData.maxPrice
+    if (totalAmount >= couponData.minPrice && totalAmount <= couponData.maxPrice) {
+      let temp = (totalAmount * couponData.couponOffer) / 100
+      totalAmount = (totalAmount - temp)
+      res.json({ total: totalAmount, offer: temp })
+    } else if (totalAmount <= couponData.minPrice) {
+      res.json({ msg: minMsg, total: totalAmount })
+    } else if (totalAmount >= couponData.maxPrice) {
+      res.json({ msg: maxMsg, total: totalAmount })
+    }
+  }).catch(() => {
+    let msg = "Invalid Coupon Or It's already Expired"
+    res.json({ msg: msg, total: totalAmount })
+  })
+})
+
 //ORDERS
 router.get('/orders', middleware.loginChecked, async (req, res) => {
   let orders = await userHelpers.getUserOrders(req.session.user._id)
@@ -334,7 +354,6 @@ router.get('/profile', middleware.loginChecked, (req, res) => {
 router.post('/profile', (req, res) => {
   userHelpers.editProfile(req.session.user._id, req.body).then(() => {
     req.session.user = req.body
-    console.log(req.session.user);
     res.redirect('/profile')
   })
 })
@@ -389,6 +408,13 @@ router.post('/password', (req, res) => {
     req.session.user = null
     res.redirect('/login')
   })
+})
+
+//WALLET
+router.get('/wallet', async (req, res) => {
+  let user = req.session.user
+  let wallet = await userHelpers.getWallet(user._id)
+  res.render('user/wallet', { user, wallet })
 })
 
 //VERIFY PAYMENT

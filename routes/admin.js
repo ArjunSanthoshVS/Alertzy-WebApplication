@@ -282,8 +282,10 @@ router.post('/offer-management/product-offer', (req, res) => {
 })
 
 //DELETE PRODUCT OFFER
-router.post('/offer-management/delete-product-offer/:id', (req, res) => {
-  productHelpers.deleteProductOffer(req.params.id).then((response) => {
+router.post('/offer-management/delete-product-offer/:id', async (req, res) => {
+  let products = await productHelpers.getAllProducts()
+  console.log(products);
+  productHelpers.deleteProductOffer(req.params.id, products).then((response) => {
     res.json({ status: true })
   })
 })

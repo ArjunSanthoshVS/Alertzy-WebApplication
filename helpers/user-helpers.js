@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 var objectId = require('mongodb').ObjectId
 const Razorpay = require('razorpay');
 const paypal = require('paypal-rest-sdk');
+const { resolve } = require('path');
 require('dotenv').config()
 
 var instance = new Razorpay({
@@ -21,34 +22,34 @@ module.exports = {
 
     //USER SIGNUP
     doSignUp: (userData) => {
-        userData.status = true
+        // userData.status = true
         return new Promise(async (resolve, reject) => {
-            let emailChecking = await db.get().collection(collection.USER_COLLECTION).find({ email: userData.email }).toArray()
+            let emailChecking = await db.get().collection(collection.USER_COLLECTION).find({ email: userData.email })
             if (emailChecking.length == null) {
                 userData.password = await bcrypt.hash(userData.password, 10);
                 userData.address = [] //creating an array for future use
                 userData.signupDate = new Date()
-                userData.referralCode = userData.firstname + new objectId().toString().slice(1, 7)
-                console.log(userData.referralCode);
+                userData.referralId = userData.firstname + new objectId().toString().slice(1, 7)
 
                 userData.status = true
                 db.get().collection(collection.USER_COLLECTION).insertOne(userData).then((data) => {
                     db.get().collection(collection.WALLET_COLLECTION).insertOne({
                         userId: userData._id,
                         walletBalance: 0,
-                        referralCode: userData.referralCode,
+                        referralId: userData.referralId,
                         transaction: []
                     })
-                    resolve('Success')
+                    resolve(userData)
                 })
             } else {
+
                 reject("This email is Already Existing")
             }
             if (userData.referralCode) {
-                db.get().collection(collection.USER_COLLECTION).findOne({ referralCode: userData.referralCode }).then((response) => {
+                db.get().collection(collection.USER_COLLECTION).findOne({ referralId: userData.referralCode }).then(async (response) => {
                     if (response != null) {
-                        db.get().collection(collection.WALLET_COLLECTION).updateOne({ userId: objectId(userData._id) }, { $set: { walletBalance: 100 } })
-                        db.get().collection(collection.WALLET_COLLECTION).updateOne({ referralCode: userData.referralCode }, { $inc: { walletBalance: 100 } })
+                        await db.get().collection(collection.WALLET_COLLECTION).updateOne({ userId: objectId(userData._id) }, { $set: { walletBalance: 100 } })
+                        await db.get().collection(collection.WALLET_COLLECTION).updateOne({ referralId: userData.referralCode }, { $inc: { walletBalance: 100 } })
                     }
                 })
             }
@@ -236,7 +237,7 @@ module.exports = {
                 {
                     $pull: { products: { item: objectId(prodId) } }
                 }
-            ).then(() => {
+            ).then((response) => {
                 resolve(response)
             })
         })
@@ -306,7 +307,8 @@ module.exports = {
                 totalAmount: total,
                 status: status,
                 displayDate: new Date().toDateString(),
-                date: new Date()
+                date: new Date(),
+                return: false
             }
             db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response) => {
                 db.get().collection(collection.CART_COLLECTION).deleteOne({ user: objectId(userId) })
@@ -735,6 +737,13 @@ module.exports = {
             } else {
                 reject()
             }
+        })
+    },
+
+    //RETURN PRODUCT
+    returnOrder: () => {
+        return new Promise((resolve, reject) => {
+            // db.get().collection(collection.ORDER_COLLECTION).
         })
     }
 }

@@ -26,7 +26,7 @@
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="card" style="width: 18rem; margin-top:25px;">
 
-                    <img style="width:100px; height:180px;" src="/product-images/{{this._id}}/{{this._id}}_0.png"
+                    <img style="width:75%;" src="/product-images/{{this._id}}/{{this._id}}_0.png"
                         class="card-img-top mx-auto mt-3" alt="...">
 
                     <div class="card-body">
@@ -34,13 +34,23 @@
                         <a style="text-decoration: none;" href="/product-details/{{this._id}}">
                             <h5>{{this.product}}</h5>
                         </a>
-                        {{#if this.offerPrice }}
-                        <p class="mb-0" style="text-decoration :line-through;">₹{{this.actualPrice}}</p>
-                        <h5>₹{{this.offerPrice}}</h5>
-                        {{else}}
+                        {{!-- {{#if this.offerPrice}}
+                        <p class="mb-0" style="text-decoration :line-through;">₹{{this.actualPrice}}</p> --}}
+                        <div class="d-flex">
+                            <h5 class="me-3">₹{{this.offerPrice}}</h5>
+                            {{#if this.currentOffer}}
+                            <p style="color:green;">{{this.currentOffer}}% off</p>
+                            {{else}}
+                            {{!-- {{#if this.categoryOffer}} --}}
+                            {{!-- <p style="color:green;">{{this.categoryOffer}}% off</p>
+                            {{else}} --}}
+                            <p style="color:red;">0% off</p>
+                            {{/if}}
+                        </div>
+                        {{!-- {{else}}
                         <p class="mb-0">No Offer</p>
                         <h5>₹{{this.actualPrice}}</h5>
-                        {{/if}}
+                        {{/if}} --}}
                         <button type="button" class="btn btn-primary" style="border-radius: 10px;"
                             onclick="addToCart('{{this._id}}')">Add to Cart</button>
 

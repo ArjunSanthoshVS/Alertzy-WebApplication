@@ -750,3 +750,16 @@ $('#redeem-coupon').submit((e) => {
         }
     })
 })
+
+//RETURN ORDER
+$('#returnOrder').submit((e) => {
+    e.preventDefault()
+    $.ajax({
+        url: '/return-order',
+        method: 'post',
+        data: $('#returnOrder').serialize(),
+        success: (response) => {
+            location.reload()
+        }
+    })
+})

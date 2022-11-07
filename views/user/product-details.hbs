@@ -5,7 +5,7 @@
     style="left:530px; top: 100px; z-index: 1000; background-color:black; border-radius:10px;">
     <p id="success-text" class="text-center mt-3" style="color:white;">Added to Cart</p>
   </div>
-  <div class=" row">
+  <div class="row" style="padding:1%;">
     <div class="col-2">
 
       <div class="col-md-4 px-0 lens" id="img-container" style="margin-left:6rem; width:62%">
@@ -45,55 +45,54 @@
       <div class="small-img-col">
         <img src="https://i.ibb.co/4j34KdX/gallery-2.jpg" alt="" width="100%" class="small-img" />
       </div>
+    </div>--}}
+
+
+    <div class="col-2" style="background: #e2e2e2; border-radius: 10px;">
+
+
+      <h4 class="mb-3">{{response.brand}}</h4>
+      <h2 class="mb-3" style="font-family: none;">{{response.product}}</h2>
+      {{#if response.offerPrice}}
+      <h5 class="mb-3" style="text-decoration:line-through ;">₹{{response.actualPrice}}</h5>
+      <h3 class="mb-3" style="font-weight:600;">₹{{response.offerPrice}}</h3>
+      {{else}}
+      {{!-- <h5 class="mb-3" style="text-decoration:line-through ;">₹{{response.actualPrice}}</h5> --}}
+      <h3 class="mb-3" style="font-weight:600;">₹{{response.actualPrice}}</h3>
+      {{/if}}
+      <h6 class="mb-3">{{response.description}}</h6>
+      {{!-- <select>
+        <option>Select Size</option>
+        <option>XXL</option>
+        <option>XL</option>
+        <option>L</option>
+        <option>M</option>
+        <option>S</option>
+      </select> --}}
+      {{#if user}}
+      <button type="button" class="btn1" style="border-radius: 20; border: 0;"
+        onclick="addToCart('{{response._id}}')">Add
+        to Cart</button>
+      {{else}}
+      <button type="button" class="btn1" data-bs-toggle="modal" style="border-radius: 20; border: 0;"
+        data-bs-target="#exampleModal" data-bs-whatever="@mdo">Add to cart</button>
+      {{/if}}
+
+
+      {{!-- <a href="" class="btn">Add to Wishlist</a><br> --}}
+      <a href="" class="btn2 px-5">Buy Now</a>
+
+      {{!-- <h3>Product Details <i class="fas fa-indent"></i></h3>
+      <br />
+      <p>
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Alias,
+        accusamus soluta quasi illum, deserunt ut iste rem obcaecati
+        inventore, est harum repellendus fuga velit odio sint officia
+        corrupti eum perspiciatis.
+      </p> --}}
+
     </div>
-  </div> --}}
-
-  <div class="col-2" style="background: #e2e2e2; border-radius: 10px; padding-top: auto;">
-    <h1></h1><br>
-
-    <h4 class="mb-3">{{response.brand}}</h4>
-    <h2 class="mb-3" style="font-family: none;">{{response.product}}</h2>
-    {{#if response.offerPrice}}
-    <h5 class="mb-3" style="text-decoration:line-through ;">₹{{response.actualPrice}}</h5>
-    <h3 class="mb-3" style="font-weight:600;">₹{{response.offerPrice}}</h3>
-    {{else}}
-    {{!-- <h5 class="mb-3" style="text-decoration:line-through ;">₹{{response.actualPrice}}</h5> --}}
-    <h3 class="mb-3" style="font-weight:600;">₹{{response.actualPrice}}</h3>
-    {{/if}}
-    <h6 class="mb-3">{{response.description}}</h6>
-    {{!-- <select>
-      <option>Select Size</option>
-      <option>XXL</option>
-      <option>XL</option>
-      <option>L</option>
-      <option>M</option>
-      <option>S</option>
-    </select> --}}
-    {{#if user}}
-    <button type="button" class="btn1" style="border-radius: 20; border: 0;" onclick="addToCart('{{response._id}}')">Add
-      to Cart</button>
-    {{else}}
-    <button type="button" class="btn1" data-bs-toggle="modal" style="border-radius: 20; border: 0;"
-      data-bs-target="#exampleModal" data-bs-whatever="@mdo">Add to cart</button>
-    {{/if}}
-
-
-    {{!-- <a href="" class="btn">Add to Wishlist</a><br> --}}
-    <a href="" class="btn2 px-5">Buy Now</a>
-
-    {{!-- <h3>Product Details <i class="fas fa-indent"></i></h3>
-    <br />
-    <p>
-      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Alias,
-      accusamus soluta quasi illum, deserunt ut iste rem obcaecati
-      inventore, est harum repellendus fuga velit odio sint officia
-      corrupti eum perspiciatis.
-    </p> --}}
-    <h1></h1><br>
-    <h1></h1><br>
-    <h1></h1><br>
   </div>
-</div>
 </div>
 
 <!--modal-->

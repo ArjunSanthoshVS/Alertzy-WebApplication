@@ -79,6 +79,13 @@
                                 </div> --}}
                                 <div class="buttons d-flex justify-content-end mt-0">
                                     {{#ifCheck status 'delivered'}}
+                                    {{!-- <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                        data-bs-target="#returnOrder" data-bs-whatever="@mdo">Return Product</button>
+                                    --}}
+                                    {{!-- <button id="return-button"
+                                        onclick="returnOrder('{{this._id}}','{{this.item}}')"
+                                        class="btn btn-warning">Return
+                                        Order</button> --}}
                                     {{/ifCheck}}
                                     {{#ifCheck status 'canceled'}}
                                     {{/ifCheck}}
@@ -145,3 +152,97 @@
         </div>
     </div>
 </section>
+{{!-- <div class="modal fade" id="returnOrder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Choose a Reason</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/return-order/{{}}" method="post">
+                    <label>Damaged/defective product.
+                        <input type="radio" name="reason" checked>
+                        <span class="custom-radio-button"></span>
+                    </label>
+                    <label>Wrong product description information.
+                        <input type="radio" name="reason">
+                        <span class=" custom-radio-button"></span>
+                    </label>
+                    <label>Unfit size.
+                        <input type="radio" name="reason" value="Unfit size.">
+                        <span class=" custom-radio-button"></span>
+                    </label>
+                    <br>
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+        </div>
+    </div>
+</div> --}}
+<style>
+    label {
+        display: block;
+        position: relative;
+        padding-left: 50px;
+        margin: 10px 0;
+        cursor: pointer;
+        font-size: 20px;
+    }
+
+    /* Hide the default radio button */
+    label input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    /* Creating own radio button to style */
+    .custom-radio-button {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 24px;
+        width: 24px;
+        background-color: #eee;
+        border-radius: 50%;
+    }
+
+    /* hover effect on unchecked buttons */
+    label:hover input+.custom-radio-button {
+        background: #fdd;
+    }
+
+    /* button checked */
+    label input:checked+.custom-radio-button {
+        background-color: #1867C2;
+    }
+
+    /* White dot on checked radio button (hidden) */
+    label .custom-radio-button::after {
+        content: "";
+        display: none;
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: white;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    /* Show the dot on checked button */
+    label input:checked+.custom-radio-button::after {
+        display: block;
+    }
+
+    input[type="submit"] {
+        border: none;
+        color: white;
+        font-size: 18px;
+        padding: 5px 15px;
+        background: #1867C2;
+        border-radius: .25rem;
+    }
+</style>

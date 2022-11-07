@@ -12,6 +12,7 @@ module.exports = {
             product.offerPrice = product.actualPrice
             product.productOffer = 0
             product.categoryOffer = 0
+            product.currentOffer = 0
             await db.get().collection(collection.PRODUCT_COLLECTION).insertOne(product).then((data) => {
                 resolve(data.insertedId.toString())
             })
@@ -58,6 +59,7 @@ module.exports = {
                         offerPrice: prodDetails.offerPrice,
                         productOffer: prodDetails.productOffer,
                         categoryOffer: prodDetails.categoryOffer,
+                        currentOffer: prodDetails.currentOffer,
                         category: prodDetails.category,
                         description: prodDetails.description
                     }
@@ -72,7 +74,7 @@ module.exports = {
         let prodId = objectId(offer.product)
         let offerPercentage = Number(offer.productOffer)
         return new Promise(async (resolve, reject) => {
-            db.get().collection(collection.PRODUCT_COLLECTION).updateOne(
+            await db.get().collection(collection.PRODUCT_COLLECTION).updateOne(
                 {
                     _id: prodId
                 },
@@ -89,7 +91,25 @@ module.exports = {
                         _id: prodId
                     },
                     {
-                        $set: { offerPrice: updatedOfferPrice }
+                        $set: {
+                            offerPrice: updatedOfferPrice,
+                            currentOffer: product.productOffer
+                        }
+                    }
+                )
+                resolve(updatedProduct)
+            } else if (product.productOffer < product.categoryOffer) {
+                let temp = (product.actualPrice * product.categoryOffer) / 100
+                let updatedOfferPrice = (product.actualPrice - temp)
+                let updatedProduct = await db.get().collection(collection.PRODUCT_COLLECTION).updateOne(
+                    {
+                        _id: prodId
+                    },
+                    {
+                        $set: {
+                            offerPrice: updatedOfferPrice,
+                            currentOffer: product.categoryOffer
+                        }
                     }
                 )
                 resolve(updatedProduct)
@@ -122,21 +142,39 @@ module.exports = {
     },
 
     //DELETE PORDUCT OFFER
-    deleteProductOffer: (prodId) => {
+    deleteProductOffer: (prodId, product) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.PRODUCT_COLLECTION).updateOne({ _id: objectId(prodId) },
                 {
                     $set: { productOffer: 0 }
                 }
             ).then((response) => {
-                db.get().collection(collection.PRODUCT_COLLECTION).findOne({ _id: objectId(prodId) }).then((response) => {
-                    if (response.productOffer == 07 && response.categoryOffer == 0) {
+                db.get().collection(collection.PRODUCT_COLLECTION).findOne({ _id: objectId(prodId) }).then(async (response) => {
+                    if (response.productOffer == 0 && response.categoryOffer == 0) {
                         response.offerPrice = response.actualPrice
                         db.get().collection(collection.PRODUCT_COLLECTION).updateOne({ _id: objectId(prodId) }, {
                             $set: {
-                                offerPrice: response.offerPrice
+                                offerPrice: response.offerPrice,
+                                actualPrice: response.actualPrice,
+                                currentOffer: 0
                             }
                         })
+                    } else if (product.productOffer < product.categoryOffer) {
+                        let temp = (product.actualPrice * product.categoryOffer) / 100
+                        let updatedOfferPrice = (product.actualPrice - temp)
+                        let updatedProduct = await db.get().collection(collection.PRODUCT_COLLECTION).updateOne(
+                            {
+                                _id: prodId
+                            },
+                            {
+                                $set: {
+                                    offerPrice: updatedOfferPrice,
+                                    actualPrice: 0,
+                                    currentOffer: product.categoryOffer
+                                }
+                            }
+                        )
+                        resolve(updatedProduct)
                     }
                 })
                 resolve()
@@ -149,7 +187,7 @@ module.exports = {
         let category = offer.category
         let offerPercentage = Number(offer.categoryOffer)
         return new Promise(async (resolve, reject) => {
-            db.get().collection(collection.CATEGORY_COLLECTION).updateOne(
+            await db.get().collection(collection.CATEGORY_COLLECTION).updateOne(
                 {
                     category: category
                 },
@@ -159,7 +197,7 @@ module.exports = {
                     }
                 }
             )
-            db.get().collection(collection.PRODUCT_COLLECTION).updateMany(
+            await db.get().collection(collection.PRODUCT_COLLECTION).updateMany(
                 {
                     category: category
                 },
@@ -174,18 +212,33 @@ module.exports = {
             }).toArray()
 
             for (let i = 0; i < products.length; i++) {
-                if (products[i].categoryOffer > products[i].productOffer) {
+                if (products[i].categoryOffer >= products[i].productOffer) {
                     let temp = (products[i].actualPrice * products[i].categoryOffer) / 100
                     let updatedOfferPrice = (products[i].actualPrice - temp)
                     db.get().collection(collection.PRODUCT_COLLECTION).updateOne({
                         _id: objectId(products[i]._id)
                     },
                         {
-                            $set: { offerPrice: updatedOfferPrice }
+                            $set: {
+                                offerPrice: updatedOfferPrice,
+                                currentOffer: products[i].categoryOffer
+                            }
+                        }
+                    )
+                } else if (products[i].categoryOffer < products[i].productOffer) {
+                    let temp = (products[i].actualPrice * products[i].productOffer) / 100
+                    let updatedOfferPrice = (products[i].actualPrice - temp)
+                    db.get().collection(collection.PRODUCT_COLLECTION).updateOne({
+                        _id: objectId(products[i]._id)
+                    },
+                        {
+                            $set: {
+                                offerPrice: updatedOfferPrice,
+                                currentOffer: products[i].productOffer
+                            }
                         }
                     )
                 }
-
             }
             resolve()
         })
@@ -209,11 +262,24 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             db.get().collection(collection.CATEGORY_COLLECTION).updateOne({ category: category }, { $set: { categoryOffer: 0 } })
             db.get().collection(collection.PRODUCT_COLLECTION).updateMany({ category: category }, { $set: { categoryOffer: 0 } }).then(async (response) => {
-                let product = await db.get().collection(collection.PRODUCT_COLLECTION).find({ category: category }).toArray()
-                for (i = 0; i < product.length; i++) {
-                    if (product[i].productOffer == 0 && product[i].categoryOffer == 0) {
-                        product[i].offerPrice = product[i].actualPrice
-                        db.get().collection(collection.PRODUCT_COLLECTION).updateMany({ category: category }, { $set: { offerPrice: product[i].offerPrice } })
+                let products = await db.get().collection(collection.PRODUCT_COLLECTION).find({ category: category }).toArray()
+                for (i = 0; i < products.length; i++) {
+                    if (products[i].productOffer == 0 && products[i].categoryOffer == 0) {
+                        products[i].offerPrice = products[i].actualPrice
+                        db.get().collection(collection.PRODUCT_COLLECTION).updateOne({ _id: objectId(products[i]._id) }, { $set: { offerPrice: products[i].offerPrice, currentOffer: 0 } })
+                    } else if (products[i].categoryOffer < products[i].productOffer) {
+                        let temp = (products[i].actualPrice * products[i].productOffer) / 100
+                        let updatedOfferPrice = (products[i].actualPrice - temp)
+                        db.get().collection(collection.PRODUCT_COLLECTION).updateOne({
+                            _id: objectId(products[i]._id)
+                        },
+                            {
+                                $set: {
+                                    offerPrice: updatedOfferPrice,
+                                    currentOffer: products[i].productOffer
+                                }
+                            }
+                        )
                     }
                 }
             })

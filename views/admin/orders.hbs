@@ -21,10 +21,10 @@
                             <th>Options</th>
                         </tr>
                     </thead>
-                    {{#each orderItems}}
                     <tbody>
+                        {{#each orderItems}}
                         <tr>
-                            <td>{{inc @index}}</td>
+                            <td class="align-middle fw-b">{{inc @index}}</td>
                             <td>
                                 <img style="width:70px; height:70px;"
                                     src="/product-images/{{this.item}}/{{this.item}}_0.png" alt="">
@@ -80,13 +80,12 @@
                                 {{/ifCheck}}
                             </td>
                         </tr>
-
+                        {{/each}}
                     </tbody>
-
-                    {{/each}}
                 </table>
             </div>
         </div>
+
         <script>
             $(document).ready(function () {
                 $('#orders').DataTable();

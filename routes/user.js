@@ -8,6 +8,7 @@ const adminHelpers = require('../helpers/admin-helpers');
 require('dotenv').config()
 const client = require('twilio')(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN)
 const paypal = require('paypal-rest-sdk');
+const { response } = require('express');
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
   'client_id': process.env.CLIENT_ID,
@@ -162,7 +163,7 @@ router.get('/product-details/:id', async (req, res) => {
   if (user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   }
-  productHelpers.getProductDetails(req.params.id).then((response) => {
+  await productHelpers.getProductDetails(req.params.id).then((response) => {
     res.render('user/product-details', { response, user: true, user, cartCount })
   })
 })
@@ -237,7 +238,7 @@ router.get('/place-order', middleware.loginChecked, async (req, res) => {
 router.post('/place-order', async (req, res) => {
   let products = await userHelpers.getCartProductList(req.session.user._id)
   // let totalPrice = await userHelpers.getTotalAmount(req.session.user._id)
-  let totalPrice = req.body.total
+  let totalPrice = Number(req.body.total)
   let userAddress = await userHelpers.getOrderAddress(req.session.user._id, req.body.addressId)
   userHelpers.placeOrder(userAddress, products, totalPrice, req.body['paymentMethod'], req.session.user._id).then((orderId) => {
     if (req.body['paymentMethod'] === 'COD') {
@@ -411,7 +412,7 @@ router.post('/password', (req, res) => {
 })
 
 //WALLET
-router.get('/wallet', async (req, res) => {
+router.get('/wallet', middleware.loginChecked, async (req, res) => {
   let user = req.session.user
   let wallet = await userHelpers.getWallet(user._id)
   res.render('user/wallet', { user, wallet })
@@ -428,6 +429,14 @@ router.post('/verify-payment', (req, res) => {
   }).catch((err) => {
     console.log(err);
     res.json({ status: false, errMsg: '' })
+  })
+})
+
+//RETURN PRODUCT
+router.post('/return-order/:id', (req, res) => {
+  console.log(req.body, '************************8');
+  userHelpers.returnOrder(req.params.id).then((response) => {
+    res.redirect('/orders')
   })
 })
 

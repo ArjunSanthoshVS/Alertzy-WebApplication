@@ -8,49 +8,77 @@
 
     </nav>
     <hr class="mt-0 mb-4">
-    <div class="card mb-4">
-        {{!-- <div class="card-header">Account Details</div>
-        <div class="card-body">
-            <form action="/profile" method="post">
-                <!-- Form Group (username)-->
-                <!-- Form Row-->
-                <div class="row gx-3 mb-3">
-                    <!-- Form Group (first name)-->
-                    <div class="col-md-6">
-                        <label class="small mb-1" for="firstname">First name</label>
-                        <input class="form-control" id="firstname" name="firstname" type="text"
-                            placeholder="Enter your first name" value="{{user.firstname}}">
-                    </div>
-                    <!-- Form Group (last name)-->
-                    <div class="col-md-6">
-                        <label class="small mb-1" for="lastname">Last name</label>
-                        <input class="form-control" id="lastname" name="lastname" type="text"
-                            placeholder="Enter your last name" value="{{user.lastname}}">
-                    </div>
+    {{!-- <div class="card-header">Account Details</div>
+    <div class="card-body">
+        <form action="/profile" method="post">
+            <!-- Form Group (username)-->
+            <!-- Form Row-->
+            <div class="row gx-3 mb-3">
+                <!-- Form Group (first name)-->
+                <div class="col-md-6">
+                    <label class="small mb-1" for="firstname">First name</label>
+                    <input class="form-control" id="firstname" name="firstname" type="text"
+                        placeholder="Enter your first name" value="{{user.firstname}}">
                 </div>
-                <!-- Form Row        -->
+                <!-- Form Group (last name)-->
+                <div class="col-md-6">
+                    <label class="small mb-1" for="lastname">Last name</label>
+                    <input class="form-control" id="lastname" name="lastname" type="text"
+                        placeholder="Enter your last name" value="{{user.lastname}}">
+                </div>
+            </div>
+            <!-- Form Row        -->
 
-                <!-- Form Group (email address)-->
-                <div class="mb-3">
-                    <label class="small mb-1" for="email">Email address</label>
-                    <input class="form-control" id="email" name="email" type="email"
-                        placeholder="Enter your email address" value="{{user.email}}">
+            <!-- Form Group (email address)-->
+            <div class="mb-3">
+                <label class="small mb-1" for="email">Email address</label>
+                <input class="form-control" id="email" name="email" type="email" placeholder="Enter your email address"
+                    value="{{user.email}}">
+            </div>
+            <!-- Form Row-->
+            <div class="row gx-3 mb-3">
+                <!-- Form Group (phone number)-->
+                <div class="col-md-6">
+                    <label class="small mb-1" for="mobile">Phone number</label>
+                    <input class="form-control" id="mobile" name="mobile" type="tel"
+                        placeholder="Enter your phone number" value="{{user.mobile}}">
                 </div>
-                <!-- Form Row-->
-                <div class="row gx-3 mb-3">
-                    <!-- Form Group (phone number)-->
-                    <div class="col-md-6">
-                        <label class="small mb-1" for="mobile">Phone number</label>
-                        <input class="form-control" id="mobile" name="mobile" type="tel"
-                            placeholder="Enter your phone number" value="{{user.mobile}}">
-                    </div>
-                    <div class="col-md-6">
-                        <input class="form-control" id="id" name="_id" type="tel" value="{{user._id}}" hidden>
+                <div class="col-md-6">
+                    <input class="form-control" id="id" name="_id" type="tel" value="{{user._id}}" hidden>
+                </div>
+            </div>
+            <!-- Save changes button-->
+            <button class="btn btn-primary" type="submit">Save changes</button>
+        </form>
+    </div> --}}
+    <div class="d-flex">
+        <div class="box mt-4">
+            <div class="card" style="width: 18rem; border-radius: 10px; box-shadow:0px 1px 17px -2px;">
+                <div class="card-body px-5 py-4">
+                    <h5 class="card-title">Wallet</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Current Balance</h6>
+                    {{#if wallet.walletBalance}}
+                    <h3>₹ {{wallet.walletBalance}}</h3>
+                    {{else}}
+                    <h3>₹ 0</h3>
+                    {{/if}}
+                    <div class="d-flex justify-content-end">
+                        <a href="/cart" class="btn btn-small btn-primary p-1">Go to Cart</a>
                     </div>
                 </div>
-                <!-- Save changes button-->
-                <button class="btn btn-primary" type="submit">Save changes</button>
-            </form>
-        </div> --}}
+            </div>
+        </div>
+
+        <div class="box mt-5 ms-5">
+            <div class="card" style="width: 20rem; border-radius: 10px; box-shadow:0px 1px 17px -2px;">
+                <div class="card-body px-5 py-4">
+                    <h5 class="card-title">Your Referral Code</h5>
+                    {{!-- <h6 class="card-subtitle mb-2 text-muted">Current Balance</h6> --}}
+                    <h3 class="mt-3">{{user.referralId}}</h3>
+                    <div class="d-flex justify-content-end">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

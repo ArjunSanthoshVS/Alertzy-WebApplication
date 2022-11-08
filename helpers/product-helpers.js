@@ -5,7 +5,7 @@ var objectId = require('mongodb').ObjectId
 module.exports = {
 
     //ADD PRODUCT
-    addProduct: (product) => {
+    addProduct: (product, urls, callback) => {
         return new Promise(async (resolve, reject) => {
             product.date = new Date()
             product.actualPrice = parseInt(product.actualPrice) //changing value to int for calculatiom
@@ -13,8 +13,9 @@ module.exports = {
             product.productOffer = 0
             product.categoryOffer = 0
             product.currentOffer = 0
+            product.image = urls
             await db.get().collection(collection.PRODUCT_COLLECTION).insertOne(product).then((data) => {
-                resolve(data.insertedId.toString())
+                callback(data.insertedId.toString())
             })
         })
     },
@@ -284,6 +285,24 @@ module.exports = {
                 }
             })
             resolve()
+        })
+    },
+
+    //RANDOM PRODUCTS
+    randomProducts: () => {
+        return new Promise((resolve, reject) => {
+            let random = db.get().collection(collection.PRODUCT_COLLECTION).aggregate([
+                {
+                    '$match': {
+                        'actualPrice': {
+                            '$gt': 0
+                        }
+                    }
+                }, {
+                    '$limit': 4
+                }
+            ]).toArray()
+            resolve(random)
         })
     }
 }

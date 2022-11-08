@@ -4,7 +4,23 @@ const adminHelpers = require('../helpers/admin-helpers');
 const productHelpers = require('../helpers/product-helpers');
 const userHelpers = require('../helpers/user-helpers');
 const middleware = require('../middlewares/authentication-check')
-const mkdirp = require('mkdirp');
+const cloudinary = require('../utils/cloudinary')
+
+const multer = require('multer')
+const path = require('path');
+
+upload = multer({
+  storage: multer.diskStorage({}),
+  fileFilter: (req, file, cb) => {
+    let ext = path.extname(file.originalname)
+    if (ext !== ".jpg" && ext !== ".jpeg" && ext !== ".png" && ext !== ".webp") {
+      cb(new Error("File type is not supported"), false)
+      console.log('Its workinggggggggggggggggggggg');
+      return
+    }
+    cb(null, true)
+  }
+})
 
 //ENTERING PAGE
 router.get('/', function (req, res, next) {
@@ -73,21 +89,55 @@ router.get('/add-product', middleware.adminLoginChecked, async (req, res) => {
   res.render('admin/add-product', { category, admin: true, admin })
 })
 
-router.post('/add-product', (req, res) => {
-  adminHelpers.addProduct(req.body, (id) => {
-    let image1 = req.files?.image1;
-    let image2 = req.files?.image2;
-    let image3 = req.files?.image3;
-    let image4 = req.files?.image4;
-    mkdirp('./public/product-images/' + id).then(() => {
-      image1.mv('./public/product-images/' + id + "/" + id + "_0" + '.png')
-      image2.mv('./public/product-images/' + id + "/" + id + "_1" + '.png')
-      image3.mv('./public/product-images/' + id + "/" + id + "_2" + '.png')
-      image4.mv('./public/product-images/' + id + "/" + id + "_3" + '.png')
+router.post('/add-product', upload.fields([
+  { name: 'image1', maxCount: 1 },
+  { name: 'image2', maxCount: 1 },
+  { name: 'image3', maxCount: 1 },
+  { name: 'image4', maxCount: 1 },
+]), async (req, res) => {
+  console.log(req.files);
+  const cloudinaryImageUploadMethod = (file) => {
+    console.log("qwertyui");
+    return new Promise((resolve) => {
+      cloudinary.uploader.upload(file, (err, res) => {
+        console.log(err, " asdfgh");
+        if (err) return res.status(500).send("Upload Image Error")
+        resolve(res.secure_url)
+      })
     })
+  }
+
+  const files = req.files
+  let arr1 = Object.values(files)
+  let arr2 = arr1.flat()
+  const urls = await Promise.all(
+    arr2.map(async (file) => {
+      const { path } = file
+      const result = await cloudinaryImageUploadMethod(path)
+      return result
+    })
+  )
+  console.log(urls);
+
+  productHelpers.addProduct(req.body, urls, (id) => {
     res.redirect('/admin/products')
   })
 })
+// router.post('/add-product', (req, res) => {
+// productHelpers.addProduct(req.body).then((id) => {
+//   //     let image1 = req.files?.image1;
+//     let image2 = req.files?.image2;
+//     let image3 = req.files?.image3;
+//     let image4 = req.files?.image4;
+//     mkdirp('./public/product-images/' + id).then(() => {
+//       image1.mv('./public/product-images/' + id + "/" + id + "_0" + '.png')
+//       image2.mv('./public/product-images/' + id + "/" + id + "_1" + '.png')
+//       image3.mv('./public/product-images/' + id + "/" + id + "_2" + '.png')
+//       image4.mv('./public/product-images/' + id + "/" + id + "_3" + '.png')
+//     })
+//     res.redirect('/admin/products')
+//   })
+// })
 
 // router.post("/add-productSample", (req, res) => {
 //   productHelpers.addProduct(req.body, (id) => {
@@ -114,30 +164,36 @@ router.get('/edit-product/:prodId', async (req, res) => {
   res.render('admin/edit-product', { product, category, admin: true, admin })
 })
 
-router.post('/edit-product/:id', (req, res) => {
-  productHelpers.updateProduct(req.params.id, req.body).then(() => {
-    let id = req.params.id;
-    let image1 = req.files?.image1
-    let image2 = req.files?.image2
-    let image3 = req.files?.image3
-    let image4 = req.files?.image4
+// router.post('/edit-product/:id', upload.fields([
+//   { name: 'image1', maxCount: 1 },
+//   { name: 'image2', maxCount: 1 },
+//   { name: 'image3', maxCount: 1 },
+//   { name: 'image4', maxCount: 1 },
+// ]))
+// router.post('/edit-product/:id', (req, res) => {
+//   productHelpers.updateProduct(req.params.id, req.body).then(() => {
+//     let id = req.params.id;
+//     let image1 = req.files?.image1
+//     let image2 = req.files?.image2
+//     let image3 = req.files?.image3
+//     let image4 = req.files?.image4
 
-    if (image1) {
-      image1.mv('./public/product-images/' + id + "/" + id + "_0" + '.png')
-    }
-    if (image2) {
-      image2.mv('./public/product-images/' + id + "/" + id + "_1" + '.png')
-    }
+//     if (image1) {
+//       image1.mv('./public/product-images/' + id + "/" + id + "_0" + '.png')
+//     }
+//     if (image2) {
+//       image2.mv('./public/product-images/' + id + "/" + id + "_1" + '.png')
+//     }
 
-    if (image3) {
-      image3.mv('./public/product-images/' + id + "/" + id + "_2" + '.png')
-    }
-    if (image4) {
-      image4.mv('./public/product-images/' + id + "/" + id + "_3" + '.png')
-    }
-    res.redirect('/admin/products')
-  })
-})
+//     if (image3) {
+//       image3.mv('./public/product-images/' + id + "/" + id + "_2" + '.png')
+//     }
+//     if (image4) {
+//       image4.mv('./public/product-images/' + id + "/" + id + "_3" + '.png')
+//     }
+//     res.redirect('/admin/products')
+//   })
+// })
 
 // router.post('/edit-product/:id', (req, res) => {
 //   let id = req.params.id
@@ -327,4 +383,42 @@ router.post('/delete-coupon', (req, res) => {
   })
 })
 
+//BANNER MANAGEMENT
+router.get('/banner', middleware.adminLoginChecked, (req, res) => {
+  res.render('admin/banner', { admin: true })
+})
+
+router.post('/banner', upload.fields([
+  { name: 'banner1', maxCount: 1 },
+  { name: 'banner2', maxCount: 1 },
+  { name: 'banner3', maxCount: 1 },
+  { name: 'banner4', maxCount: 1 },
+]), async (req, res) => {
+  console.log(req.files);
+  const cloudinaryImageUploadMethod = (file) => {
+    return new Promise((resolve) => {
+      cloudinary.uploader.upload(file, (err, res) => {
+        console.log(err, " asdfgh");
+        if (err) return res.status(500).send("Upload Image Error")
+        resolve(res.secure_url)
+      })
+    })
+  }
+
+  const files = req.files
+  let arr1 = Object.values(files)
+  let arr2 = arr1.flat()
+  const urls = await Promise.all(
+    arr2.map(async (file) => {
+      const { path } = file
+      const result = await cloudinaryImageUploadMethod(path)
+      return result
+    })
+  )
+  console.log(urls);
+
+  adminHelpers.addBanner(urls).then(() => {
+    res.redirect('/admin/banner')
+  })
+})
 module.exports = router;

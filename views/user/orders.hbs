@@ -18,9 +18,8 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-1">
-                                        <img style="width:100px; height:130px;"
-                                            src="/product-images/{{this.item}}/{{this.item}}_0.png" class="img-fluid"
-                                            alt="Phone">
+                                        <img style="width:100px; height:104px;" src="{{this.product.image.[0]}}"
+                                            class="img-fluid" alt="Phone">
                                     </div>
                                     <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
 
@@ -82,6 +81,7 @@
                                     {{!-- <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                         data-bs-target="#returnOrder" data-bs-whatever="@mdo">Return Product</button>
                                     --}}
+
                                     {{!-- <button id="return-button"
                                         onclick="returnOrder('{{this._id}}','{{this.item}}')"
                                         class="btn btn-warning">Return

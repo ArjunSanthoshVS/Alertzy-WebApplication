@@ -1,4 +1,12 @@
 <!-- single product details -->
+<div class="position-fixed w-25 d-none" id="success"
+  style="left:530px; top: 100px; z-index: 1000; background-color:black; border-radius:10px;">
+  <p id="success-text" class="text-center mt-3" style="color:white;">Added to Cart</p>
+</div>
+<div class="position-fixed w-25 d-none" id="wishSuccess"
+  style="left:530px; top: 100px; z-index: 1000; background-color:black; border-radius:10px;">
+  <p id="success-text" class="text-center mt-3" style="color:white;">Added to Cart</p>
+</div>
 <div class="small-container single-product"
   style=" background-color:white; box-shadow: rgba(100, 100, 111, 0.5) 0px 7px 29px 0px; border-radius: 10px 10px 10px 10px; margin-top: 100px;">
   <div class="position-fixed w-25 d-none" id="success"
@@ -9,21 +17,20 @@
     <div class="col-2">
 
       <div class="col-md-4 px-0 lens" id="img-container" style="margin-left:6rem; width:62%">
-        <img class="img-fluid mb-3" src="/product-images/{{response._id}}/{{response._id}}_0.png" alt="" width="50%"
-          id="ProductImg" />
+        <img class="img-fluid mb-3" src="{{response.image.[0]}}" alt="" width="50%" id="ProductImg" />
       </div>
       <div class="small-img-row">
         <div class="small-img-col">
-          <img src="/product-images/{{response._id}}/{{response._id}}_0.png" alt="" width="80%" class="small-img" />
+          <img src="{{response.image.[0]}}" alt="" width="80%" class="small-img" />
         </div>
         <div class="small-img-col">
-          <img src="/product-images/{{response._id}}/{{response._id}}_1.png" alt="" width="80%" class="small-img" />
+          <img src="{{response.image.[1]}}" alt="" width="80%" class="small-img" />
         </div>
         <div class="small-img-col">
-          <img src="/product-images/{{response._id}}/{{response._id}}_2.png" alt="" width="80%" class="small-img" />
+          <img src="{{response.image.[2]}}" alt="" width="80%" class="small-img" />
         </div>
         <div class="small-img-col">
-          <img src="/product-images/{{response._id}}/{{response._id}}_3.png" alt="" width="80%" class="small-img" />
+          <img src="{{response.image.[3]}}" alt="" width="80%" class="small-img" />
         </div>
       </div>
     </div>
@@ -47,50 +54,52 @@
       </div>
     </div>--}}
 
-
-    <div class="col-2" style="background: #e2e2e2; border-radius: 10px;">
-
-
-      <h4 class="mb-3">{{response.brand}}</h4>
-      <h2 class="mb-3" style="font-family: none;">{{response.product}}</h2>
-      {{#if response.offerPrice}}
-      <h5 class="mb-3" style="text-decoration:line-through ;">₹{{response.actualPrice}}</h5>
-      <h3 class="mb-3" style="font-weight:600;">₹{{response.offerPrice}}</h3>
-      {{else}}
-      {{!-- <h5 class="mb-3" style="text-decoration:line-through ;">₹{{response.actualPrice}}</h5> --}}
-      <h3 class="mb-3" style="font-weight:600;">₹{{response.actualPrice}}</h3>
-      {{/if}}
-      <h6 class="mb-3">{{response.description}}</h6>
-      {{!-- <select>
-        <option>Select Size</option>
-        <option>XXL</option>
-        <option>XL</option>
-        <option>L</option>
-        <option>M</option>
-        <option>S</option>
-      </select> --}}
-      {{#if user}}
-      <button type="button" class="btn1" style="border-radius: 20; border: 0;"
-        onclick="addToCart('{{response._id}}')">Add
-        to Cart</button>
-      {{else}}
-      <button type="button" class="btn1" data-bs-toggle="modal" style="border-radius: 20; border: 0;"
-        data-bs-target="#exampleModal" data-bs-whatever="@mdo">Add to cart</button>
-      {{/if}}
+    <div class="d-flex justify-content-center">
+      <div class="col-12 p-4"
+        style="background: linear-gradient(to bottom right,#b9e5ff,#c6ffe7); border-radius: 10px;box-shadow: 0px 0px 13px -1px black;">
 
 
-      {{!-- <a href="" class="btn">Add to Wishlist</a><br> --}}
-      <a href="" class="btn2 px-5">Buy Now</a>
+        <h4 class="mb-3">{{response.brand}}</h4>
+        <h2 class="mb-3" style="font-family: none;">{{response.product}}</h2>
+        {{#if response.offerPrice}}
+        <h5 class="mb-3" style="text-decoration:line-through ;">₹{{response.actualPrice}}</h5>
+        <h3 class="mb-3" style="font-weight:600;">₹{{response.offerPrice}}</h3>
+        {{else}}
+        {{!-- <h5 class="mb-3" style="text-decoration:line-through ;">₹{{response.actualPrice}}</h5> --}}
+        <h3 class="mb-3" style="font-weight:600;">₹{{response.actualPrice}}</h3>
+        {{/if}}
+        <h6 class="mb-3">{{response.description}}</h6>
+        {{!-- <select>
+          <option>Select Size</option>
+          <option>XXL</option>
+          <option>XL</option>
+          <option>L</option>
+          <option>M</option>
+          <option>S</option>
+        </select> --}}
+        {{#if user}}
+        <button type="button" class="btn1" style="border-radius: 20; border: 0;"
+          onclick="addToCart('{{response._id}}')">Add
+          to Cart</button>
+        {{else}}
+        <button type="button" class="btn1" data-bs-toggle="modal" style="border-radius: 20; border: 0;"
+          data-bs-target="#exampleModal" data-bs-whatever="@mdo">Add to cart</button>
+        {{/if}}
 
-      {{!-- <h3>Product Details <i class="fas fa-indent"></i></h3>
-      <br />
-      <p>
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Alias,
-        accusamus soluta quasi illum, deserunt ut iste rem obcaecati
-        inventore, est harum repellendus fuga velit odio sint officia
-        corrupti eum perspiciatis.
-      </p> --}}
 
+        {{!-- <a href="" class="btn">Add to Wishlist</a><br> --}}
+        <a href="" class="btn2 px-5">Buy Now</a>
+
+        {{!-- <h3>Product Details <i class="fas fa-indent"></i></h3>
+        <br />
+        <p>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Alias,
+          accusamus soluta quasi illum, deserunt ut iste rem obcaecati
+          inventore, est harum repellendus fuga velit odio sint officia
+          corrupti eum perspiciatis.
+        </p> --}}
+
+      </div>
     </div>
   </div>
 </div>
@@ -173,63 +182,49 @@
 
 <!-- products -->
 
-<div class="container">
+<div class="container mt-3">
   <div class="row">
-    <div class="col-lg-3 col-md-6 col-sm-12">
-      <div class="card mb-5" style="width: 18rem;">
-        <img class="mx-auto mt-3" style="width:10rem;" src="/product-images/{{response._id}}/{{response._id}}_0.png"
-          alt="" />
-        <div class="card-body" style="font-family:none;">
-          <h6>{{response.brand}}</h6>
-          <h4>{{response.product}}</h4>
-          <p class="mb-1" style="text-decoration: line-through;">₹{{response.actualPrice}}</p>
-          <h4>₹{{response.offerPrice}}</h4>
+    {{#each random}}
+    <div class="col-lg-3 col-md-6 col-sm-12 ">
+      <div class="card" style="width: 100%; margin-top:25px;">
+
+        <img style="width:75%;" src="{{this.image.[0]}}" class="card-img-top mx-auto mt-3" alt="...">
+
+        <div class="card-body">
+          <h6>{{this.brand}}</h6>
+          <a style="text-decoration: none;" href="/product-details/{{this._id}}">
+            <h5>{{this.product}}</h5>
+          </a>
+          {{!-- {{#if this.offerPrice}}
+          <p class="mb-0" style="text-decoration :line-through;">₹{{this.actualPrice}}</p> --}}
+          <div class="d-flex">
+            <h5 class="me-3">₹{{this.offerPrice}}</h5>
+            {{#if this.currentOffer}}
+            <p style="color:green;">{{this.currentOffer}}% off</p>
+            {{else}}
+            {{!-- {{#if this.categoryOffer}} --}}
+            {{!-- <p style="color:green;">{{this.categoryOffer}}% off</p>
+            {{else}} --}}
+            <p style="color:red;">0% off</p>
+            {{/if}}
+          </div>
+          {{!-- {{else}}
+          <p class="mb-0">No Offer</p>
+          <h5>₹{{this.actualPrice}}</h5>
+          {{/if}} --}}
+          <button type="button" class="btn btn-primary" style="border-radius: 10px;"
+            onclick="addToCart('{{this._id}}')">Add to Cart</button>
         </div>
       </div>
     </div>
-    <div class="col-lg-3 col-md-6 col-sm-12">
-      <div class="card mb-5" style="width: 18rem;">
-        <img class="mx-auto mt-3" style="width:10rem;" src="/product-images/{{response._id}}/{{response._id}}_1.png"
-          alt="" />
-        <div class="card-body" style="font-family:none;">
-          <h6>{{response.brand}}</h6>
-          <h4>{{response.product}}</h4>
-          <p class="mb-1" style="text-decoration: line-through;">₹{{response.actualPrice}}</p>
-          <h4>₹{{response.offerPrice}}</h4>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-6 col-sm-12">
-      <div class="card mb-5" style="width: 18rem;">
-        <img class="mx-auto mt-3" style="width:10rem;" src="/product-images/{{response._id}}/{{response._id}}_2.png"
-          alt="" />
-        <div class="card-body" style="font-family:none;">
-          <h6>{{response.brand}}</h6>
-          <h4>{{response.product}}</h4>
-          <p class="mb-1" style="text-decoration: line-through;">₹{{response.actualPrice}}</p>
-          <h4>₹{{response.offerPrice}}</h4>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-6 col-sm-12">
-      <div class="card mb-5" style="width: 18rem;">
-        <img class="mx-auto mt-3" style="width:10rem;" src="/product-images/{{response._id}}/{{response._id}}_3.png"
-          alt="" />
-        <div class="card-body" style="font-family:none;">
-          <h6>{{response.brand}}</h6>
-          <h4>{{response.product}}</h4>
-          <p class="mb-1" style="text-decoration: line-through;">₹{{response.actualPrice}}</p>
-          <h4>₹{{response.offerPrice}}</h4>
-        </div>
-      </div>
-    </div>
+    {{/each}}
   </div>
 </div>
 
 
 
 <!-- Footer -->
-<footer class="text-center text-lg-start text-white" style="background-color: #45526e">
+<footer class="text-center text-lg-start text-white mt-5" style="background-color: #45526e">
   <!-- Grid container -->
   <div class="container p-4 pb-0">
     <!-- Section: Links -->
@@ -383,6 +378,11 @@
 </script>
 
 <style>
+  .card:hover {
+    box-shadow: rgba(100, 100, 111, 0.5) 0px 7px 29px 0px;
+    transition-duration: .6s;
+  }
+
   * {
     margin: 0;
     padding: 0;

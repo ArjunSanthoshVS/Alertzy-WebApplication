@@ -83,7 +83,7 @@
             <div class="modal-body">
                 <form action="/admin/offer-management/product-offer" id=" product-offer" method="post">
                     <div class=" mb-3">
-                        <select class="form-select" id="product-offer" name="product">
+                        <select class="form-select" id="product-offer" name="product" required>
                             <option selected>Choose the Product</option>
                             {{#each products}}
                             <option value="{{this._id}}">{{this.product}}</option>
@@ -93,7 +93,7 @@
                     <div class="mb-3">
                         <input type="number" class="form-control" aria-label="Sizing example input"
                             aria-describedby="inputGroup-sizing-default" id="product-offer" name="productOffer"
-                            placeholder="Enter Offer in Percentage">
+                            placeholder="Enter Offer in Percentage" required>
                     </div>
 
                     <div class="modal-footer">

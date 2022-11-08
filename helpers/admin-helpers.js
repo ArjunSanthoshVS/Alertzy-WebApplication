@@ -2,6 +2,7 @@ var db = require('../config/connection')
 var collection = require('../config/collection')
 var bcrypt = require('bcrypt');
 const { response } = require('express');
+const { image, url } = require('../utils/cloudinary');
 var objectId = require('mongodb').ObjectId
 //ADMIN SIGNUP
 module.exports = {
@@ -410,6 +411,16 @@ module.exports = {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.COUPON_COLLECTION).deleteOne({ coupon: data })
             resolve(response)
+        })
+    },
+
+    //ADD BANNER
+    addBanner: (urls) => {
+        return new Promise((resolve, reject) => {
+
+            db.get().collection(collection.BANNER_COLLECTION).insertMany().then(() => {
+                resolve()
+            })
         })
     }
 }

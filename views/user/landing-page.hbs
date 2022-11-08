@@ -1,4 +1,12 @@
-<div class="row align-items-center mb-5 p-0"
+<div class="position-fixed w-25 d-none" id="success"
+  style="left:530px; top: 100px; z-index: 1000; background-color:black; border-radius:10px;">
+  <p id="success-text" class="text-center mt-3" style="color:white;">Added to Cart</p>
+</div>
+<div class="position-fixed w-25 d-none" id="wishSuccess"
+  style="left:530px; top: 100px; z-index: 1000; background-color:black; border-radius:10px;">
+  <p id="success-text" class="text-center mt-3" style="color:white;">Added to Cart</p>
+</div>
+<div class="row align-items-center mb-5 p-0 mt-5"
   style="margin-right:0;background-color: #C4C4C4; height: max-content; border-radius: 0px 0px 70px 70px;">
   <div class="col ms-5 mt-5 mb-5" style="font-family: none;">
     <h3 style="font-weight:bold; font-size: 60px; color:#1867C2;">Exclusive Deals of</h3>
@@ -45,71 +53,43 @@
 </a>
 </div> --}}
 
-<div class="container pt-5 mb-5">
-  <div class="text-center">
-    <h2 style="font-weight:bold; font-size: 45px; color:#1867C2;">Popular Products</h2>
-  </div>
-  <section>
-    <div class="container mt-3">
-      <div class="row">
-        {{!-- {{#each products}} --}}
-        <div class="col-lg-3 col-md-6 col-sm-12">
-          <div class="card" style="width:auto; margin-top:25px;">
-            {{!-- <img src="/product-images/{{this._id}}.jpg" class="card-img-top" alt="..."> --}}
-            <a href="/products"><img src="/images/landing-page-watch.png" class="card-img-top mt-5" alt="..."
-                width="18rem"></a>
-            <div class="card-body">
-              <h4 class="card-title">Fossil</h4>
-              <h5 class="price">FS4662 Machine Analog Watch - For Men</h5>
-              <h6 style="text-decoration: line-through;">₹12,495</h6>
-              <h4>₹10,399</h4>
-              <a href="#" class="btn btn-primary">Add to cart</a>
-            </div>
+<div class="container mt-3">
+  <div class="row">
+    {{#each random}}
+    <div class="col-lg-3 col-md-6 col-sm-12">
+      <div class="card" style="width: 18rem; margin-top:25px;">
+
+        <img style="width:75%;" src="{{this.image.[0]}}" class="card-img-top mx-auto mt-3" alt="...">
+
+        <div class="card-body">
+          <h6>{{this.brand}}</h6>
+          <a style="text-decoration: none;" href="/product-details/{{this._id}}">
+            <h5>{{this.product}}</h5>
+          </a>
+          {{!-- {{#if this.offerPrice}}
+          <p class="mb-0" style="text-decoration :line-through;">₹{{this.actualPrice}}</p> --}}
+          <div class="d-flex">
+            <h5 class="me-3">₹{{this.offerPrice}}</h5>
+            {{#if this.currentOffer}}
+            <p style="color:green;">{{this.currentOffer}}% off</p>
+            {{else}}
+            {{!-- {{#if this.categoryOffer}} --}}
+            {{!-- <p style="color:green;">{{this.categoryOffer}}% off</p>
+            {{else}} --}}
+            <p style="color:red;">0% off</p>
+            {{/if}}
           </div>
+          {{!-- {{else}}
+          <p class="mb-0">No Offer</p>
+          <h5>₹{{this.actualPrice}}</h5>
+          {{/if}} --}}
+          <button type="button" class="btn btn-primary" style="border-radius: 10px;"
+            onclick="addToCart('{{this._id}}')">Add to Cart</button>
         </div>
-        <div class="col-lg-3 col-md-6 col-sm-12">
-          <div class="card" style="width:auto; margin-top:25px;">
-            {{!-- <img src="/product-images/{{this._id}}.jpg" class="card-img-top" alt="..."> --}}
-            <img src="/images/landing-page-watch.png" class="card-img-top mt-5" alt="..." width="18rem">
-            <div class="card-body">
-              <h4 class="card-title">Fossil</h4>
-              <h5 class="price">FS4662 Machine Analog Watch - For Men</h5>
-              <h6 style="text-decoration: line-through;">₹12,495</h6>
-              <h4>₹10,399</h4>
-              <a href="#" class="btn btn-primary">Add to cart</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6 col-sm-12">
-          <div class="card" style="width:auto; margin-top:25px;">
-            {{!-- <img src="/product-images/{{this._id}}.jpg" class="card-img-top" alt="..."> --}}
-            <img src="/images/landing-page-watch.png" class="card-img-top mt-5" alt="..." width="18rem">
-            <div class="card-body">
-              <h4 class="card-title">Fossil</h4>
-              <h5 class="price">FS4662 Machine Analog Watch - For Men</h5>
-              <h6 style="text-decoration: line-through;">₹12,495</h6>
-              <h4>₹10,399</h4>
-              <a href="#" class="btn btn-primary">Add to cart</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6 col-sm-12">
-          <div class="card" style="width:auto; margin-top:25px;">
-            {{!-- <img src="/product-images/{{this._id}}.jpg" class="card-img-top" alt="..."> --}}
-            <img src="/images/landing-page-watch.png" class="card-img-top mt-5" alt="..." width="18rem">
-            <div class="card-body">
-              <h4 class="card-title">Fossil</h4>
-              <h5 class="price">FS4662 Machine Analog Watch - For Men</h5>
-              <h6 style="text-decoration: line-through;">₹12,495</h6>
-              <h4>₹10,399</h4>
-              <a href="#" class="btn btn-primary">Add to cart</a>
-            </div>
-          </div>
-        </div>
-        {{!-- {{/each}} --}}
       </div>
     </div>
-  </section>
+    {{/each}}
+  </div>
 </div>
 
 <div class="container">
@@ -242,3 +222,9 @@
 </footer>
 <!-- Footer -->
 <!-- End of .container -->
+<style>
+  .card:hover {
+    box-shadow: rgba(100, 100, 111, 0.5) 0px 7px 29px 0px;
+    transition-duration: .6s;
+  }
+</style>

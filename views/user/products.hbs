@@ -8,8 +8,8 @@
     <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
     <label class="btn btn-outline-primary" for="btnradio3">Ladies</label>
 
-    <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btnradio3">Kids</label>
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
+    <label class="btn btn-outline-primary" for="btnradio4">Kids</label>
 </div>
 <section>
     <div class="position-fixed w-25 d-none" id="success"
@@ -26,8 +26,7 @@
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="card" style="width: 18rem; margin-top:25px;">
 
-                    <img style="width:75%;" src="/product-images/{{this._id}}/{{this._id}}_0.png"
-                        class="card-img-top mx-auto mt-3" alt="...">
+                    <img style="width:75%;" src="{{this.image.[0]}}" class="card-img-top mx-auto mt-3" alt="...">
 
                     <div class="card-body">
                         <h6>{{this.brand}}</h6>

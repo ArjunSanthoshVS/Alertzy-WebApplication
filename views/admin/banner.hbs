@@ -1,0 +1,73 @@
+<div class="background pb-3" style="    margin-left: 7%;
+    width: 90%;">
+    <div class="" style=" vh-100">
+
+        <a class="navbar-brand mt-4" style="font-family: none; font-weight: 900; color: black;">
+            <h1 class="text-center pt-5">Banner Management</h1>
+        </a>
+    </div>
+
+    <form action="/admin/banner" method="post" enctype="multipart/form-data">
+        <div class="form-row d-flex mt-2">
+            <div class="form-group col-md-6 d-flex">
+                <div class="d-none me-3" id="imgView1_1">
+                    <img src="" alt="" width="50" height="50" id="imgView1">
+                </div>
+                <input type="file" onchange="viewImage(event,'imgView1',1)" class="form-control-file" name="banner1"
+                    id="imgInput" multiple required>
+            </div>
+            <div class="form-group col-md-6 d-flex">
+                <div class="d-none me-3" id="imgView2_2">
+                    <img src="" alt="" width="50" height="50" id="imgView2">
+                </div>
+                <input type="file" onchange="viewImage(event,'imgView2',2)" class="form-control-file" name="banner2"
+                    id="imgInput" multiple required>
+            </div>
+        </div>
+        <div class="form-row d-flex mt-4">
+            <div class="form-group col-md-6 d-flex">
+                <div class="d-none me-3" id="imgView3_3">
+                    <img src="" alt="" width="50" height="50" id="imgView3">
+                </div>
+                <input type="file" onchange="viewImage(event,'imgView3',3)" class="form-control-file" name="banner3"
+                    id="imgInput" multiple required>
+            </div>
+            <div class="form-group col-md-6 d-flex">
+                <div class="d-none me-3" id="imgView4_4">
+                    <img src="" alt="" width="50" height="50" id="imgView4">
+                </div>
+                <input type="file" onchange="viewImage(event,'imgView4',4)" class="form-control-file" name="banner4"
+                    id="imgInput" multiple required>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-5">
+            <button type="submit" class="btn btn-primary">Save</button>&nbsp;<button type="reset"
+                class="btn btn-danger">Cancel</button>
+        </div>
+    </form>
+</div>
+<script>
+    function viewImage(event, imgId, idNum) {
+        console.log(event);
+        var fileInput =
+            document.getElementById('imgInput');
+
+        var filePath = fileInput.value;
+
+        console.log(filePath);
+
+        var allowedExtensions =
+            /(\.jpg|\.jpeg|\.png|\.gif|\.jfif|\.webp)$/i;
+
+        if (!allowedExtensions.exec(filePath)) {
+            alert('Invalid file type');
+            fileInput.value = '';
+            return false;
+        }
+        else {
+            document.getElementById(imgId + '_' + idNum).classList.remove("d-none")
+            document.getElementById(imgId).src = URL.createObjectURL(event.target.files[0])
+        }
+
+    } 
+</script>

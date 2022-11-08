@@ -8,14 +8,11 @@ const adminHelpers = require('../helpers/admin-helpers');
 require('dotenv').config()
 const client = require('twilio')(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN)
 const paypal = require('paypal-rest-sdk');
-const { response } = require('express');
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
   'client_id': process.env.CLIENT_ID,
   'client_secret': process.env.CLIENT_SECRET
 });
-
-
 
 //ENTERING PAGE
 router.get('/', async function (req, res, next) {
@@ -24,8 +21,9 @@ router.get('/', async function (req, res, next) {
   if (user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   }
-  adminHelpers.getCategory().then((category) => {
-    res.render('user/landing-page', { user, cartCount, category })
+  adminHelpers.getCategory().then(async (category) => {
+    let random = await productHelpers.randomProducts()
+    res.render('user/landing-page', { user, cartCount, category, random })
   })
 })
 
@@ -160,11 +158,12 @@ router.get('/products', async function (req, res, next) {
 router.get('/product-details/:id', async (req, res) => {
   let user = req.session.user
   let cartCount = null
+  let random = await productHelpers.randomProducts()
   if (user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   }
   await productHelpers.getProductDetails(req.params.id).then((response) => {
-    res.render('user/product-details', { response, user: true, user, cartCount })
+    res.render('user/product-details', { response, user: true, user, cartCount, random })
   })
 })
 
@@ -231,6 +230,7 @@ router.get('/place-order', middleware.loginChecked, async (req, res) => {
   let user = req.session.user
   let total = await userHelpers.getTotalAmount(user._id)
   let cartProducts = await userHelpers.getCartProducts(user._id)
+  console.log(cartProducts);
   let address = await userHelpers.addressDetails(user._id)
   res.render('user/place-order', { total, user, cartProducts, address })
 })
@@ -238,7 +238,9 @@ router.get('/place-order', middleware.loginChecked, async (req, res) => {
 router.post('/place-order', async (req, res) => {
   let products = await userHelpers.getCartProductList(req.session.user._id)
   // let totalPrice = await userHelpers.getTotalAmount(req.session.user._id)
+  console.log(req.body);
   let totalPrice = Number(req.body.total)
+  console.log(totalPrice, '$$$$$$$$$$$$$$$$$');
   let userAddress = await userHelpers.getOrderAddress(req.session.user._id, req.body.addressId)
   userHelpers.placeOrder(userAddress, products, totalPrice, req.body['paymentMethod'], req.session.user._id).then((orderId) => {
     if (req.body['paymentMethod'] === 'COD') {
@@ -306,13 +308,14 @@ router.post('/redeem-coupon', async (req, res) => {
   console.log(req.body);
   let userId = req.session.user._id
   let totalAmount = await userHelpers.getTotalAmount(userId)
-  console.log(totalAmount);
+  console.log(totalAmount, '*******');
   await userHelpers.redeemCoupon(req.body).then((couponData) => {
     let minMsg = "This coupen is only valid for purchase above ₹" + couponData.minPrice
     let maxMsg = "This coupen is only valid for purchase below ₹" + couponData.maxPrice
     if (totalAmount >= couponData.minPrice && totalAmount <= couponData.maxPrice) {
       let temp = (totalAmount * couponData.couponOffer) / 100
       totalAmount = (totalAmount - temp)
+      console.log(totalAmount);
       res.json({ total: totalAmount, offer: temp })
     } else if (totalAmount <= couponData.minPrice) {
       res.json({ msg: minMsg, total: totalAmount })

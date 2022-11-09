@@ -13,11 +13,9 @@
 
                 {{#each products}}
                 <tr>
-
                     <td class="ps-5 pb-3 pt-3">
                         <div class="product-item">
-                            <a class="product-thumb" href="#"><img style="width:60%;"
-                                    src="/product-images/{{this.product._id}}/{{this.product._id}}_0.png"
+                            <a class="product-thumb" href="#"><img style="" src="{{this.product.image.[0]}}"
                                     alt="Product"></a>
                             <div class="product-info">
                                 <h4 class="product-title"><a href="#">{{this.product.product}}</a></h4>
@@ -45,7 +43,6 @@
                     </td>
                 </tr>
                 {{/each}}
-
             </tbody>
         </table>
     </div>

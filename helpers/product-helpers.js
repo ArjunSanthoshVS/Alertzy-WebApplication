@@ -13,6 +13,7 @@ module.exports = {
             product.productOffer = 0
             product.categoryOffer = 0
             product.currentOffer = 0
+            product.stock = parseInt(product.stock)
             product.image = urls
             await db.get().collection(collection.PRODUCT_COLLECTION).insertOne(product).then((data) => {
                 callback(data.insertedId.toString())

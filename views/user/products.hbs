@@ -1,15 +1,28 @@
-<div class="btn-group ms-5" role="group" aria-label="Basic radio toggle button group" style="margin-top:100px;">
-    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-    <label class="btn btn-outline-primary" for="btnradio1">All products</label>
+<div class="btn-group" role="group" aria-label="Basic radio toggle button group"
+    style="margin-top:100px; width: 100%; justify-content: center;">
 
-    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btnradio2">Gents</label>
+    <div>
+        {{!-- <form action="/products/">
+            <input type="radio" class="btn-check" name="" id="btnradio1" autocomplete="off" value="" checked>
+            <label class="btn btn-outline-primary" for="btnradio1">All products</label>
+            {{#each category}}
+            <input type="radio" class="btn-check" name="search" id="btnradio2" autocomplete="off"
+                value="{{this.category}}">
+            <label class="btn btn-outline-primary" for="btnradio2">{{this.category}}</label>
+            {{/each}}
+        </form> --}}
+        {{#each category}}
+        <a class="btn btn-primary" href="/products?search={{this.category}}">{{this.category}}</a>
+        {{/each}}
+    </div>
 
-    <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btnradio3">Ladies</label>
+    <div class="float-end ms-3">
+        <form class="d-flex" action="/products/" method="get">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+            <button class="btn btn-outline-primary" type="submit">Search</button>
+        </form>
+    </div>
 
-    <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btnradio4">Kids</label>
 </div>
 <section>
     <div class="position-fixed w-25 d-none" id="success"
@@ -22,7 +35,7 @@
     </div>
     <div class="container mt-3">
         <div class="row">
-            {{#each products}}
+            {{#each response}}
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="card" style="width: 18rem; margin-top:25px;">
 

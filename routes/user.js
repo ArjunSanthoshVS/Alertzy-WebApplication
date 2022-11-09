@@ -8,6 +8,7 @@ const adminHelpers = require('../helpers/admin-helpers');
 require('dotenv').config()
 const client = require('twilio')(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN)
 const paypal = require('paypal-rest-sdk');
+const { response } = require('express');
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
   'client_id': process.env.CLIENT_ID,
@@ -23,7 +24,8 @@ router.get('/', async function (req, res, next) {
   }
   adminHelpers.getCategory().then(async (category) => {
     let random = await productHelpers.randomProducts()
-    res.render('user/landing-page', { user, cartCount, category, random })
+    let banner = await adminHelpers.getBanner()
+    res.render('user/landing-page', { user, cartCount, category, random, banner })
   })
 })
 
@@ -142,17 +144,26 @@ router.get('/logout', (req, res) => {
 })
 
 //PRODUCTS LIST
-router.get('/products', async function (req, res, next) {
-  let user = req.session.user
-  let cartCount = null
-  if (user) {
-    cartCount = await userHelpers.getCartCount(req.session.user._id)
-  }
-  let category = adminHelpers.getCategory()
-  productHelpers.getAllProducts().then((products) => {
-    res.render('user/products', { products, category, user: true, user, cartCount })
+router.get('/products/', async function (req, res, next) {
+  console.log(req.query.search);
+  // let user = req.session.user
+  // // cartCount = null
+  // if (user) {
+  //   cartCount = await userHelpers.getCartCount(req.session.user._id)
+  // }
+  adminHelpers.getSearchProduct(req.query.search).then((response) => {
+    adminHelpers.getCategory().then((category) => {
+      console.log(category);
+      console.log(response);
+      res.render('user/products', { category, response, user: req.session.user, cartCount: req.session.cartCount, logout: !req.session.loggedIn })
+    })
+  }).catch(() => {
+    console.log('ERrrrrrrrrrrrrrr');
+    adminHelpers.getCategory().then((category) => {
+      res.render('user/products', { category, user: req.session.user, cartCount: req.session.cartCount, logout: !req.session.loggedIn })
+    })
   })
-});
+})
 
 //PRODUCTS DETAILS
 router.get('/product-details/:id', async (req, res) => {
@@ -442,5 +453,6 @@ router.post('/return-order/:id', (req, res) => {
     res.redirect('/orders')
   })
 })
+
 
 module.exports = router;

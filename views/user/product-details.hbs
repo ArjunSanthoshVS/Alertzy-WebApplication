@@ -1,13 +1,9 @@
-<!-- single product details -->
 <div class="position-fixed w-25 d-none" id="success"
   style="left:530px; top: 100px; z-index: 1000; background-color:black; border-radius:10px;">
   <p id="success-text" class="text-center mt-3" style="color:white;">Added to Cart</p>
 </div>
-<div class="position-fixed w-25 d-none" id="wishSuccess"
-  style="left:530px; top: 100px; z-index: 1000; background-color:black; border-radius:10px;">
-  <p id="success-text" class="text-center mt-3" style="color:white;">Added to Cart</p>
-</div>
-<div class="small-container single-product"
+
+{{!-- <div class="small-container single-product"
   style=" background-color:white; box-shadow: rgba(100, 100, 111, 0.5) 0px 7px 29px 0px; border-radius: 10px 10px 10px 10px; margin-top: 100px;">
   <div class="position-fixed w-25 d-none" id="success"
     style="left:530px; top: 100px; z-index: 1000; background-color:black; border-radius:10px;">
@@ -35,24 +31,6 @@
       </div>
     </div>
 
-    {{!-- <div class="col-md-4 w-100 px-0 lens" id="img-container">
-      <img id="image" src="/product-images/{{response._id}}/{{response._id}}_0.png" class="img-fluid"
-        style="box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px; width: 100%; max-height: 405px;" />
-    </div>
-    <div class="small-img-row pt-3 justify-content-center">
-      <div class="small-img-col">
-        <img src="/product-images/{{response._id}}/{{response._id}}_0.png" alt="" width="100%" class="small-img" />
-      </div>
-      <div class="small-img-col">
-        <img src="https://i.ibb.co/4j34KdX/gallery-2.jpg" alt="" width="100%" class="small-img" />
-      </div>
-      <div class="small-img-col">
-        <img src="https://i.ibb.co/kGhWJ84/gallery-3.jpg" alt="" width="100%" class="small-img" />
-      </div>
-      <div class="small-img-col">
-        <img src="https://i.ibb.co/4j34KdX/gallery-2.jpg" alt="" width="100%" class="small-img" />
-      </div>
-    </div>--}}
 
     <div class="d-flex justify-content-center">
       <div class="col-12 p-4"
@@ -65,18 +43,10 @@
         <h5 class="mb-3" style="text-decoration:line-through ;">₹{{response.actualPrice}}</h5>
         <h3 class="mb-3" style="font-weight:600;">₹{{response.offerPrice}}</h3>
         {{else}}
-        {{!-- <h5 class="mb-3" style="text-decoration:line-through ;">₹{{response.actualPrice}}</h5> --}}
         <h3 class="mb-3" style="font-weight:600;">₹{{response.actualPrice}}</h3>
         {{/if}}
         <h6 class="mb-3">{{response.description}}</h6>
-        {{!-- <select>
-          <option>Select Size</option>
-          <option>XXL</option>
-          <option>XL</option>
-          <option>L</option>
-          <option>M</option>
-          <option>S</option>
-        </select> --}}
+
         {{#if user}}
         <button type="button" class="btn1" style="border-radius: 20; border: 0;"
           onclick="addToCart('{{response._id}}')">Add
@@ -87,17 +57,7 @@
         {{/if}}
 
 
-        {{!-- <a href="" class="btn">Add to Wishlist</a><br> --}}
         <a href="" class="btn2 px-5">Buy Now</a>
-
-        {{!-- <h3>Product Details <i class="fas fa-indent"></i></h3>
-        <br />
-        <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Alias,
-          accusamus soluta quasi illum, deserunt ut iste rem obcaecati
-          inventore, est harum repellendus fuga velit odio sint officia
-          corrupti eum perspiciatis.
-        </p> --}}
 
       </div>
     </div>
@@ -195,23 +155,17 @@
           <a style="text-decoration: none;" href="/product-details/{{this._id}}">
             <h5>{{this.product}}</h5>
           </a>
-          {{!-- {{#if this.offerPrice}}
-          <p class="mb-0" style="text-decoration :line-through;">₹{{this.actualPrice}}</p> --}}
+
           <div class="d-flex">
             <h5 class="me-3">₹{{this.offerPrice}}</h5>
             {{#if this.currentOffer}}
             <p style="color:green;">{{this.currentOffer}}% off</p>
             {{else}}
-            {{!-- {{#if this.categoryOffer}} --}}
-            {{!-- <p style="color:green;">{{this.categoryOffer}}% off</p>
-            {{else}} --}}
+
             <p style="color:red;">0% off</p>
             {{/if}}
           </div>
-          {{!-- {{else}}
-          <p class="mb-0">No Offer</p>
-          <h5>₹{{this.actualPrice}}</h5>
-          {{/if}} --}}
+
           <button type="button" class="btn btn-primary" style="border-radius: 10px;"
             onclick="addToCart('{{this._id}}')">Add to Cart</button>
         </div>
@@ -342,9 +296,10 @@
     <!-- Section: Copyright -->
   </div>
   <!-- Grid container -->
-</footer>
+</footer> --}}
 
 <!-- js for toggle menu -->
+{{!--
 <script>
   var MenuItems = document.getElementById('MenuItems');
   MenuItems.style.maxHeight = '0px';
@@ -356,10 +311,11 @@
       MenuItems.style.maxHeight = '0px';
     }
   }
-</script>
+</script> --}}
 
 <!-- js for product gallery -->
 
+{{!--
 <script>
   var ProductImg = document.getElementById('ProductImg');
   var SmallImg = document.getElementsByClassName('small-img');
@@ -892,4 +848,395 @@
       display: none;
     }
   }
+</style> --}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="py-5 mt-5">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-lg-6">
+        <!-- PRODUCT SLIDER-->
+        <div class="row m-sm-0">
+          <div class="col-sm-2 p-sm-0 order-2 order-sm-1 mt-2 mt-sm-0 px-xl-2">
+            <div class="swiper product-slider-thumbs">
+              <div class="swiper-wrapper">
+                <div class="small-img-col">
+                  <img src="{{response.image.[0]}}" alt="" width="100px" class="small-img mb-3" />
+                </div>
+                <div class="small-img-col">
+                  <img src="{{response.image.[1]}}" alt="" width="100px" class=" small-img mb-3" />
+                </div>
+                <div class="small-img-col">
+                  <img src="{{response.image.[2]}}" alt="" width="100px" class=" small-img mb-3" />
+                </div>
+                <div class="small-img-col">
+                  <img src="{{response.image.[3]}}" alt="" width="100px" class=" small-img" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-10 order-1 order-sm-2">
+            <div class="swiper product-slider">
+              <div class="swiper-wrapper">
+                <div class="col-md-4 px-0 lens mt-5" id="img-container" style="margin-left:6rem; width:100%">
+                  <img class="img-fluid" src="{{response.image.[0]}}" alt="" id="ProductImg" />
+                </div>
+                {{!-- <div class="swiper-slide h-auto"><a class="glightbox product-view" href="{{response.image.[0]}}"
+                    data-gallery="gallery2" data-glightbox="Product item 2"><img class="img-fluid"
+                      src="{{response.image.[0]}}" alt="..."></a></div>
+                <div class="swiper-slide h-auto"><a class="glightbox product-view" href="{{response.image.[0]}}"
+                    data-gallery="gallery2" data-glightbox="Product item 3"><img class="img-fluid"
+                      src="{{response.image.[0]}}" alt="..."></a></div>
+                <div class="swiper-slide h-auto"><a class="glightbox product-view" href="{{response.image.[0]}}"
+                    data-gallery="gallery2" data-glightbox="Product item 4"><img class="img-fluid"
+                      src="{{response.image.[0]}}" alt="..."></a></div> --}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- PRODUCT DETAILS-->
+      <div class="col-lg-6">
+        {{!-- <ul class="list-inline mb-2 text-sm">
+          <li class="list-inline-item m-0"><i class="fas fa-star small text-warning"></i></li>
+          <li class="list-inline-item m-0 1"><i class="fas fa-star small text-warning"></i></li>
+          <li class="list-inline-item m-0 2"><i class="fas fa-star small text-warning"></i></li>
+          <li class="list-inline-item m-0 3"><i class="fas fa-star small text-warning"></i></li>
+          <li class="list-inline-item m-0 4"><i class="fas fa-star small text-warning"></i></li>
+        </ul> --}}
+        <h5>{{response.brand}}</h5>
+        <h1>{{response.product}}</h1>
+        {{#if response.offerPrice}}
+        <p class="text-muted lead" style="text-decoration:line-through ;">₹{{response.actualPrice}}</p>
+        {{#if response.currentOffer}}
+        <p style="color:green;">{{response.currentOffer}}% off</p>
+        {{else}}
+        <p style="color:red;">0% off</p>
+        {{/if}}
+        <p class="lead" style="font-weight:600;">₹{{response.offerPrice}}</p>
+        {{else}}
+        <p class="lead" style="font-weight:600;">₹{{response.actualPrice}}</p>
+        {{/if}}
+        <p class="text-sm mb-4">{{response.description}}</p>
+        <div class="row align-items-stretch mb-4">
+          {{!-- <div class="col-sm-5 pr-sm-0">
+            <div class="border d-flex align-items-center justify-content-between py-1 px-3 bg-white border-white">
+              <span class="small text-uppercase text-gray mr-4 no-select">Quantity</span>
+              <div class="quantity">
+                <button class="dec-btn p-0"><i class="fas fa-caret-left"></i></button>
+                <input class="form-control border-0 shadow-0 p-0" type="text" value="1">
+                <button class="inc-btn p-0"><i class="fas fa-caret-right"></i></button>
+              </div>
+            </div>
+          </div> --}}
+          {{#if user}}
+          <button type="button" class="ms-3 col-3 btn btn-primary" style="border-radius: 20; border: 0;"
+            onclick="addToCart('{{response._id}}')">Add
+            to Cart</button>
+          {{else}}
+          <button type="button" class="ms-3 col-3 btn btn-primary" data-bs-toggle="modal"
+            style="border-radius: 20; border: 0;" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Add to
+            cart</button>
+          {{/if}}
+        </div>
+        {{!-- <a class="text-dark p-0 mb-4 d-inline-block" href="#!"><i class="far fa-heart me-2"></i>Add to wish
+          list</a><br> --}}
+        <ul class="list-unstyled small d-inline-block">
+          {{!-- <li class="px-3 py-2 mb-1 bg-white"><strong class="text-uppercase">SKU:</strong><span
+              class="ms-2 text-muted">039</span></li> --}}
+          <li class="px-3 py-2 mb-1 bg-white text-muted"><strong class="text-uppercase text-dark">Category:</strong><a
+              class="reset-anchor ms-2" href="#">{{response.category}}</a></li>
+          {{!-- <li class="px-3 py-2 mb-1 bg-white text-muted"><strong class="text-uppercase text-dark">Tags:</strong><a
+              class="reset-anchor ms-2" href="#!">Innovation</a></li> --}}
+        </ul>
+      </div>
+    </div>
+    <!-- DETAILS TABS-->
+    <ul class="nav nav-tabs border-0" id="myTab" role="tablist">
+      <li class="nav-item"><a class="nav-link text-uppercase active" id="description-tab" data-bs-toggle="tab"
+          href="#description" role="tab" aria-controls="description" aria-selected="true">Description</a></li>
+    </ul>
+    <div class="tab-content mb-5" id="myTabContent">
+      <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+        <div class="p-4 p-lg-5 bg-white">
+          <h6 class="text-uppercase">Product description </h6>
+          <p class="text-muted text-sm mb-0">{{response.description}}</p>
+        </div>
+      </div>
+    </div>
+    <!-- RELATED PRODUCTS-->
+    <h2 class="h5 text-uppercase mb-4">Related products</h2>
+    <div class="row">
+      {{#each random}}
+      <div class="col-lg-3 col-md-6 col-sm-12 ">
+        <div class="card" style="width: 100%; margin-top:25px;">
+
+          <img style="width:75%;" src="{{this.image.[0]}}" class="card-img-top mx-auto mt-3" alt="...">
+
+          <div class="card-body">
+            <h6>{{this.brand}}</h6>
+            <a style="text-decoration: none;" href="/product-details/{{this._id}}">
+              <h5>{{this.product}}</h5>
+            </a>
+
+            <div class="d-flex">
+              <h5 class="me-3">₹{{this.offerPrice}}</h5>
+              {{#if this.currentOffer}}
+              <p style="color:green;">{{this.currentOffer}}% off</p>
+              {{else}}
+              <p style="color:red;">0% off</p>
+              {{/if}}
+            </div>
+
+            <button type="button" class="btn btn-primary" style="border-radius: 10px;"
+              onclick="addToCart('{{this._id}}')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</section>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <section class="" style=" background-color: #FDFBF8;">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-xl-10">
+              <div class="card" style="border-radius: 1rem; box-shadow: 4px 3px 8px 1px #969696;">
+                <div class="row g-0">
+                  <div class="col-md-5 col-lg-4 d-none d-md-block p-4"
+                    style="text-align: center;background-color:darkgray; box-shadow: 3px 0px 2px 1px #969696;">
+                    <h1 class="mt-5  display-4 fw-bold ls-tight " style="color: white;">
+                      The best offer for your<br />
+                      <h1 class="text-primary mt-5 display-2 fw-bold ls-tight" style="text-shadow:3px 1px #969696;;">
+                        Dream
+                        Watch</h1>
+                    </h1>
+                  </div>
+                  <div class="col-md-7 col-lg-8 d-flex align-items-center">
+                    <div class="card-body p-4 p-lg-5 text-black">
+                      {{#if loginErr}}
+                      <p class="h6" style="color: red;">{{loginErr}}</p>
+                      {{else}}
+                      <p></p>
+                      {{/if}}
+                      {{#if otpErr}}
+                      <p class="h6" style="color: red;">{{otpErr}}</p>
+                      {{else}}
+                      <p></p>
+                      {{/if}}
+
+                      <form method="post" id="login-form">
+                        <div class="mb-3 pb-1 d-flex justify-content-center">
+                          <img src="/images/Logo.png" alt="" style=" width:50%;">
+                        </div>
+                        <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
+                        <div class="invalid-feedback"></div>
+                        <div class="form-outline mb-4">
+                          <input type="email" id="email" class="form-control form-control-lg" name="email" />
+                          <label class="form-label" for="form2Example17">Email address</label>
+                        </div>
+                        <div class="invalid-feedback"></div>
+                        <div class="form-outline mb-4">
+                          <input type="password" id="password" class="form-control form-control-lg" name="password" />
+                          <label class="form-label" for="form2Example27">Password</label>
+                        </div>
+                        <div class="pt-1 mb-4">
+                          <button class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
+                          <p>Forgot Password..? <a href="/otp-login">Login with OTP</a></p>
+                        </div>
+                        <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a href="/signup"
+                            style="color: #393f81;">Register here</a></p>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+
+<!-- Footer -->
+<footer class="text-center text-lg-start text-white mt-5" style="background-color: #45526e">
+  <!-- Grid container -->
+  <div class="container p-4 pb-0">
+    <!-- Section: Links -->
+    <section class="">
+      <!--Grid row-->
+      <div class="row">
+        <!-- Grid column -->
+        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+          <h3 class="text-uppercase mb-4 font-weight-bold">
+            Alertzy
+          </h3>
+          <p>
+            “Unlike diamonds, watches were practical. They were for people on the run, people with appointments to
+            keep
+            and schedules to meet.”
+          </p>
+        </div>
+        <!-- Grid column -->
+
+        <hr class="w-100 clearfix d-md-none" />
+
+        <!-- Grid column -->
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+          <h6 class="text-uppercase mb-4 font-weight-bold">About</h6>
+          <p>
+            <a class="text-white">Contact Us</a>
+          </p>
+          <p>
+            <a class="text-white">About Us</a>
+          </p>
+          <p>
+            <a class="text-white">Wholesale</a>
+          </p>
+          <p>
+            <a class="text-white">Corporate Information</a>
+          </p>
+        </div>
+        <!-- Grid column -->
+
+        <hr class="w-100 clearfix d-md-none" />
+
+        <!-- Grid column -->
+        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+          <h6 class="text-uppercase mb-4 font-weight-bold">
+            Help
+          </h6>
+          <p>
+            <a class="text-white">Payments</a>
+          </p>
+          <p>
+            <a class="text-white">Shipping</a>
+          </p>
+          <p>
+            <a class="text-white">Cancellation and Returns</a>
+          </p>
+          <p>
+            <a class="text-white">FAQ</a>
+          </p>
+        </div>
+
+        <!-- Grid column -->
+        <hr class="w-100 clearfix d-md-none" />
+
+        <!-- Grid column -->
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+          <h6 class="text-uppercase mb-4 font-weight-bold">Contact</h6>
+          <p><i class="fas fa-home mr-3"></i> New York, NY 10012, US</p>
+          <p><i class="fas fa-envelope mr-3"></i> info@gmail.com</p>
+          <p><i class="fas fa-phone mr-3"></i> + 01 234 567 88</p>
+          <p><i class="fas fa-print mr-3"></i> + 01 234 567 89</p>
+        </div>
+        <!-- Grid column -->
+      </div>
+      <!--Grid row-->
+    </section>
+    <!-- Section: Links -->
+
+    <hr class="my-3">
+
+    <!-- Section: Copyright -->
+    <section class="p-3 pt-0">
+      <div class="row d-flex align-items-center">
+        <!-- Grid column -->
+        <div class="col-md-7 col-lg-8 text-center text-md-start">
+          <!-- Copyright -->
+          <div class="p-3">
+            © 2020 Copyright:
+            <a class="text-white" href="#">Alertzy.com</a>
+          </div>
+          <!-- Copyright -->
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-5 col-lg-4 ml-lg-0 text-center text-md-end">
+          <!-- Facebook -->
+          <a class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+              class="fab fa-facebook-f"></i></a>
+
+          <!-- Twitter -->
+          <a class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+              class="fab fa-twitter"></i></a>
+
+          <!-- Google -->
+          <a class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+              class="fab fa-google"></i></a>
+
+          <!-- Instagram -->
+          <a class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+              class="fab fa-instagram"></i></a>
+        </div>
+        <!-- Grid column -->
+      </div>
+    </section>
+    <!-- Section: Copyright -->
+  </div>
+  <!-- Grid container -->
+</footer>
+
+
+
+<style>
+  .card:hover,
+  .img-fluid:hover {
+    box-shadow: rgba(100, 100, 111, 0.5) 0px 7px 29px 0px;
+    transition-duration: .6s;
+  }
 </style>
+
+<!-- JavaScript files-->
+
+<script>
+
+
+  var ProductImg = document.getElementById('ProductImg');
+  var SmallImg = document.getElementsByClassName('small-img');
+  SmallImg[0].onclick = function () {
+    ProductImg.src = SmallImg[0].src;
+  };
+  SmallImg[1].onclick = function () {
+    ProductImg.src = SmallImg[1].src;
+  };
+  SmallImg[2].onclick = function () {
+    ProductImg.src = SmallImg[2].src;
+  };
+  SmallImg[3].onclick = function () {
+    ProductImg.src = SmallImg[3].src;
+  };
+</script>

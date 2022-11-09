@@ -384,8 +384,9 @@ router.post('/delete-coupon', (req, res) => {
 })
 
 //BANNER MANAGEMENT
-router.get('/banner', middleware.adminLoginChecked, (req, res) => {
-  res.render('admin/banner', { admin: true })
+router.get('/banner', middleware.adminLoginChecked, async (req, res) => {
+  let banner = await adminHelpers.getBanner()
+  res.render('admin/banner', { admin: true, banner })
 })
 
 router.post('/banner', upload.fields([
@@ -417,7 +418,7 @@ router.post('/banner', upload.fields([
   )
   console.log(urls);
 
-  adminHelpers.addBanner(urls).then(() => {
+  adminHelpers.addBanner(req.body, urls).then(() => {
     res.redirect('/admin/banner')
   })
 })

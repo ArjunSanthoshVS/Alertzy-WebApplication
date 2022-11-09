@@ -415,12 +415,40 @@ module.exports = {
     },
 
     //ADD BANNER
-    addBanner: (urls) => {
+    addBanner: (data, urls) => {
         return new Promise((resolve, reject) => {
-
-            db.get().collection(collection.BANNER_COLLECTION).insertMany().then(() => {
+            data.image = urls
+            db.get().collection(collection.BANNER_COLLECTION).insertOne(data).then(() => {
                 resolve()
             })
+        })
+    },
+
+    //GET BANNER
+    getBanner: () => {
+        return new Promise(async (resolve, reject) => {
+            let bannerImages = await db.get().collection(collection.BANNER_COLLECTION).find({}).toArray()
+            resolve(bannerImages)
+        })
+    },
+
+    //SEARCH
+    getSearchProduct: (key) => {
+        return new Promise(async (resolve, reject) => {
+            let data = await db.get().collection(collection.PRODUCT_COLLECTION).find({
+                "$or": [
+                    { product: { $regex: key, '$options': 'i' } },
+                    { brand: { $regex: key, '$options': 'i' } },
+                    { category: { $regex: key, '$options': 'i' } },
+                ]
+            }).toArray()
+            if (data.length > 0) {
+                console.log(data, '%%%%%%%^^^^^^^^');
+                resolve(data)
+            } else {
+                console.log('Errrrrrgscvkd');
+                reject()
+            }
         })
     }
 }

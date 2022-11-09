@@ -6,6 +6,73 @@
   style="left:530px; top: 100px; z-index: 1000; background-color:black; border-radius:10px;">
   <p id="success-text" class="text-center mt-3" style="color:white;">Added to Cart</p>
 </div>
+
+
+
+
+
+<section class="mt-5">
+  {{#each banner}}
+  <div class="bg-image"
+    style="background-image: url({{this.image.[3]}}); height: 700px; box-shadow: 0px -4px 18px 11px black; border-radius: 0px 0px 50px 50px;">
+    <div class="mask d-flex align-items-center h-100">
+      <div class="container">
+        <div class="row justify-content-center text-center">
+
+          <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
+            <div class="card mask-custom text-white">
+              <div class="card-body">
+                <a href="/products">
+                  <img style="width:100%;" src="{{this.image.[0]}}" alt="">
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-12  mb-4 mb-md-0">
+            <div class="card mask-custom text-white">
+              <div class="card-body">
+                <a href="/products">
+                  <img style="width:100%;" src="{{this.image.[1]}}" alt="">
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-12  mb-4 mb-md-0">
+            <div class="card mask-custom text-white">
+              <div class="card-body">
+                <a href="/products">
+                  <img style="width:100%;" src="{{this.image.[2]}}" alt="">
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+</section>
+
+<style>
+  .mask-custom {
+    background: rgba(24, 24, 16, .2);
+    border-radius: 2em;
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.05);
+    background-clip: padding-box;
+    box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
+  }
+
+  @media (max-width: 767px) {
+    .bg-image {
+      height: 1400px !important;
+    }
+  }
+</style>
+
+{{!--
+
+
 <div class="row align-items-center mb-5 p-0 mt-5"
   style="margin-right:0;background-color: #C4C4C4; height: max-content; border-radius: 0px 0px 70px 70px;">
   <div class="col ms-5 mt-5 mb-5" style="font-family: none;">
@@ -17,7 +84,7 @@
   <div class="col-md-7 mt-5 mb-5">
     <img class="img-fluid" src="/images/landing-page-watch.png" alt="" style="width:50rem;">
   </div>
-</div>
+</div> --}}
 
 <div class="category mt-5">
   <div class="text-center">
@@ -115,7 +182,8 @@
             Alertzy
           </h3>
           <p>
-            “Unlike diamonds, watches were practical. They were for people on the run, people with appointments to keep
+            “Unlike diamonds, watches were practical. They were for people on the run, people with appointments to
+            keep
             and schedules to meet.”
           </p>
         </div>

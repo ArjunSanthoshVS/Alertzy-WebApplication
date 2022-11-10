@@ -230,8 +230,8 @@ function addToWishlist(prodId) {
     })
 }
 //ADMIN ORDER STATUS
-function statusChange(proId, orderId) {
-    var status = document.getElementById(proId + orderId).value;
+function statusChange(prodId, orderId, status) {
+    var status = document.getElementById(prodId + orderId).value;
     swal({
         title: "Are you sure?",
         text: "Do you want to " + status + " the order",
@@ -248,13 +248,14 @@ function statusChange(proId, orderId) {
                 $.ajax({
                     url: '/admin/order-status',
                     data: {
+                        prodId,
                         orderId,
                         status
                     },
                     method: 'post',
                     success: (response) => {
                         if (response.status) {
-                            document.getElementById(orderId + proId).innerHTML = status
+                            document.getElementById(orderId + prodId).innerHTML = status
                             if (status == 'pending' || status == 'placed' || status == 'shipped' || status == 'delivered' || status == 'canceled') {
                                 location.reload()
                             }
@@ -269,7 +270,7 @@ function statusChange(proId, orderId) {
 }
 
 //USER ORDER CANCEL
-function cancelOrder(orderId, proId) {
+function cancelOrder(orderId, prodId) {
     swal({
         title: "Are you sure?",
         text: "Do you want to cancel the order",
@@ -284,8 +285,12 @@ function cancelOrder(orderId, proId) {
         function (isConfirm) {
             if (isConfirm) {
                 $.ajax({
-                    url: '/cancel-order/' + orderId,
-                    method: 'get',
+                    url: '/cancel-order',
+                    method: 'put',
+                    data: {
+                        orderId,
+                        prodId
+                    },
                     success: (response) => {
                         if (response.status) {
                             location.reload()
@@ -436,6 +441,8 @@ function histogram(days, buttonId) {
                 let totalOrder = response.deliveredOrders + response.shippedOrders + response.placedOrders
 
                 document.getElementById('totalOrders').innerHTML = totalOrder
+                document.getElementById('placedOrders').innerHTML = response.placedOrders
+                document.getElementById('deliveredOrders').innerHTML = response.deliveredOrders
                 document.getElementById('totalAmount').innerHTML = response.totalAmount
 
                 var xValues = ["Delivered", "Shipped", "Placed", "Pending", "Canceled"];
@@ -599,6 +606,57 @@ function deleteProductOffer(prodId) {
     })
 }
 
+//CATEGORY CHECKING IF ALREADY EXISTS
+$("#addCategory").submit((e) => {
+    e.preventDefault();
+    $.ajax({
+        url: '/admin/category',
+        method: 'post',
+        data: $("#addCategory").serialize(),
+        success: (response) => {
+            if (response.status) {
+                location.reload()
+            } else {
+                swal({
+                    title: "There is Already a Category....!",
+                    text: "Your will not be able to create an existing CATEGORY",
+                    type: "warning",
+                    confirmButtonColor: "red",
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Ok",
+                    closeOnConfirm: true
+                })
+            }
+        }
+    })
+})
+
+//DELETE CATEGORY
+function deleteCategory(catId) {
+    $.ajax({
+        url: '/admin/delete-category/' + catId,
+        method: 'get',
+        success: (response) => {
+            swal({
+                title: "Are you sure?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "red",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        location.reload()
+                    }
+                }
+            )
+        }
+    })
+}
+
 //DELETE CATEGORY OFFER
 function deleteCategoryOffer(category) {
     $.ajax({
@@ -690,9 +748,13 @@ $("#addCoupon").submit((e) => {
                 location.reload()
             } else {
                 swal({
-                    title: 'There is Already a coupon with this code',
-                    icon: 'warning',
-                    timer: 1000,
+                    title: "There is Already a Coupon....!",
+                    text: "Your will not be able to create an existing COUPON",
+                    type: "warning",
+                    confirmButtonColor: "red",
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Ok",
+                    closeOnConfirm: true
                 })
             }
         }

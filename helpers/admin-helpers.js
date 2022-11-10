@@ -131,7 +131,7 @@ module.exports = {
     deleteCategory: (catId) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.CATEGORY_COLLECTION).deleteOne({ _id: objectId(catId) }).then((response) => {
-                resolve()
+                resolve(response)
             })
         })
     },
@@ -153,7 +153,7 @@ module.exports = {
     },
 
     //ORDER DETAILS
-    getOrderDetails: (orderStatus) => {
+    getOrderDetails: () => {
         return new Promise(async (resolve, reject) => {
             let orderItems = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
 
@@ -167,7 +167,8 @@ module.exports = {
                         deliveryDetails: '$deliveryDetails',
                         paymentMethod: '$paymentMethod',
                         totalAmount: '$totalAmount',
-                        status: '$status',
+                        offerPrice: '$offerPrice',
+                        status: '$products.status',
                         date: '$date'
                     }
                 }, {
@@ -186,6 +187,7 @@ module.exports = {
                         deliveryDetails: 1,
                         paymentMethod: 1,
                         totalAmount: 1,
+                        offerPrice: '$product.offerPrice',
                         status: 1,
                         date: 1
 
@@ -197,11 +199,11 @@ module.exports = {
     },
 
     //ORDER STATUS
-    changeOrderStatus: (orderId, status) => {
+    changeOrderStatus: (prodId, orderId, status) => {
         return new Promise((resolve, reject) => {
             let dateStatus = new Date()
-            db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId) },
-                { $set: { status: status, statusUpdateDate: dateStatus } }).then(() => {
+            db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId), 'products.item': objectId(prodId) },
+                { $set: { 'products.$.status': status, statusUpdateDate: dateStatus } }).then(() => {
                     resolve()
                 })
         })

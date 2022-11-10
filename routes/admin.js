@@ -245,23 +245,33 @@ router.get('/category', middleware.adminLoginChecked, (req, res) => {
 
 })
 
+// router.post('/category', (req, res) => {
+//   adminHelpers.addCategory(req.body).then(() => {
+//     if (!err) {
+//       let successmsg = encodeURIComponent('Category added successfully');
+//       res.redirect('/admin/category?msg=' + successmsg)
+//     }
+//   }).catch(() => {
+//     res.redirect('/admin/category')
+//   })
+
+// })
+
 router.post('/category', (req, res) => {
   adminHelpers.addCategory(req.body).then(() => {
-    if (!err) {
-      let successmsg = encodeURIComponent('Category added successfully');
-      res.redirect('/admin/category?msg=' + successmsg)
-    }
+    res.json({ status: true })
   }).catch(() => {
-    res.redirect('/admin/category')
+    res.json({ status: false })
   })
 
 })
 
 //DELETE CATEGORY 
 router.get('/delete-category/:id', (req, res) => {
+  console.log(req.params.id);
   let catId = req.params.id
   adminHelpers.deleteCategory(catId).then((response) => {
-    res.redirect('/admin/category')
+    res.json(response)
   })
 })
 
@@ -280,7 +290,7 @@ router.get('/orders/:status', (req, res) => {
 })
 
 router.post('/order-status', (req, res) => {
-  adminHelpers.changeOrderStatus(req.body.orderId, req.body.status).then(() => {
+  adminHelpers.changeOrderStatus(req.body.prodId, req.body.orderId, req.body.status).then(() => {
     res.json({ status: true })
   })
 })

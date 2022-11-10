@@ -241,15 +241,12 @@ router.get('/place-order', middleware.loginChecked, async (req, res) => {
   let user = req.session.user
   let total = await userHelpers.getTotalAmount(user._id)
   let cartProducts = await userHelpers.getCartProducts(user._id)
-  console.log(cartProducts);
   let address = await userHelpers.addressDetails(user._id)
   res.render('user/place-order', { total, user, cartProducts, address })
 })
 
 router.post('/place-order', async (req, res) => {
   let products = await userHelpers.getCartProductList(req.session.user._id)
-  // let totalPrice = await userHelpers.getTotalAmount(req.session.user._id)
-  console.log(req.body);
   let totalPrice = Number(req.body.total)
   console.log(totalPrice, '$$$$$$$$$$$$$$$$$');
   let userAddress = await userHelpers.getOrderAddress(req.session.user._id, req.body.addressId)
@@ -353,8 +350,8 @@ router.get('/orders', middleware.loginChecked, async (req, res) => {
 // })
 
 //CANCEL ORDER
-router.get('/cancel-order/:id', (req, res) => {
-  userHelpers.cancelOrder(req.params.id).then((response) => {
+router.put('/cancel-order', (req, res) => {
+  userHelpers.cancelOrder(req.body.orderId, req.body.prodId).then((response) => {
     res.json({ status: true })
   })
 })

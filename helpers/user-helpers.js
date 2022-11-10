@@ -289,6 +289,9 @@ module.exports = {
     placeOrder: (order, products, total, paymentMethod, userId) => {
         return new Promise((resolve, reject) => {
             let status = paymentMethod === 'COD' ? 'placed' : 'pending'
+            products.forEach(element => {
+                element.status = status
+            });
             let orderObj = {
                 deliveryDetails: {
                     fullname: order[0]?.address.firstname + " " + order[0]?.address.lastname,
@@ -311,8 +314,17 @@ module.exports = {
                 return: false
             }
             db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response) => {
-                db.get().collection(collection.CART_COLLECTION).deleteOne({ user: objectId(userId) })
-                resolve(response.insertedId)
+                if (status === 'placed') {
+                    db.get().collection(collection.CART_COLLECTION).deleteOne({ user: objectId(userId) })
+                    products.forEach(element => {
+                        console.log('innnnnnnnnnnnnnnnnnnnnnn');
+                        db.get().collection(collection.PRODUCT_COLLECTION).updateOne({ _id: objectId(element.item) }, { $inc: { stock: -(element.quantity) } })
+                    })
+                    resolve(response.insertedId)
+                } else {
+                    console.log('ooouttttttttttttttttttttt');
+                    resolve(response.insertedId)
+                }
             })
         })
     },
@@ -331,7 +343,7 @@ module.exports = {
             let orders = db.get().collection(collection.ORDER_COLLECTION)
                 .aggregate([
                     {
-                        $match: { userId: objectId(userId) }
+                        $match: { userId: objectId(userId), status: 'placed' }
                     },
                     {
                         $unwind: '$products'
@@ -343,7 +355,7 @@ module.exports = {
                             deliveryDetails: '$deliveryDetails',
                             paymentMethod: '$paymentMethod',
                             totalAmount: '$totalAmount',
-                            status: '$status',
+                            status: '$products.status',
                             displayDate: '$displayDate',
                             date: '$date'
                         }
@@ -363,6 +375,7 @@ module.exports = {
                             deliveryDetails: 1,
                             paymentMethod: 1,
                             totalAmount: 1,
+                            offerPrice: '$product.offerPrice',
                             status: 1,
                             displayDate: 1,
                             date: 1
@@ -510,9 +523,9 @@ module.exports = {
     },
 
     //CANCEL ORDER
-    cancelOrder: (orderId) => {
+    cancelOrder: (orderId, prodId) => {
         return new Promise(async (resolve, reject) => {
-            db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId) }, { $set: { status: 'canceled' } }).then(() => {
+            db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId), 'products.item': objectId(prodId) }, { $set: { 'products.$.status': 'canceled' } }).then(() => {
                 resolve('Success')
             })
         })

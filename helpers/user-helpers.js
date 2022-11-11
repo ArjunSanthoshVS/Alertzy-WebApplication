@@ -4,6 +4,9 @@ const bcrypt = require('bcrypt');
 var objectId = require('mongodb').ObjectId
 const Razorpay = require('razorpay');
 const paypal = require('paypal-rest-sdk');
+const { count } = require('console');
+const { Db } = require('mongodb');
+const { use } = require('../routes/user');
 require('dotenv').config()
 
 var instance = new Razorpay({
@@ -73,6 +76,7 @@ module.exports = {
             let user = await db.get().collection(collection.USER_COLLECTION).findOne({
                 email: userData.email, status: true
             })
+            console.log(user);
             if (user) {
                 bcrypt.compare(userData.password, user.password).then((status) => {
                     if (status) {
@@ -81,14 +85,14 @@ module.exports = {
                         resolve(response);
                     } else {
                         console.log('Login Failed');
-                        resolve({ status: false })
+                        reject({ status: false })
                     }
                 }
                 )
             }
             else {
                 console.log('Login err');
-                resolve({ status: false })
+                reject({ status: false })
             }
 
         })
@@ -288,7 +292,7 @@ module.exports = {
     //PLACE ORDER
     placeOrder: (order, products, total, paymentMethod, userId) => {
         return new Promise((resolve, reject) => {
-            let status = paymentMethod === 'COD' ? 'placed' : 'pending'
+            let status = paymentMethod === 'COD' || 'WALLET' ? 'placed' : 'pending'
             products.forEach(element => {
                 element.status = status
             });
@@ -326,6 +330,15 @@ module.exports = {
                     resolve(response.insertedId)
                 }
             })
+        })
+    },
+
+    //DECREASE WALLET
+    decreaseWallet: (userId, amount) => {
+        db.get().collection(collection.WALLET_COLLECTION).findOne({ userId: objectId(userId) }).then((response) => {
+            console.log(response, '000000000000000000000000');
+            let updatedBalance = response.walletBalance - amount
+            db.get().collection(collection.WALLET_COLLECTION).updateOne({ userId: objectId(userId) }, { $set: { walletBalance: updatedBalance } })
         })
     },
 
@@ -438,10 +451,13 @@ module.exports = {
 
         return new Promise(async (resolve, reject) => {
             let userWish = await db.get().collection(collection.WISHLIST_COLLECTION).findOne({ user: objectId(userId) })
+            let count;
             let prodObj = {
                 item: objectId(prodId),
             }
+
             if (userWish) {
+                count = userWish.products.length
                 let prodExist = userWish.products.findIndex(product => product.item == prodId)
                 console.log(prodExist);
                 if (prodExist == -1) {
@@ -452,7 +468,7 @@ module.exports = {
                             $push: { products: { item: objectId(prodId) } }
                         }
                     ).then((response) => {
-                        resolve()
+                        resolve(count)
                     })
                 } else {
                     db.get().collection(collection.WISHLIST_COLLECTION)
@@ -469,7 +485,8 @@ module.exports = {
                     products: [prodObj]
                 }
                 db.get().collection(collection.WISHLIST_COLLECTION).insertOne(wishObj).then((response) => {
-                    resolve()
+                    count = 0
+                    resolve(count)
                 })
             }
         })
@@ -504,6 +521,18 @@ module.exports = {
                 }
             ]).toArray()
             resolve(wishlist)
+        })
+    },
+
+    //WISHLIST COUNT
+    getWishCount: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            let count
+            let wish = await db.get().collection(collection.WISHLIST_COLLECTION).findOne({ user: objectId(userId) })
+            if (wish) {
+                count = wish.products.length
+            }
+            resolve(count)
         })
     },
 

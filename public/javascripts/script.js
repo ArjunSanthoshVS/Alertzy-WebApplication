@@ -1,96 +1,165 @@
-//SIGNUP DATA VALIDATING
-function signUpValidate() {
-    // const userName=document.getElementById('username')
-    const number = document.getElementById('number')
-    const email = document.getElementById('email')
-    const password = document.getElementById('password')
-    const repassword = document.getElementById('repassword')
-    const error = document.getElementsByClassName('invalid-feedback')
+// //SIGNUP DATA VALIDATING
+// function signUpValidate() {
+//     // const userName=document.getElementById('username')
+//     const number = document.getElementById('number')
+//     const email = document.getElementById('email')
+//     const password = document.getElementById('password')
+//     const repassword = document.getElementById('repassword')
+//     const error = document.getElementsByClassName('invalid-feedback')
 
-    // if (userName.value.trim() === "" || userName.value.trim().match(/^[0-9]+$/)) {
+//     // if (userName.value.trim() === "" || userName.value.trim().match(/^[0-9]+$/)) {
+//     //     error[0].style.display = "block";
+//     //     error[0].innerHTML = "please enter valid username"
+//     //     userName.style.border = "2px solid red";
+//     //     return false;
+//     // } else {
+//     //     error[0].innerHTML = ""
+//     //     userName.style.border = "2px solid green";
+//     // }
+
+
+
+//     if (number.value.trim() === "" || number.value.length < 9) {
+//         error[0].style.display = "block";
+//         error[0].innerHTML = "Enter valid phone number";
+//         number.style.border = "2px solid red";
+//         return false;
+//     } else {
+//         error[0].innerHTML = ""
+//         number.style.border = "2px solid green";
+//     }
+
+//     if (!(email.value.trim().match(/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/))) {
+//         error[1].style.display = "block";
+//         error[1].innerHTML = "Enter correct email";
+//         email.style.border = "2px solid red";
+//         return false;
+//     } else {
+//         error[1].innerHTML = ""
+//         email.style.border = "2px solid green";
+//     }
+
+//     if (password.value.trim() === "" || password.value.length < 8) {
+//         error[2].style.display = "block";
+//         error[2].innerHTML = "password must be 8 character";
+//         password.style.border = "2px solid red";
+//         return false;
+//     } else {
+//         error[2].innerHTML = ""
+//         password.style.border = "2px solid green";
+//     }
+
+
+
+//     if (repassword.value === password.value) {
+//         error[3].innerHTML = ""
+//         repassword.style.border = "2px solid green";
+//     } else {
+//         error[3].style.display = "block";
+//         error[3].innerHTML = "Incorrect Password";
+//         repassword.style.border = "2px solid red";
+//         return false;
+//     }
+//     return true;
+// }
+
+// USER SIGNUP
+$("#signup-form").submit((e) => {
+    e.preventDefault();
+    // const number = document.getElementById('number')
+    // const email = document.getElementById('email')
+    // const password = document.getElementById('password')
+    // const repassword = document.getElementById('repassword')
+    // const error = document.getElementsByClassName('invalid-feedback')
+
+    // if (number.value.trim() === "" || number.value.length < 9) {
     //     error[0].style.display = "block";
-    //     error[0].innerHTML = "please enter valid username"
-    //     userName.style.border = "2px solid red";
+    //     error[0].innerHTML = "Enter valid phone number";
+    //     number.style.border = "2px solid red";
     //     return false;
     // } else {
     //     error[0].innerHTML = ""
-    //     userName.style.border = "2px solid green";
+    //     number.style.border = "2px solid green";
+    // }
+
+    // if (!(email.value.trim().match(/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/))) {
+    //     error[1].style.display = "block";
+    //     error[1].innerHTML = "Enter correct email";
+    //     email.style.border = "2px solid red";
+    //     return false;
+    // } else {
+    //     error[1].innerHTML = ""
+    //     email.style.border = "2px solid green";
+    // }
+
+    // if (password.value.trim() === "" || password.value.length < 8) {
+    //     error[2].style.display = "block";
+    //     error[2].innerHTML = "password must be 8 character";
+    //     password.style.border = "2px solid red";
+    //     return false;
+    // } else {
+    //     error[2].innerHTML = ""
+    //     password.style.border = "2px solid green";
     // }
 
 
 
-    if (number.value.trim() === "" || number.value.length < 9) {
-        error[0].style.display = "block";
-        error[0].innerHTML = "Enter valid phone number";
-        number.style.border = "2px solid red";
-        return false;
-    } else {
-        error[0].innerHTML = ""
-        number.style.border = "2px solid green";
-    }
-
-    if (!(email.value.trim().match(/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/))) {
-        error[1].style.display = "block";
-        error[1].innerHTML = "Enter correct email";
-        email.style.border = "2px solid red";
-        return false;
-    } else {
-        error[1].innerHTML = ""
-        email.style.border = "2px solid green";
-    }
-
-    if (password.value.trim() === "" || password.value.length < 8) {
-        error[2].style.display = "block";
-        error[2].innerHTML = "password must be 8 character";
-        password.style.border = "2px solid red";
-        return false;
-    } else {
-        error[2].innerHTML = ""
-        password.style.border = "2px solid green";
-    }
-
-
-
-    if (repassword.value === password.value) {
-        error[3].innerHTML = ""
-        repassword.style.border = "2px solid green";
-    } else {
-        error[3].style.display = "block";
-        error[3].innerHTML = "Incorrect Password";
-        repassword.style.border = "2px solid red";
-        return false;
-    }
-    return true;
-}
+    // if (repassword.value === password.value) {
+    //     error[3].innerHTML = ""
+    //     repassword.style.border = "2px solid green";
+    // } else {
+    //     error[3].style.display = "block";
+    //     error[3].innerHTML = "Incorrect Password";
+    //     repassword.style.border = "2px solid red";
+    //     return false;
+    // }
+    console.log('Its not workinggggggggggggggg.............');
+    $.ajax({
+        url: '/modal-signup',
+        type: 'post',
+        data: $('#signup-form').serialize(),
+        success: (response) => {
+            console.log(response);
+            if (response.status) {
+                $('#signup').modal('hide')
+                $('#login').modal('show')
+            } else {
+                error[1].style.display = "block";
+                error[1].innerHTML = "Email Already taken";
+                email.style.border = "2px solid red";
+            }
+        }
+    })
+})
 
 //VALIDATING LOGIN DATA
-function logInValidate() {
-    const email = document.getElementById('email')
-    const password = document.getElementById('password')
-    const error = document.getElementsByClassName('invalid-feedback')
+// function logInValidate() {
+//     const email = document.getElementById('email')
+//     const password = document.getElementById('password')
+//     const error = document.getElementsByClassName('invalid-feedback')
 
-    if (!(email.value.trim().match(/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/))) {
-        error[0].style.display = "block";
-        error[0].innerHTML = "Enter email";
+//     if (!(email.value.trim().match(/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/))) {
+//         error[0].style.display = "block";
+//         error[0].innerHTML = "Enter email";
 
-        return false;
-    } else {
-        error[0].innerHTML = ""
-        email.style.border = "2px solid none";
-    }
+//         return false;
+//     } else {
+//         error[0].innerHTML = ""
+//         email.style.border = "2px solid none";
+//     }
 
-    if (password.value.trim() === "") {
-        error[1].style.display = "block";
-        error[1].innerHTML = "Enter password";
+//     if (password.value.trim() === "") {
+//         error[1].style.display = "block";
+//         error[1].innerHTML = "Enter password";
 
-        return false;
-    } else {
-        error[1].innerHTML = ""
+//         return false;
+//     } else {
+//         error[1].innerHTML = ""
 
-    }
+//     }
 
-    return true;
-}
+//     return true;
+// }
 
 //MODAL LOGIN
 $("#login-form").submit((e) => {
@@ -118,7 +187,6 @@ $("#login-form").submit((e) => {
         error[1].innerHTML = ""
         pass.style.border = "2px solid none";
     }
-    console.log('Its not workinggggggggggggggg.............');
     $.ajax({
         url: '/modal-login',
         type: 'post',
@@ -137,7 +205,7 @@ $("#login-form").submit((e) => {
 })
 
 //VALIDATING ADMIN LOGIN
-function logInValidate() {
+function adminlogInValidate() {
     const email = document.getElementById('email')
     const password = document.getElementById('password')
     const error = document.getElementsByClassName('invalid-feedback')
@@ -219,9 +287,11 @@ function addToWishlist(prodId) {
         method: 'get',
         success: (response) => {
             if (response.status) {
+                let count = $('#wish-count').html()
+                count = parseInt(count) + 1
+                $("#wish-count").html(count)
                 document.getElementById('add' + prodId).classList.add('d-none')
                 document.getElementById('remove' + prodId).classList.remove('d-none')
-
             } else {
                 document.getElementById('remove' + prodId).classList.add('d-none')
                 document.getElementById('add' + prodId).classList.remove('d-none')
@@ -229,6 +299,7 @@ function addToWishlist(prodId) {
         }
     })
 }
+
 //ADMIN ORDER STATUS
 function statusChange(prodId, orderId, status) {
     var status = document.getElementById(prodId + orderId).value;

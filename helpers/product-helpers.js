@@ -49,7 +49,8 @@ module.exports = {
     },
 
     //UPDATE PRODUCT
-    updateProduct: (prodId, prodDetails) => {
+    updateProduct: (prodId, prodDetails, urls) => {
+        console.log(urls, '^^^^^^^^^^^^^^^^^6');
         return new Promise((resolve, reject) => {
             db.get().collection(collection.PRODUCT_COLLECTION)
                 .updateOne({ _id: objectId(prodId) }, {
@@ -58,15 +59,13 @@ module.exports = {
                         brand: prodDetails.brand,
                         stock: prodDetails.stock,
                         actualPrice: prodDetails.actualPrice,
-                        offerPrice: prodDetails.offerPrice,
-                        productOffer: prodDetails.productOffer,
-                        categoryOffer: prodDetails.categoryOffer,
-                        currentOffer: prodDetails.currentOffer,
                         category: prodDetails.category,
-                        description: prodDetails.description
+                        description: prodDetails.description,
+                        image: urls
                     }
                 }).then((response) => {
-                    resolve()
+                    console.log(response, 'OOOOOOOOOOOOOOOOOOOOOOOOOOO');
+                    resolve(response)
                 })
         })
     },

@@ -163,6 +163,15 @@
                                 required>PAYPAL
                         </label>
                     </div>
+                    {{#if wallet.walletBalance}}
+                    <div class="custom-control custom-radio">
+                        <label class="custom-control-label">
+                            <input name="wallet" type="checkbox" class="custom-control-input"
+                                value="{{wallet.walletBalance}}" id="wallet" required>Use Wallet
+                            <strong>(₹{{wallet.walletBalance}})</strong>
+                        </label>
+                    </div>
+                    {{/if}}
                     <input name="total" type="hidden" id="totalCheckoutAmount" value="{{total}}">
                 </div>
                 <hr class=" mb-4">
@@ -190,7 +199,7 @@
             method: 'post',
             data: $('#checkout-form').serialize(),
             success: (response) => {
-                if (response.codSuccess) {
+                if (response.codSuccess || response.walletSuccess) {
                     swal({
                         title: "Order Placed ",
                         type: 'success',

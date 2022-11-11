@@ -78,9 +78,8 @@
                                 </div> --}}
                                 <div class="buttons d-flex justify-content-end mt-0">
                                     {{#ifCheck status 'delivered'}}
-                                    {{!-- <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                         data-bs-target="#returnOrder" data-bs-whatever="@mdo">Return Product</button>
-                                    --}}
 
                                     {{!-- <button id="return-button"
                                         onclick="returnOrder('{{this._id}}','{{this.item}}')"
@@ -152,7 +151,7 @@
         </div>
     </div>
 </section>
-{{!-- <div class="modal fade" id="returnOrder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="returnOrder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -160,7 +159,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="/return-order/{{}}" method="post">
+                <form id="returnReason" method="post">
                     <label>Damaged/defective product.
                         <input type="radio" name="reason" checked>
                         <span class="custom-radio-button"></span>
@@ -179,7 +178,7 @@
             </div>
         </div>
     </div>
-</div> --}}
+</div>
 <style>
     label {
         display: block;

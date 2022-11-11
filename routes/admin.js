@@ -164,12 +164,44 @@ router.get('/edit-product/:prodId', async (req, res) => {
   res.render('admin/edit-product', { product, category, admin: true, admin })
 })
 
-// router.post('/edit-product/:id', upload.fields([
-//   { name: 'image1', maxCount: 1 },
-//   { name: 'image2', maxCount: 1 },
-//   { name: 'image3', maxCount: 1 },
-//   { name: 'image4', maxCount: 1 },
-// ]))
+router.post('/edit-product/:id', upload.fields([
+  { name: 'image1', maxCount: 1 },
+  { name: 'image2', maxCount: 1 },
+  { name: 'image3', maxCount: 1 },
+  { name: 'image4', maxCount: 1 },
+]), async (req, res) => {
+  console.log(req.files);
+  const cloudinaryImageUploadMethod = (file) => {
+    console.log("qwertyui");
+    return new Promise((resolve) => {
+      cloudinary.uploader.upload(file, (err, res) => {
+        console.log(err, " asdfgh");
+        if (err) return res.status(500).send("Upload Image Error")
+        resolve(res.secure_url)
+      })
+    })
+  }
+
+  const files = req.files
+  let arr1 = Object.values(files)
+  let arr2 = arr1.flat()
+  const urls = await Promise.all(
+    arr2.map(async (file) => {
+      const { path } = file
+      const result = await cloudinaryImageUploadMethod(path)
+      return result
+    })
+  )
+  console.log(urls);
+
+  // productHelpers.updateProduct(req.body, urls, (id) => {
+  //   res.redirect('/admin/products')
+  // })
+  productHelpers.updateProduct(req.params.id, req.body, urls).then((id) => {
+    res.redirect('/admin/products')
+  })
+})
+
 // router.post('/edit-product/:id', (req, res) => {
 //   productHelpers.updateProduct(req.params.id, req.body).then(() => {
 //     let id = req.params.id;

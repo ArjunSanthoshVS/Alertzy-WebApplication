@@ -64,7 +64,7 @@ module.exports = {
     //EDIT PRODUCT
     editProduct: (proId, updatedData) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(collection.PRODUCT_COLLECTION).updateOne({ _id: objId(proId) }, { "$set": updatedData })
+            db.get().collection(collection.PRODUCT_COLLECTION).updateOne({ _id: objectId(proId) }, { "$set": updatedData })
             resolve()
         })
     },
@@ -435,7 +435,7 @@ module.exports = {
     },
 
     //SEARCH
-    getSearchProduct: (key) => {
+    getSearchProduct: (key, page, productsPerPage) => {
         return new Promise(async (resolve, reject) => {
             let data = await db.get().collection(collection.PRODUCT_COLLECTION).find({
                 "$or": [
@@ -443,7 +443,12 @@ module.exports = {
                     { brand: { $regex: key, '$options': 'i' } },
                     { category: { $regex: key, '$options': 'i' } },
                 ]
-            }).toArray()
+            })
+
+
+
+
+                .toArray()
             if (data.length > 0) {
                 console.log(data, '%%%%%%%^^^^^^^^');
                 resolve(data)

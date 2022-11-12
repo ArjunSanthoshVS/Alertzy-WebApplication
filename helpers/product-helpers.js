@@ -13,7 +13,7 @@ module.exports = {
             product.productOffer = 0
             product.categoryOffer = 0
             product.currentOffer = 0
-            product.stock = parseInt(product.stock)
+            product.stock = Number(product.stock)
             product.image = urls
             await db.get().collection(collection.PRODUCT_COLLECTION).insertOne(product).then((data) => {
                 callback(data.insertedId.toString())
@@ -295,8 +295,12 @@ module.exports = {
                 {
                     '$match': {
                         'actualPrice': {
+                            '$gt': 0,
+                        },
+                        'stock': {
                             '$gt': 0
                         }
+
                     }
                 }, {
                     '$limit': 4

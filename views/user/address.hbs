@@ -19,63 +19,63 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="/add-address" method="post">
+                    <form action="/add-address" method="post" class="needs-validation" novalidate>
                         <div class="row gx-3 mb-3">
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputFirstName">First name</label>
                                 <input class="form-control" id="firstname" type="text" name="firstname"
-                                    placeholder="Enter your first name" value="">
+                                    placeholder="Enter your first name" value="" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputLastName">Last name</label>
                                 <input class="form-control" id="lastname" type="text" name="lastname"
-                                    placeholder="Enter your last name" value="">
+                                    placeholder="Enter your last name" value="" required>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label class="small mb-1" for="inputEmailAddress">Email address</label>
                             <input class="form-control" id="email" type="email" name="email"
-                                placeholder="Enter your email address" value="">
+                                placeholder="Enter your email address" value="" required>
                         </div>
                         <div class="mb-3">
                             <label class="small mb-1" for="inputEmailAddress">Address</label>
                             <input class="form-control" id="address" type="text" name="address"
-                                placeholder="Enter your Address" value="">
+                                placeholder="Enter your Address" value="" required>
                         </div>
                         <div class="row gx-3 mb-3">
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputPhone">Phone number</label>
                                 <input class="form-control" id="mobile" type="tel" name="mobile"
-                                    placeholder="Enter your phone number" value="">
+                                    placeholder="Enter your phone number" value="" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputCountry">Country</label>
                                 <input class="form-control" id="country" type="text" name="country"
-                                    placeholder="Enter your Country" value="">
+                                    placeholder="Enter your Country" value="" required>
                             </div>
                         </div>
                         <div class="row gx-3 mb-3">
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputState">State</label>
                                 <input class="form-control" id="state" type="text" name="state"
-                                    placeholder="Enter your State" value="">
+                                    placeholder="Enter your State" value="" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputDistrict">District</label>
                                 <input class="form-control" id="district" type="text" name="district"
-                                    placeholder="Enter your District" value="">
+                                    placeholder="Enter your District" value="" required>
                             </div>
                         </div>
                         <div class="row gx-3 mb-3">
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputCity">City</label>
                                 <input class="form-control" id="city" type="text" name="city"
-                                    placeholder="Enter your City" value="">
+                                    placeholder="Enter your City" value="" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputPin">Pincode</label>
                                 <input class="form-control" id="pincode" type="number" name="pincode"
-                                    placeholder="Enter your Pincode" value="">
+                                    placeholder="Enter your Pincode" value="" required>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -158,7 +158,6 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            {{!-- <input type="hidden" name="userId" value="{{user._id}}"> --}}
                             <input type="hidden" name="_id" value="{{this.address._id}}">
                             <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Save</button>
@@ -177,8 +176,6 @@
                 <div class="card-header">
                     Address
                     <div class="float-end">
-                        {{!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#editAddress" data-bs-whatever="@mdo">Edit</button>--}}
                         <button class="btn btn-danger">
                             <a style="text-decoration:none; color: white;"
                                 href="/delete-address/{{this.address._id}}">Delete</a>

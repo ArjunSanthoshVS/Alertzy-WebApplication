@@ -1,192 +1,81 @@
-// //SIGNUP DATA VALIDATING
-// function signUpValidate() {
-//     // const userName=document.getElementById('username')
-//     const number = document.getElementById('number')
-//     const email = document.getElementById('email')
-//     const password = document.getElementById('password')
-//     const repassword = document.getElementById('repassword')
-//     const error = document.getElementsByClassName('invalid-feedback')
+//FORM VALIDATION
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(() => {
+    'use strict'
 
-//     // if (userName.value.trim() === "" || userName.value.trim().match(/^[0-9]+$/)) {
-//     //     error[0].style.display = "block";
-//     //     error[0].innerHTML = "please enter valid username"
-//     //     userName.style.border = "2px solid red";
-//     //     return false;
-//     // } else {
-//     //     error[0].innerHTML = ""
-//     //     userName.style.border = "2px solid green";
-//     // }
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.needs-validation')
 
-
-
-//     if (number.value.trim() === "" || number.value.length < 9) {
-//         error[0].style.display = "block";
-//         error[0].innerHTML = "Enter valid phone number";
-//         number.style.border = "2px solid red";
-//         return false;
-//     } else {
-//         error[0].innerHTML = ""
-//         number.style.border = "2px solid green";
-//     }
-
-//     if (!(email.value.trim().match(/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/))) {
-//         error[1].style.display = "block";
-//         error[1].innerHTML = "Enter correct email";
-//         email.style.border = "2px solid red";
-//         return false;
-//     } else {
-//         error[1].innerHTML = ""
-//         email.style.border = "2px solid green";
-//     }
-
-//     if (password.value.trim() === "" || password.value.length < 8) {
-//         error[2].style.display = "block";
-//         error[2].innerHTML = "password must be 8 character";
-//         password.style.border = "2px solid red";
-//         return false;
-//     } else {
-//         error[2].innerHTML = ""
-//         password.style.border = "2px solid green";
-//     }
-
-
-
-//     if (repassword.value === password.value) {
-//         error[3].innerHTML = ""
-//         repassword.style.border = "2px solid green";
-//     } else {
-//         error[3].style.display = "block";
-//         error[3].innerHTML = "Incorrect Password";
-//         repassword.style.border = "2px solid red";
-//         return false;
-//     }
-//     return true;
-// }
-
-// USER SIGNUP
-$("#signup-form").submit((e) => {
-    e.preventDefault();
-    // const number = document.getElementById('number')
-    // const email = document.getElementById('email')
-    // const password = document.getElementById('password')
-    // const repassword = document.getElementById('repassword')
-    // const error = document.getElementsByClassName('invalid-feedback')
-
-    // if (number.value.trim() === "" || number.value.length < 9) {
-    //     error[0].style.display = "block";
-    //     error[0].innerHTML = "Enter valid phone number";
-    //     number.style.border = "2px solid red";
-    //     return false;
-    // } else {
-    //     error[0].innerHTML = ""
-    //     number.style.border = "2px solid green";
-    // }
-
-    // if (!(email.value.trim().match(/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/))) {
-    //     error[1].style.display = "block";
-    //     error[1].innerHTML = "Enter correct email";
-    //     email.style.border = "2px solid red";
-    //     return false;
-    // } else {
-    //     error[1].innerHTML = ""
-    //     email.style.border = "2px solid green";
-    // }
-
-    // if (password.value.trim() === "" || password.value.length < 8) {
-    //     error[2].style.display = "block";
-    //     error[2].innerHTML = "password must be 8 character";
-    //     password.style.border = "2px solid red";
-    //     return false;
-    // } else {
-    //     error[2].innerHTML = ""
-    //     password.style.border = "2px solid green";
-    // }
-
-
-
-    // if (repassword.value === password.value) {
-    //     error[3].innerHTML = ""
-    //     repassword.style.border = "2px solid green";
-    // } else {
-    //     error[3].style.display = "block";
-    //     error[3].innerHTML = "Incorrect Password";
-    //     repassword.style.border = "2px solid red";
-    //     return false;
-    // }
-    console.log('Its not workinggggggggggggggg.............');
-    $.ajax({
-        url: '/modal-signup',
-        type: 'post',
-        data: $('#signup-form').serialize(),
-        success: (response) => {
-            console.log(response);
-            if (response.status) {
-                $('#signup').modal('hide')
-                $('#login').modal('show')
-            } else {
-                error[1].style.display = "block";
-                error[1].innerHTML = "Email Already taken";
-                email.style.border = "2px solid red";
+    // Loop over them and prevent submission
+    Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
             }
-        }
+
+            form.classList.add('was-validated')
+        }, false)
     })
-})
+})()
 
-//VALIDATING LOGIN DATA
-// function logInValidate() {
-//     const email = document.getElementById('email')
-//     const password = document.getElementById('password')
-//     const error = document.getElementsByClassName('invalid-feedback')
+// //SIGNUP DATA VALIDATING
+function signUpValidate() {
+    // const userName=document.getElementById('username')
+    const number = document.getElementById('number')
+    const email = document.getElementById('email')
+    const password = document.getElementById('password')
+    const repassword = document.getElementById('repassword')
+    const error = document.getElementsByClassName('invalid-feedback')
 
-//     if (!(email.value.trim().match(/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/))) {
-//         error[0].style.display = "block";
-//         error[0].innerHTML = "Enter email";
+    if (number.value.trim() === "" || number.value.length < 9) {
+        error[0].style.display = "block";
+        error[0].innerHTML = "Enter valid phone number";
+        number.style.border = "2px solid red";
+        return false;
+    } else {
+        error[0].innerHTML = ""
+        number.style.border = "2px solid green";
+    }
 
-//         return false;
-//     } else {
-//         error[0].innerHTML = ""
-//         email.style.border = "2px solid none";
-//     }
+    if (!(email.value.trim().match(/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/))) {
+        error[1].style.display = "block";
+        error[1].innerHTML = "Enter correct email";
+        email.style.border = "2px solid red";
+        return false;
+    } else {
+        error[1].innerHTML = ""
+        email.style.border = "2px solid green";
+    }
 
-//     if (password.value.trim() === "") {
-//         error[1].style.display = "block";
-//         error[1].innerHTML = "Enter password";
+    if (password.value.trim() === "" || password.value.length < 8) {
+        error[2].style.display = "block";
+        error[2].innerHTML = "password must be 8 character";
+        password.style.border = "2px solid red";
+        return false;
+    } else {
+        error[2].innerHTML = ""
+        password.style.border = "2px solid green";
+    }
 
-//         return false;
-//     } else {
-//         error[1].innerHTML = ""
 
-//     }
 
-//     return true;
-// }
+    if (repassword.value === password.value) {
+        error[3].innerHTML = ""
+        repassword.style.border = "2px solid green";
+    } else {
+        error[3].style.display = "block";
+        error[3].innerHTML = "Incorrect Password";
+        repassword.style.border = "2px solid red";
+        return false;
+    }
+    return true;
+}
+
 
 //MODAL LOGIN
 $("#login-form").submit((e) => {
     e.preventDefault();
-    const email = document.getElementById('email');
-    const pass = document.getElementById('password');
-    const error = document.getElementsByClassName('invalid-feedback');
-
-    if (!(email.value.trim().match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/))) {
-        error[0].style.display = "block";
-        error[0].innerHTML = "Enter email";
-        email.style.border = "2px solid red";
-        return false;
-    } else {
-        error[0].innerHTML = ""
-        email.style.border = "2px solid none";
-    }
-
-    if (pass.value.trim() === "") {
-        error[1].style.display = "block";
-        error[1].innerHTML = "Enter password";
-        pass.style.border = "2px solid red";
-        return false;
-    } else {
-        error[1].innerHTML = ""
-        pass.style.border = "2px solid none";
-    }
     $.ajax({
         url: '/modal-login',
         type: 'post',
@@ -196,9 +85,9 @@ $("#login-form").submit((e) => {
             if (response.status) {
                 location.reload()
             } else {
-                error[0].style.display = "block";
-                error[0].innerHTML = "No user found! Enter valid email & password";
-                email.style.border = "2px solid red";
+                $('#login-Err').text(response.msg)
+                $('#email').css('border-color', 'red')
+                $('#password').css('border-color', 'red')
             }
         }
     })
@@ -365,8 +254,6 @@ function cancelOrder(orderId, prodId) {
                     success: (response) => {
                         if (response.status) {
                             location.reload()
-                            // document.getElementById(orderId + proId).innerHTML = 'canceled'
-                            // document.getElementById("status-button").style.display = 'none'
                         }
                     }
                 })
@@ -375,20 +262,6 @@ function cancelOrder(orderId, prodId) {
     );
 }
 
-//DELETE ADDRESS
-// function deleteAddress(addressId) {
-//     $.ajax
-//         ({
-//             url: '/delete-address',
-//             method: 'get',
-//             data: {
-//                 addressId
-//             },
-//             success: (response) => {
-//                 location.reload()
-//             }
-//         })
-// }
 
 //SALES REPORT
 function salesReport(days, buttonId) {
@@ -446,55 +319,9 @@ function export_data() {
 }
 
 //DASHBOARD CHART
-// window.addEventListener('load', () => {
-//     histogram(1, 'daily')
-// })
-// function histogram(days, buttonId) {
-//     $.ajax({
-//         url: '/admin/dashboard/' + days,
-//         method: 'get',
-//         success: (data) => {
-//             if (data) {
-//                 const buttons = document.querySelectorAll('button')
-//                 buttons.forEach(button => {
-//                     button.classList.remove('active')
-//                 })
-//                 document.getElementById(buttonId).classList.add('active')
-//                 let totalOrder = data.deliveredOrders + data.shippedOrders + data.placedOrders
-//                 console.log(totalOrder);
-//                 document.getElementById('totalOrders').innerHTML = totalOrder
-//                 document.getElementById('totalAmount').innerHTML = data.totalAmount
-
-//                 var xValues = ["Pending", "Placed", "Shipped", "Delivered", "Cancelled"];
-//                 var yValues = [data.pendingOrders, data.placedOrders, data.shippedOrders, data.deliveredOrders, data.canceledOrders];
-//                 var barColors = ["red", "green", "blue", "orange", "brown"];
-//                 new Chart("order", {
-//                     type: "bar",
-//                     data: {
-//                         labels: xValues,
-//                         datasets: [{
-//                             backgroundColor: barColors,
-//                             data: yValues
-//                         }]
-//                     }, options: {
-//                         legend: { display: false },
-//                         title: {
-//                             display: true,
-//                             text: "Orders"
-//                         }
-//                     }
-//                 });
-
-//             }
-//         }
-//     })
-// }
-
-
 window.addEventListener('load', () => {
     histogram(1, 'daily')
 })
-
 
 function histogram(days, buttonId) {
 
@@ -597,31 +424,6 @@ function histogram(days, buttonId) {
     })
 }
 
-//PRODUCT OFFER
-// $("#product-offer").submit((e) => {
-//     e.preventDefault();
-//     $.ajax({
-//         url: '/admin/offer-management/product-offer',
-//         type: 'post',
-//         data: $('#product-offer').serialize(),
-//         success: (response) => {
-//             console.log(response);
-//             location.reload()
-//         }
-//     })
-// })
-// //EDIT PRODUCT
-// function editProduct(prodId) {
-//     $.ajax({
-//         url: '/admin/edit-product/' + prodId,
-//         method: 'get',
-//         success: (response) => {
-//             if (response) {
-//                 location.reload()
-//             }
-//         }
-//     })
-// }
 
 //DELETE PRODUCT
 function deleteProduct(prodId) {
@@ -885,12 +687,12 @@ $('#redeem-coupon').submit((e) => {
 })
 
 //RETURN ORDER
-$('#returnOrder').submit((e) => {
+$('#returnReason').submit((e) => {
     e.preventDefault()
     $.ajax({
         url: '/return-order',
         method: 'post',
-        data: $('#returnOrder').serialize(),
+        data: $('#returnReason').serialize(),
         success: (response) => {
             location.reload()
         }

@@ -61,8 +61,9 @@ router.post('/modal-login', (req, res) => {
     req.session.user = response.user;
     res.json({ status: true })
   }).catch((response) => {
+    let msg = "Invalid Email Or Password...!"
     console.log(response, '(((((((((((');
-    res.json({ status: false })
+    res.json({ status: false, msg: msg })
   })
 });
 
@@ -159,44 +160,7 @@ router.get('/logout', (req, res) => {
 })
 
 // //PRODUCTS LIST
-// router.get('/products/', async function (req, res, next) {
-//   console.log(req.query.search);
-//   let cartCount
-//   let wishCount
-//   let user = req.session.user
-//   // cartCount = null
-//   if (user) {
-//     cartCount = await userHelpers.getCartCount(req.session.user._id)
-//     wishCount = await userHelpers.getWishCount(req.session.user._id)
-
-//   }
-//   adminHelpers.getSearchProduct(req.query.search).then((response) => {
-//     adminHelpers.getCategory().then((category) => {
-//       console.log(category);
-//       console.log(response);
-//       res.render('user/products', { category, response, user, cartCount, wishCount, logout: !req.session.loggedIn })
-//     })
-//   }).catch(() => {
-//     console.log('ERrrrrrrrrrrrrrr');
-//     adminHelpers.getCategory().then((category) => {
-//       res.render('user/products', { category, user: req.session.user, cartCount: req.session.cartCount, logout: !req.session.loggedIn })
-//     })
-//   })
-// })
-
-
-//SAMPLE
-router.get('/sample', (req, res) => {
-  res.render('user/sample')
-})
-
-
-//TRYING PAGINATION IN PRODUCTS
 router.get('/products/', async function (req, res, next) {
-
-  // const page = req.query.p || 0
-  // const productsPerPage = 3
-
   console.log(req.query.search);
   let cartCount
   let wishCount
@@ -256,11 +220,11 @@ router.get('/add-to-cart/:id', (req, res) => {
 
 //CART PRODUCT QUANTITY
 router.post('/change-product-quantity', (req, res) => {
+  console.log(req.body, 'EEeeeeeeeeeeeeeeEe');
   userHelpers.changeProductQuantity(req.body).then(async (response) => {
     response.total = await userHelpers.getTotalAmount(req.body.user)
     res.json(response)
   })
-
 })
 
 //DELETE CART PRODUCT
@@ -331,8 +295,6 @@ router.post('/place-order', async (req, res) => {
   userHelpers.placeOrder(userAddress, products, totalPrice, req.body['paymentMethod'], req.session.user._id).then((orderId) => {
     if (req.body['paymentMethod'] === 'COD') {
       res.json({ codSuccess: true })
-    } else if (req.body['paymentMethod'] === 'WALLET') {
-      res.json({ walletSuccess: true })
     } else if (req.body['paymentMethod'] === 'ONLINE') {
       userHelpers.generateRazorpay(orderId, totalPrice).then((response) => {
         res.json({ razorpay: true, response })
@@ -425,12 +387,6 @@ router.get('/orders', middleware.loginChecked, async (req, res) => {
 
 })
 
-// //ORDERED PRODUCTS
-// router.get('/view-ordered-products/:id', async (req, res) => {
-//   let products = await userHelpers.getOrderProducts(req.params._id)
-//   res.render('user/view-ordered-products', { user: req.session.user, products })
-// })
-
 //CANCEL ORDER
 router.put('/cancel-order', (req, res) => {
   userHelpers.cancelOrder(req.body.orderId, req.body.prodId).then((response) => {
@@ -471,12 +427,6 @@ router.post('/add-address-checkout', (req, res) => {
   })
 })
 
-//EDIT ADDRESS
-// router.post('/edit-address/:addId', (req, res) => {
-//   userHelpers.editAddress(req.body, req.params.addId, req.session.user._id).then((newData) => {
-//     res.redirect('/address')
-//   })
-// })
 
 //DELETE ADDRESS
 router.get('/delete-address/:id', middleware.loginChecked, (req, res) => {
@@ -534,10 +484,10 @@ router.post('/verify-payment', (req, res) => {
 })
 
 //RETURN PRODUCT
-router.post('/return-order/:id', (req, res) => {
+router.post('/return-order', (req, res) => {
   console.log(req.body, '************************8');
-  userHelpers.returnOrder(req.params.id).then((response) => {
-    res.redirect('/orders')
+  userHelpers.returnOrder(req.body).then((response) => {
+    res.json(response)
   })
 })
 

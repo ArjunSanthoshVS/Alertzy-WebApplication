@@ -55,36 +55,10 @@
                                         <p>{{this.status}}</p>
                                     </div>
                                 </div>
-                                {{!--
-                                <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
-                                <div class="row d-flex align-items-center">
-                                    <div class="col-md-6">
-                                        <p class="text mb-3 small">Address</p>
-                                        <p>{{this.deliveryDetails.fullname}}</p>
-                                        <p>{{this.deliveryDetails.address}}</p>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <p class="text mb-0 small">Date</p>
-                                        <p>{{this.displayDate}}</p>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <p class="text mb-0 small">Payment :</p>
-                                        <p>{{this.paymentMethod}}</p>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <p class="text mb-0 small">Status</p>
-                                        <p>{{this.status}}</p>
-                                    </div>
-                                </div> --}}
                                 <div class="buttons d-flex justify-content-end mt-0">
                                     {{#ifCheck status 'delivered'}}
                                     <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                         data-bs-target="#returnOrder" data-bs-whatever="@mdo">Return Product</button>
-
-                                    {{!-- <button id="return-button"
-                                        onclick="returnOrder('{{this._id}}','{{this.item}}')"
-                                        class="btn btn-warning">Return
-                                        Order</button> --}}
                                     {{/ifCheck}}
                                     {{#ifCheck status 'canceled'}}
                                     {{/ifCheck}}
@@ -106,41 +80,6 @@
                                 </div>
                             </div>
                         </div>
-                        {{!-- <div class="card mb-4">
-                            <div class="card-header">
-                                {{this.product.product}}
-                            </div>
-                            <div class="card-body d-flex">
-                                <div class="col-md-2">
-                                    <img style="width:100px; height:130px;"
-                                        src="/product-images/{{this.item}}/{{this.item}}_0.png" class="img-fluid"
-                                        alt="Phone">
-                                </div>
-                                <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                    <p class="text mb-0 small"><b>Quantity: <br>{{this.quantity}}</b></p>
-                                </div>
-                                <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                    <p class="text mb-0 small"><b>Amount: <br>{{this.totalAmount}}</b></p>
-                                </div>
-                                <div class="col-md-6">
-                                    <p class="text mb-3 small">Address</p>
-                                    <p>{{this.deliveryDetails.fullname}}</p>
-                                    <p>{{this.deliveryDetails.address}}</p>
-                                </div>
-                                <div class="col-md-2">
-                                    <p class="text mb-0 small">Date</p>
-                                    <p>{{this.displayDate}}</p>
-                                </div>
-                                <div class="col-md-2">
-                                    <p class="text mb-0 small">Payment :</p>
-                                    <p>{{this.paymentMethod}}</p>
-                                </div>
-                                <div class="col-md-2">
-                                    <p class="text mb-0 small">Status</p>
-                                    <p>{{this.status}}</p>
-                                </div>
-                            </div>
-                        </div> --}}
                         {{/each}}
                         {{else}}
                         <h2 class="fw-bold text-danger">Order list is Empty...!</h2>
@@ -151,6 +90,7 @@
         </div>
     </div>
 </section>
+
 <div class="modal fade" id="returnOrder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -159,22 +99,27 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                {{#each orders}}
                 <form id="returnReason" method="post">
                     <label>Damaged/defective product.
-                        <input type="radio" name="reason" checked>
+                        <input type="radio" name="reason" value="Damaged/defective product." required>
                         <span class="custom-radio-button"></span>
                     </label>
                     <label>Wrong product description information.
-                        <input type="radio" name="reason">
+                        <input type="radio" name="reason" value="Wrong product description information." required>
                         <span class=" custom-radio-button"></span>
                     </label>
                     <label>Unfit size.
-                        <input type="radio" name="reason" value="Unfit size.">
+                        <input type="radio" name="reason" value="Unfit size." required>
                         <span class=" custom-radio-button"></span>
                     </label>
+
+                    <input type="text" name="id" value="{{this.product._id}}" hidden>
+
                     <br>
-                    <input type="submit" value="Submit">
+                    <button type="submit" class="btn btn-warning">Submit</button>
                 </form>
+                {{/each}}
             </div>
         </div>
     </div>

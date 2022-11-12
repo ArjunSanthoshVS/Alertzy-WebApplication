@@ -123,38 +123,6 @@ router.post('/add-product', upload.fields([
     res.redirect('/admin/products')
   })
 })
-// router.post('/add-product', (req, res) => {
-// productHelpers.addProduct(req.body).then((id) => {
-//   //     let image1 = req.files?.image1;
-//     let image2 = req.files?.image2;
-//     let image3 = req.files?.image3;
-//     let image4 = req.files?.image4;
-//     mkdirp('./public/product-images/' + id).then(() => {
-//       image1.mv('./public/product-images/' + id + "/" + id + "_0" + '.png')
-//       image2.mv('./public/product-images/' + id + "/" + id + "_1" + '.png')
-//       image3.mv('./public/product-images/' + id + "/" + id + "_2" + '.png')
-//       image4.mv('./public/product-images/' + id + "/" + id + "_3" + '.png')
-//     })
-//     res.redirect('/admin/products')
-//   })
-// })
-
-// router.post("/add-productSample", (req, res) => {
-//   productHelpers.addProduct(req.body, (id) => {
-//     let image = req.files?.image;
-//     if (Array.isArray(image)) {
-//       mkdirp('./public/product-images/' + id).then(() => {
-//         image.forEach((element, index) => {
-//           element.mv('./public/product-images/' + id + "/" + id + "_" + index + '.png')
-//         });
-//       })
-//       res.redirect('/admin/products')
-//     } else {
-//       image?.mv('./public/product-images/' + id + '.png')
-//       res.redirect('/admin/products')
-//     }
-//   })
-// })
 
 //EDIT PRODUCT
 router.get('/edit-product/:prodId', async (req, res) => {
@@ -194,55 +162,10 @@ router.post('/edit-product/:id', upload.fields([
   )
   console.log(urls);
 
-  // productHelpers.updateProduct(req.body, urls, (id) => {
-  //   res.redirect('/admin/products')
-  // })
   productHelpers.updateProduct(req.params.id, req.body, urls).then((id) => {
     res.redirect('/admin/products')
   })
 })
-
-// router.post('/edit-product/:id', (req, res) => {
-//   productHelpers.updateProduct(req.params.id, req.body).then(() => {
-//     let id = req.params.id;
-//     let image1 = req.files?.image1
-//     let image2 = req.files?.image2
-//     let image3 = req.files?.image3
-//     let image4 = req.files?.image4
-
-//     if (image1) {
-//       image1.mv('./public/product-images/' + id + "/" + id + "_0" + '.png')
-//     }
-//     if (image2) {
-//       image2.mv('./public/product-images/' + id + "/" + id + "_1" + '.png')
-//     }
-
-//     if (image3) {
-//       image3.mv('./public/product-images/' + id + "/" + id + "_2" + '.png')
-//     }
-//     if (image4) {
-//       image4.mv('./public/product-images/' + id + "/" + id + "_3" + '.png')
-//     }
-//     res.redirect('/admin/products')
-//   })
-// })
-
-// router.post('/edit-product/:id', (req, res) => {
-//   let id = req.params.id
-//   productHelpers.updateProduct(req.params.id, req.body).then(() => {
-//     res.redirect('/admin/products')
-//     let image = req.files?.image;
-//     if (Array.isArray(image)) {
-//       mkdirp('./public/product-images/' + id).then(() => {
-//         image.forEach((element, index) => {
-//           element.mv('./public/product-images/' + id + "/" + id + "_" + index + '.png')
-//         });
-//       })
-//     } else {
-//       image?.mv('./public/product-images/' + id + '.png')
-//     }
-//   })
-// })
 
 //DELETE PRODUCT
 router.get('/delete-product/:id', (req, res) => {
@@ -276,18 +199,6 @@ router.get('/category', middleware.adminLoginChecked, (req, res) => {
   })
 
 })
-
-// router.post('/category', (req, res) => {
-//   adminHelpers.addCategory(req.body).then(() => {
-//     if (!err) {
-//       let successmsg = encodeURIComponent('Category added successfully');
-//       res.redirect('/admin/category?msg=' + successmsg)
-//     }
-//   }).catch(() => {
-//     res.redirect('/admin/category')
-//   })
-
-// })
 
 router.post('/category', (req, res) => {
   adminHelpers.addCategory(req.body).then(() => {

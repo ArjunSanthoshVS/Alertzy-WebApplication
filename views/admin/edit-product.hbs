@@ -10,20 +10,21 @@
         </a>
 
         <div class="d-flex justify-content-center">
-            <form action="/admin/edit-product/{{product._id}}" method="post" enctype="multipart/form-data">
+            <form action="/admin/edit-product/{{product._id}}" method="post" enctype="multipart/form-data"
+                class="needs-validation" novalidate>>
                 <div class="form-row d-flex">
                     <div class="row me-2 w-50">
                         <label for="" class="col-form-label">Product</label>
                         <div>
                             <input type="text" class="form-control" id="inputEmail3" name="product"
-                                value="{{product.product}}">
+                                value="{{product.product}}" required>
                         </div>
                     </div>
                     <div class="row w-50">
                         <label for="" class="col-form-label">Brand</label>
                         <div>
                             <input type="text" class="form-control" id="inputEmail3" name="brand"
-                                value="{{product.brand}}">
+                                value="{{product.brand}}" required>
                         </div>
                     </div>
                 </div>
@@ -32,14 +33,14 @@
                         <label for="" class=" col-form-label">Stock</label>
                         <div>
                             <input type="number" class="form-control" id="inputEmail3" name="stock"
-                                value="{{product.stock}}">
+                                value="{{product.stock}}" required>
                         </div>
                     </div>
                     <div class="row w-50">
                         <label for="" class=" col-form-label">Actual Price</label>
                         <div>
                             <input type="number" class="form-control" id="inputEmail3" name="actualPrice"
-                                value="{{product.actualPrice}}">
+                                value="{{product.actualPrice}}" required>
                         </div>
                     </div>
                 </div>
@@ -47,7 +48,8 @@
                     <div class="row w-50">
                         <label for="" class="col-form-label">Category</label>
                         <div>
-                            <select id="inputState" class="form-select" name="category" value="{{product.category}}">
+                            <select id="inputState" class="form-select" name="category" value="{{product.category}}"
+                                required>
                                 <option selected>{{product.category}}</option>
                                 {{#each category}}
                                 <option>{{this.category}}</option>
@@ -59,7 +61,8 @@
                 <div class="row me-2 mb-4 w-100">
                     <label for="" class="col-form-label">Description</label>
                     <div>
-                        <input type="text" class="form-control" name="description" value="{{product.description}}">
+                        <input type="text" class="form-control" name="description" value="{{product.description}}"
+                            required>
                     </div>
                 </div>
                 {{!-- <div class="form-row d-flex mt-2">
@@ -100,77 +103,78 @@
                             name="image4" id="imgInput">
                     </div>
                 </div> --}}
+                <div class="d-flex">
+                    <div class="mt-5  col-md-6">
+                        <label for="productimage" class="">
+                            Image
+                        </label>
+                        <img style="width:100px;" src="{{product.image.[0]}}" alt="">
+                        <input type="file" required id="id_image1" name="image1" accept="image/*" class="form-control"
+                            onchange="viewImage1(event)" style="width:100%;"><br>
+                        <img src="" id="imgView1" alt="" class="clr" style="height:100px">
 
-                <div class="mt-5  col-md-4">
-                    <label for="productimage" class="">
-                        Image
-                    </label>
-                    <img src="{{product.image.[0]}}" alt="">
-                    <input type="file" required id="id_image1" name="image1" accept="image/*" class="form-control"
-                        onchange="viewImage1(event)" style="width:100%;"><br>
-                    <img src="" id="imgView1" alt="" class="clr" style="height:100px">
-
-                    <div class="vald-info" id="info"></div>
-                    <h5 class="error_form text-danger" id="image1_error_message"></h5>
-                    <div style="display:flex">
-                        <div id="image-box1" class="clr image-container" style="height: 300px; width:20%"></div>
-                        <button type="button" class="btn btn-outline-info" id="crop-btn1" style=" margin-top: 10px;  display: none;
+                        <div class="vald-info" id="info"></div>
+                        <h5 class="error_form text-danger" id="image1_error_message"></h5>
+                        <div style="display:flex">
+                            <div id="image-box1" class="clr image-container" style="height: 300px; width:20%"></div>
+                            <button type="button" class="btn btn-outline-info" id="crop-btn1" style=" margin-top: 10px;  display: none;
                                         width:  50% ; margin: 20rem 0rem 0rem 0rem;">Crop</button>
+                        </div>
                     </div>
-                </div>
 
-                <div class="mt-5  col-md-4">
-                    <label for="productimage" class="">
-                        Image
-                    </label>
-                    <img src="{{product.image.[1]}}" alt="">
-                    <input type="file" id="id_image2" required name="image2" accept="image/*" class="form-control"
-                        onchange="viewImage2(event)" style="width:100%;"><br>
-                    <img src="" id="imgView2" class="clr" alt="" style="height:100px">
+                    <div class="mt-5 ms-3 col-md-6">
+                        <label for="productimage" class="">
+                            Image
+                        </label>
+                        <img style="width:100px;" src="{{product.image.[1]}}" alt="">
+                        <input type="file" id="id_image2" required name="image2" accept="image/*" class="form-control"
+                            onchange="viewImage2(event)" style="width:100%;"><br>
+                        <img src="" id="imgView2" class="clr" alt="" style="height:100px">
 
-                    <div class="vald-info" id="info"></div>
-                    <h5 class="error_form text-danger" id="image2_error_message"></h5>
-                    <div id="image2container" style="display:flex">
-                        <div id="image-box2" class="image-container clr" style="height: 300px; width:20%"></div>
-                        <button type="button" class="btn btn-outline-info" id="crop-btn2" style=" margin-top: 10px; display: none;
+                        <div class="vald-info" id="info"></div>
+                        <h5 class="error_form text-danger" id="image2_error_message"></h5>
+                        <div id="image2container" style="display:flex">
+                            <div id="image-box2" class="image-container clr" style="height: 300px; width:20%"></div>
+                            <button type="button" class="btn btn-outline-info" id="crop-btn2" style=" margin-top: 10px; display: none;
                                       width:  50% ; margin: 20rem 0rem 0rem 0rem;">Crop</button>
+                        </div>
                     </div>
                 </div>
+                <div class="d-flex">
+                    <div class="  mb-5 col-md-6">
+                        <label for="productimage" class="">
+                            Image
+                        </label>
+                        <img style="width:100px;" src="{{product.image.[2]}}" alt="">
+                        <input type="file" required id="id_image3" name="image3" accept="image/*" class="form-control"
+                            onchange="viewImage3(event)" style="width:100%;"><br>
+                        <img src="" id="imgView3" class="clr" alt="" style="height:100px">
 
-
-                <div class="mt-5  mb-5 col-md-4">
-                    <label for="productimage" class="">
-                        Image
-                    </label>
-                    <img src="{{product.image.[2]}}" alt="">
-                    <input type="file" required id="id_image3" name="image3" accept="image/*" class="form-control"
-                        onchange="viewImage3(event)" style="width:100%;"><br>
-                    <img src="" id="imgView3" class="clr" alt="" style="height:100px">
-
-                    <div class="vald-info" id="info"></div>
-                    <h5 class="error_form text-danger" id="image3_error_message"></h5>
-                    <div style="display:flex">
-                        <div id="image-box3" class="image-container clr" style="height: 300px; width:20%"></div>
-                        <button type="button" class="btn btn-outline-info" id="crop-btn3" style=" margin-top: 2px; display: none;
+                        <div class="vald-info" id="info"></div>
+                        <h5 class="error_form text-danger" id="image3_error_message"></h5>
+                        <div style="display:flex">
+                            <div id="image-box3" class="image-container clr" style="height: 300px; width:20%"></div>
+                            <button type="button" class="btn btn-outline-info" id="crop-btn3" style=" margin-top: 2px; display: none;
                                                     width:  50% ; margin: 20rem 0rem 0rem 0rem;">Crop</button>
+                        </div>
                     </div>
-                </div>
 
-                <div class="mt-5  mb-5 col-md-4">
-                    <label for="productimage" class="">
-                        Image
-                    </label>
-                    <img src="{{product.image.[3]}}" alt="">
-                    <input type="file" required id="id_image4" name="image4" accept="image/*" class="form-control"
-                        onchange="viewImage4(event)" style="width:100%;"><br>
-                    <img src="" id="imgView4" class="clr" alt="" style="height:100px">
+                    <div class="ms-3 mb-5 col-md-6">
+                        <label for="productimage" class="">
+                            Image
+                        </label>
+                        <img style="width:100px;" src="{{product.image.[3]}}" alt="">
+                        <input type="file" required id="id_image4" name="image4" accept="image/*" class="form-control"
+                            onchange="viewImage4(event)" style="width:100%;"><br>
+                        <img src="" id="imgView4" class="clr" alt="" style="height:100px">
 
-                    <div class="vald-info" id="info"></div>
-                    <h5 class="error_form text-danger" id="image4_error_message"></h5>
-                    <div style="display:flex">
-                        <div id="image-box4" class="image-container clr" style="height: 300px; width:20%"></div>
-                        <button type="button" class="btn btn-outline-info" id="crop-btn4" style=" margin-top: 2px; display: none;
+                        <div class="vald-info" id="info"></div>
+                        <h5 class="error_form text-danger" id="image4_error_message"></h5>
+                        <div style="display:flex">
+                            <div id="image-box4" class="image-container clr" style="height: 300px; width:20%"></div>
+                            <button type="button" class="btn btn-outline-info" id="crop-btn4" style=" margin-top: 2px; display: none;
                                                     width:  50% ; margin: 20rem 0rem 0rem 0rem;">Crop</button>
+                        </div>
                     </div>
                 </div>
 

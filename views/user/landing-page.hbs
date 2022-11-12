@@ -7,10 +7,6 @@
   <p id="success-text" class="text-center mt-3" style="color:white;">Added to Cart</p>
 </div>
 
-
-
-
-
 <section class="mt-5">
   {{#each banner}}
   <div class="bg-image"
@@ -106,19 +102,6 @@
     {{/each}}
   </div>
 </div>
-{{!-- <a href="/products" style="text-decoration:none;">
-  <div class="container p-4 my-5 border text-center"
-    style="width:40rem; background-color:#C82657;font-weight:bold; font-size: 60px; color:white;">Ladies
-    <img src="/images/ladies watch.png" alt="" style="width:150px;">
-  </div>
-</a>
-<a href="/products" style="text-decoration:none;">
-  <div class="container p-4 my-5 border text-center"
-    style="width:40rem; background-color:#828282;font-weight:bold; font-size: 60px; color:white;">Kids
-    <img src="/images/kids watch.webp" alt="" style="width:100px;">
-  </div>
-</a>
-</div> --}}
 
 <div class="container mt-3">
   <div class="text-center">
@@ -136,23 +119,17 @@
           <a style="text-decoration: none;" href="/product-details/{{this._id}}">
             <h5>{{this.product}}</h5>
           </a>
-          {{!-- {{#if this.offerPrice}}
-          <p class="mb-0" style="text-decoration :line-through;">₹{{this.actualPrice}}</p> --}}
+
           <div class="d-flex">
             <h5 class="me-3">₹{{this.offerPrice}}</h5>
             {{#if this.currentOffer}}
             <p style="color:green;">{{this.currentOffer}}% off</p>
             {{else}}
-            {{!-- {{#if this.categoryOffer}} --}}
-            {{!-- <p style="color:green;">{{this.categoryOffer}}% off</p>
-            {{else}} --}}
+
             <p style="color:red;">0% off</p>
             {{/if}}
           </div>
-          {{!-- {{else}}
-          <p class="mb-0">No Offer</p>
-          <h5>₹{{this.actualPrice}}</h5>
-          {{/if}} --}}
+
           <button type="button" class="btn btn-primary" style="border-radius: 10px;"
             onclick="addToCart('{{this._id}}')">Add to Cart</button>
         </div>

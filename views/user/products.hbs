@@ -2,15 +2,6 @@
     style="margin-top:100px; width: 100%; justify-content: center;">
 
     <div>
-        {{!-- <form action="/products/">
-            <input type="radio" class="btn-check" name="" id="btnradio1" autocomplete="off" value="" checked>
-            <label class="btn btn-outline-primary" for="btnradio1">All products</label>
-            {{#each category}}
-            <input type="radio" class="btn-check" name="search" id="btnradio2" autocomplete="off"
-                value="{{this.category}}">
-            <label class="btn btn-outline-primary" for="btnradio2">{{this.category}}</label>
-            {{/each}}
-        </form> --}}
         {{#each category}}
         <a class="btn btn-primary" href="/products?search={{this.category}}">{{this.category}}</a>
         {{/each}}
@@ -47,26 +38,28 @@
                         <a style="text-decoration: none;" href="/product-details/{{this._id}}">
                             <h5>{{this.product}}</h5>
                         </a>
-                        {{!-- {{#if this.offerPrice}}
-                        <p class="mb-0" style="text-decoration :line-through;">₹{{this.actualPrice}}</p> --}}
+
+                        <p class="mb-0" style="text-decoration :line-through;">₹{{this.actualPrice}}</p>
                         <div class="d-flex">
                             <h5 class="me-3">₹{{this.offerPrice}}</h5>
                             {{#if this.currentOffer}}
                             <p style="color:green;">{{this.currentOffer}}% off</p>
                             {{else}}
-                            {{!-- {{#if this.categoryOffer}} --}}
-                            {{!-- <p style="color:green;">{{this.categoryOffer}}% off</p>
-                            {{else}} --}}
                             <p style="color:red;">0% off</p>
                             {{/if}}
                         </div>
-                        {{!-- {{else}}
-                        <p class="mb-0">No Offer</p>
-                        <h5>₹{{this.actualPrice}}</h5>
-                        {{/if}} --}}
+                        {{#if this.stock}}
+                        {{#if ../user}}
                         <button type="button" class="btn btn-primary" style="border-radius: 10px;"
                             onclick="addToCart('{{this._id}}')">Add to Cart</button>
-
+                        {{else}}
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#login"
+                            data-bs-whatever="@mdo" style="border-radius: 10px;">Add
+                            to Cart</button>
+                        {{/if}}
+                        {{else}}
+                        <button type="" class="btn btn-danger" style="border-radius: 10px;">Out of Stock</button>
+                        {{/if}}
                         <i class="fa-solid fa-heart float-end" style="font-size: xx-large; color: red;"
                             onclick="addToWishlist('{{this._id}}')"></i>
                     </div>
@@ -83,3 +76,67 @@
         transition-duration: .6s;
     }
 </style>
+<div class="modal fade" id="login" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="container h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col col-xl-12">
+                        <div class="col-md-12 col-lg-12 d-flex align-items-center">
+                            <div class="card-body  text-black">
+                                {{#if loginErr}}
+                                <p class="h6" style="color: red;">{{loginErr}}</p>
+                                {{else}}
+                                <p></p>
+                                {{/if}}
+                                {{#if otpErr}}
+                                <p class="h6" style="color: red;">{{otpErr}}</p>
+                                {{else}}
+                                <p></p>
+                                {{/if}}
+                                <form method="post" id="login-form" class="needs-validation" novalidate>
+                                    <div class="mb-3 pb-1 d-flex justify-content-center">
+                                        <img src="/images/Logo.png" alt="" style=" width:50%;">
+                                    </div>
+                                    <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account
+                                    </h5>
+                                    <div class="invalid-feedback"></div>
+                                    <div class="form-outline mb-4">
+                                        <input type="email" id="email" class="form-control form-control-lg" name="email"
+                                            required />
+                                        <label class="form-label" for="form2Example17">Email address</label>
+                                    </div>
+
+                                    <div class="invalid-feedback"></div>
+                                    <div class="form-outline mb-4">
+                                        <input type="password" id="password" class="form-control form-control-lg"
+                                            name="password" required />
+                                        <label class="form-label" for="form2Example27">Password</label>
+                                    </div>
+
+
+                                    <div class="pt-1 mb-4">
+
+                                        <button class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
+
+                                    </div>
+                                    <div>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#otp-login"
+                                            data-bs-whatever="@mdo" style="border:0; background-color: white;">
+                                            <p class="" style="color: #393f81;">Login with OTP</p>
+                                        </button>
+                                    </div>
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#signup"
+                                        data-bs-whatever="@mdo" style="border:0; background-color: white;">
+                                        <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account?</p>
+                                    </button>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

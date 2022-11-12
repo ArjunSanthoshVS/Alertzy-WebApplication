@@ -52,23 +52,6 @@ module.exports = {
         })
     },
 
-    //ADD PRODUCT
-    addProduct: (productData, callback) => {
-        return new Promise((resolve, reject) => {
-            db.get().collection(collection.PRODUCT_COLLECTION).insertOne(productData).then((data) => {
-                callback(data.insertedId.toString());
-            })
-        })
-    },
-
-    //EDIT PRODUCT
-    editProduct: (proId, updatedData) => {
-        return new Promise((resolve, reject) => {
-            db.get().collection(collection.PRODUCT_COLLECTION).updateOne({ _id: objectId(proId) }, { "$set": updatedData })
-            resolve()
-        })
-    },
-
     //GET PRODUCTS
     getProducts: () => {
         return new Promise(async (resolve, reject) => {
@@ -214,7 +197,7 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             let agg = [{
                 $match: {
-                    status: 'delivered'
+                    'products.status': 'delivered'
                 }
             }, {
                 $unwind: {
@@ -222,10 +205,24 @@ module.exports = {
                 }
             }, {
                 $project: {
+                    item: '$products.item',
                     totalAmount: '$totalAmount',
-                    paymentMethod: 1,
+                    paymentMethod: '$paymentMethod',
+                    statusUpdateDate: '$statusUpdateDate',
+                }
+            }, {
+                $lookup: {
+                    from: 'product',
+                    localField: 'item',
+                    foreignField: '_id',
+                    as: 'result'
+                }
+            }, {
+                $project: {
+                    totalAmount: 1,
+                    productPrice: '$result.offerPrice',
                     statusUpdateDate: 1,
-                    status: 1
+                    paymentMethod: '$paymentMethod'
                 }
             }]
 
@@ -288,7 +285,7 @@ module.exports = {
             let amount = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
                 {
                     '$match': {
-                        'status': 'delivered'
+                        'products.status': 'delivered'
                     }
                 }, {
                     '$group': {
@@ -443,12 +440,7 @@ module.exports = {
                     { brand: { $regex: key, '$options': 'i' } },
                     { category: { $regex: key, '$options': 'i' } },
                 ]
-            })
-
-
-
-
-                .toArray()
+            }).toArray()
             if (data.length > 0) {
                 console.log(data, '%%%%%%%^^^^^^^^');
                 resolve(data)

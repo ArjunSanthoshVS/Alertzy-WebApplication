@@ -4,9 +4,6 @@ const bcrypt = require('bcrypt');
 var objectId = require('mongodb').ObjectId
 const Razorpay = require('razorpay');
 const paypal = require('paypal-rest-sdk');
-const { count } = require('console');
-const { Db } = require('mongodb');
-const { use } = require('../routes/user');
 require('dotenv').config()
 
 var instance = new Razorpay({
@@ -207,8 +204,9 @@ module.exports = {
 
     //CART PRODUCT QUANTITY
     changeProductQuantity: (details) => {
-        count = parseInt(details.count)
-        quantity = parseInt(details.quantity)
+        console.log(details, 'Itscominggg');
+        let count = parseInt(details.count)
+        let quantity = parseInt(details.quantity)
         return new Promise((resolve, reject) => {
             if (count == -1 && quantity == 1) {
                 db.get().collection(collection.CART_COLLECTION)
@@ -225,6 +223,7 @@ module.exports = {
                         {
                             $inc: { 'products.$.quantity': count }
                         }).then((response) => {
+                            console.log(response, '*******************');
                             resolve({ status: true })
                         })
             }
@@ -292,7 +291,7 @@ module.exports = {
     //PLACE ORDER
     placeOrder: (order, products, total, paymentMethod, userId) => {
         return new Promise((resolve, reject) => {
-            let status = paymentMethod === 'COD' || 'WALLET' ? 'placed' : 'pending'
+            let status = paymentMethod === 'COD' ? 'placed' : 'pending'
             products.forEach(element => {
                 element.status = status
             });
@@ -400,51 +399,6 @@ module.exports = {
         })
     },
 
-    //ORDERED PRODUCTS
-    // getOrderProducts: (orderId) => {
-    //     return new Promise(async (resolve, reject) => {
-    //         let orderItems = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-    //             {
-    //                 $match: { user: objectId(orderId) }
-    //             },
-    //             {
-    //                 $unwind: '$products'
-    //             },
-    //             {
-    //                 $project: {
-    //                     item: '$products.item',
-    //                     quantity: '$products.quantity',
-    //                     deliveryDetails: '$deliveryDetails',
-    //                     paymentMethod: '$paymentMethod',
-    //                     totalAmount: '$totalAmount',
-    //                     status: '$status',
-    //                     date: '$date'
-    //                 }
-    //             }, {
-    //                 $lookup: {
-    //                     from: collection.PRODUCT_COLLECTION,
-    //                     localField: 'item',
-    //                     foreignField: '_id',
-    //                     as: 'product'
-    //                 }
-    //             },
-    //             {
-    //                 $project: {
-    //                     item: 1,
-    //                     quantity: 1,
-    //                     product: { $arrayElemAt: ['$product', 0] },
-    //                     deliveryDetails: 1,
-    //                     paymentMethod: 1,
-    //                     totalAmount: 1,
-    //                     status: 1,
-    //                     date: 1
-
-    //                 }
-    //             }
-    //         ]).toArray()
-    //         resolve(orderItems)
-    //     })
-    // },
 
     //ADD TO WISHLIST
     addToWishlist: (prodId, userId) => {
@@ -626,28 +580,6 @@ module.exports = {
         })
     },
 
-    //EDIT ADDRESS
-    // editAddress: (newAddress, addId, userId) => {
-    //     console.log(addId, '@@@@@#####$$$$$$$$%%%%%%%%%');
-    //     console.log(newAddress, '@@@@@#####$$$$$$$$%%%%%%%%%');
-    //     console.log(userId, '@@@@@#####$$$$$$$$%%%%%%%%%');
-    //     return new Promise((resolve, reject) => {
-    //         let newData = db.get().collection(collection.USER_COLLECTION).updateOne(
-    //             {
-    //                 _id: objectId(userId),
-    //                 'address._id': objectId(addId)
-    //             },
-    //             {
-    //                 $set: {
-    //                     'address': 'newAddress'
-    //                 }
-    //             }
-    //         ).then(() => {
-    //             resolve()
-    //         })
-    //     })
-    // },
-
     //DELETE ADDRESS
     deleteAddress: (userId, addressId) => {
         return new Promise((resolve, reject) => {
@@ -682,13 +614,6 @@ module.exports = {
             })
         })
     },
-
-    //PAYPAL
-    // generatePaypal: () => {
-    //     return new Promise((resolve, reject) => {
-
-    // )
-    //     },
 
     //VERIFY PAYMENT
     verifyPayment: (details) => {
@@ -783,9 +708,17 @@ module.exports = {
     },
 
     //RETURN PRODUCT
-    returnOrder: () => {
+    returnOrder: (data) => {
+        console.log(data.id, '^^^^^');
         return new Promise((resolve, reject) => {
-            // db.get().collection(collection.ORDER_COLLECTION).
+            db.get().collection(collection.ORDER_COLLECTION).updateOne({
+                'products.item': objectId(data.id)
+            },
+                {
+                    $set: { 'products.$.status': 'returned' }
+                }
+            )
+            resolve(response)
         })
     }
 }

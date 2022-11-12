@@ -11,7 +11,7 @@
     <div class="card mb-4">
         <div class="card-header">Account Details</div>
         <div class="card-body">
-            <form action="/profile" method="post">
+            <form action="/profile" method="post" class="needs-validation" novalidate>
                 <!-- Form Group (username)-->
                 <!-- Form Row-->
                 <div class="row gx-3 mb-3">
@@ -19,13 +19,13 @@
                     <div class="col-md-6">
                         <label class="small mb-1" for="firstname">First name</label>
                         <input class="form-control" id="firstname" name="firstname" type="text"
-                            placeholder="Enter your first name" value="{{user.firstname}}">
+                            placeholder="Enter your first name" value="{{user.firstname}}" required>
                     </div>
                     <!-- Form Group (last name)-->
                     <div class="col-md-6">
                         <label class="small mb-1" for="lastname">Last name</label>
                         <input class="form-control" id="lastname" name="lastname" type="text"
-                            placeholder="Enter your last name" value="{{user.lastname}}">
+                            placeholder="Enter your last name" value="{{user.lastname}}" required>
                     </div>
                 </div>
                 <!-- Form Row        -->
@@ -34,7 +34,7 @@
                 <div class="mb-3">
                     <label class="small mb-1" for="email">Email address</label>
                     <input class="form-control" id="email" name="email" type="email"
-                        placeholder="Enter your email address" value="{{user.email}}">
+                        placeholder="Enter your email address" value="{{user.email}}" required>
                 </div>
                 <!-- Form Row-->
                 <div class="row gx-3 mb-3">
@@ -42,7 +42,7 @@
                     <div class="col-md-6">
                         <label class="small mb-1" for="mobile">Phone number</label>
                         <input class="form-control" id="mobile" name="mobile" type="tel"
-                            placeholder="Enter your phone number" value="{{user.mobile}}">
+                            placeholder="Enter your phone number" value="{{user.mobile}}" required>
                     </div>
                     <div class="col-md-6">
                         <input class="form-control" id="id" name="_id" type="tel" value="{{user._id}}" hidden>

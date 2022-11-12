@@ -4,14 +4,8 @@
         <a class="navbar-brand mt-4" style="font-family: none; font-weight: 900; color: black;">
             <h1 class="text-center pt-5">Manage Category</h1>
         </a>
-        {{!-- <form class="d-flex">
-            <input class="form-control me-1" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-primary" type="submit">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
-        </form> --}}
         <div class="d-flex justify-content-center">
-            <form id="addCategory" method="post" class="row g-1 mt-4">
+            <form id="addCategory" method="post" class="row g-1 mt-4 needs-validation" novalidate>
                 <div class="col-auto">
                     <label for="inputPassword2" class="visually-hidden">Password</label>
                     <input type="text" class="form-control" id="inputPassword2" placeholder="Add Category"
@@ -29,10 +23,6 @@
                     <div class="ms-2 me-auto p-3">
                         <div class="fw-bold">{{this.category}}</div>
                     </div>
-                    {{!-- <a href="/admin/delete-category/{{this._id}}"
-                        onclick="return confirm('Are you want to delete {{this.category}}')"><i
-                            class="fa-solid fa-trash d-flex justify-content-center"
-                            style="font-size:20px; color: red;"></i></a> --}}
                     <button type="button" style="border:0;" class="me-3" data-bs-toggle="modal"
                         data-bs-target="#editCategory" data-bs-whatever="@mdo"><i
                             class="fa-solid fa-pen-to-square d-flex justify-content-center"

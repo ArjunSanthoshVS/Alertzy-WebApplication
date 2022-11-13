@@ -161,7 +161,6 @@ router.post('/edit-product/:id', upload.fields([
     })
   )
   console.log(urls);
-
   productHelpers.updateProduct(req.params.id, req.body, urls).then((id) => {
     res.redirect('/admin/products')
   })
@@ -197,7 +196,6 @@ router.get('/category', middleware.adminLoginChecked, (req, res) => {
     let admin = req.session.admin
     res.render('admin/manage-category', { admin: true, category, admin })
   })
-
 })
 
 router.post('/category', (req, res) => {
@@ -206,7 +204,16 @@ router.post('/category', (req, res) => {
   }).catch(() => {
     res.json({ status: false })
   })
+})
 
+//EDIT CATEGORY
+router.put('/edit-category', (req, res) => {
+  console.log(req.body, '###########');
+  adminHelpers.editCategory(req.body).then(() => {
+    res.json({ status: true })
+  }).catch(() => {
+    res.json({ status: false })
+  })
 })
 
 //DELETE CATEGORY 

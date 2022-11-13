@@ -4,6 +4,9 @@ const bcrypt = require('bcrypt');
 var objectId = require('mongodb').ObjectId
 const Razorpay = require('razorpay');
 const paypal = require('paypal-rest-sdk');
+const { response } = require('express');
+const { resolve } = require('path');
+const { addCategory } = require('./admin-helpers');
 require('dotenv').config()
 
 var instance = new Razorpay({
@@ -290,6 +293,7 @@ module.exports = {
 
     //PLACE ORDER
     placeOrder: (order, products, total, paymentMethod, userId) => {
+        console.log(paymentMethod, 'paymmmmmeeeeennnnnt');
         return new Promise((resolve, reject) => {
             let status = paymentMethod === 'COD' ? 'placed' : 'pending'
             products.forEach(element => {
@@ -311,7 +315,6 @@ module.exports = {
                 paymentMethod: paymentMethod,
                 products: products,
                 totalAmount: total,
-                status: status,
                 displayDate: new Date().toDateString(),
                 date: new Date(),
                 return: false
@@ -355,7 +358,9 @@ module.exports = {
             let orders = db.get().collection(collection.ORDER_COLLECTION)
                 .aggregate([
                     {
-                        $match: { userId: objectId(userId), status: 'placed' }
+                        $match: {
+                            userId: objectId(userId),
+                        }
                     },
                     {
                         $unwind: '$products'
@@ -364,6 +369,7 @@ module.exports = {
                         $project: {
                             item: '$products.item',
                             quantity: '$products.quantity',
+                            price: '$products.offerPrice',
                             deliveryDetails: '$deliveryDetails',
                             paymentMethod: '$paymentMethod',
                             totalAmount: '$totalAmount',
@@ -399,6 +405,10 @@ module.exports = {
         })
     },
 
+    //DELETE PENDING ORDERS
+    deletePendingOrders: async () => {
+        await db.get().collection(collection.ORDER_COLLECTION).deleteMany({ 'products.status': 'pending' })
+    },
 
     //ADD TO WISHLIST
     addToWishlist: (prodId, userId) => {
@@ -631,17 +641,32 @@ module.exports = {
     },
 
     //CHANGE PAYMENT STATUS
-    changePaymentStatus: (orderId) => {
+    changePaymentStatus: (orderId, userId, products) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(collection.ORDER_COLLECTION)
-                .updateOne({ _id: objectId(orderId) },
-                    {
+            products.forEach(async (item) => {
+                let response = await db.get().collection(collection.ORDER_COLLECTION)
+                    .updateOne({
+                        _id: objectId(orderId), 'products.item': objectId(item.item)
+                    }, {
                         $set: {
-                            status: 'placed'
+                            'products.$.status': 'placed'
                         }
-                    }).then(() => {
-                        resolve()
                     })
+                await db.get().collection(collection.PRODUCT_COLLECTION)
+                    .updateOne({
+                        _id: objectId(item.item)
+                    }, {
+                        $inc: {
+                            stock: -(item.quantity)
+                        }
+                    })
+                console.log(response, 'responseeeeeeeeeeeeeee');
+            })
+            db.get().collection(collection.CART_COLLECTION)
+                .deleteOne({
+                    user: objectId(userId)
+                })
+            resolve()
         })
     },
 
@@ -708,17 +733,24 @@ module.exports = {
     },
 
     //RETURN PRODUCT
-    returnOrder: (data) => {
-        console.log(data.id, '^^^^^');
+    returnOrder: (userId, data, product) => {
+        console.log(product, '^^^^^');
         return new Promise((resolve, reject) => {
             db.get().collection(collection.ORDER_COLLECTION).updateOne({
-                'products.item': objectId(data.id)
+                _id: objectId(data.orderId),
+                'products.item': objectId(data.prodId)
             },
                 {
                     $set: { 'products.$.status': 'returned' }
                 }
             )
             resolve(response)
+
+            db.get().collection(collection.WALLET_COLLECTION).updateOne({
+                userId: objectId(userId)
+            }, {
+                $inc: { walletBalance: (product.offerPrice) }
+            })
         })
     }
 }

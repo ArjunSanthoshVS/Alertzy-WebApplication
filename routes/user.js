@@ -169,7 +169,6 @@ router.get('/products/', async function (req, res, next) {
   if (user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
     wishCount = await userHelpers.getWishCount(req.session.user._id)
-
   }
   adminHelpers.getSearchProduct(req.query.search).then((response) => {
     adminHelpers.getCategory().then((category) => {
@@ -277,6 +276,7 @@ router.get('/place-order', middleware.loginChecked, async (req, res) => {
 router.post('/place-order', async (req, res) => {
   let products = await userHelpers.getCartProductList(req.session.user._id)
   let totalPrice = Number(req.body.total)
+  console.log(totalPrice, '@@@@@@@@@@@@@@@');
   let walletBalance = Number(req.body.wallet)
   if (walletBalance) {
     if (totalPrice >= walletBalance) {
@@ -346,8 +346,9 @@ router.post('/place-order', async (req, res) => {
   })
 })
 
-router.get('/success', (req, res) => {
-  userHelpers.changePaymentStatus(req.session.orderId).then(() => {
+router.get('/success', async (req, res) => {
+  let products = await userHelpers.getCartProductList(req.session.user._id)
+  userHelpers.changePaymentStatus(req.session.orderId, req.session.user._id, products).then(() => {
     req.session.orderId = null
     res.redirect('/orders')
   })
@@ -380,6 +381,7 @@ router.post('/redeem-coupon', async (req, res) => {
 
 //ORDERS
 router.get('/orders', middleware.loginChecked, async (req, res) => {
+  await userHelpers.deletePendingOrders()
   let orders = await userHelpers.getUserOrders(req.session.user._id)
   let cartCount = await userHelpers.getCartCount(req.session.user._id)
   let wishCount = await userHelpers.getWishCount(req.session.user._id)
@@ -470,10 +472,11 @@ router.get('/wallet', middleware.loginChecked, async (req, res) => {
 })
 
 //VERIFY PAYMENT
-router.post('/verify-payment', (req, res) => {
+router.post('/verify-payment', async (req, res) => {
   console.log(req.body);
+  let products = await userHelpers.getCartProductList(req.session.user._id)
   userHelpers.verifyPayment(req.body).then(() => {
-    userHelpers.changePaymentStatus(req.body['order[receipt]']).then(() => {
+    userHelpers.changePaymentStatus(req.body['order[receipt]'], req.session.user._id, products).then(() => {
       console.log('Payment Successfull');
       res.json({ status: true })
     })
@@ -484,12 +487,23 @@ router.post('/verify-payment', (req, res) => {
 })
 
 //RETURN PRODUCT
-router.post('/return-order', (req, res) => {
+router.post('/return-product', async (req, res) => {
   console.log(req.body, '************************8');
-  userHelpers.returnOrder(req.body).then((response) => {
-    res.json(response)
+  let product = await productHelpers.getProductDetails(req.body.prodId)
+  userHelpers.returnOrder(req.session.user._id, req.body, product).then(async (response) => {
+    res.json({ status: true })
+  }).catch(() => {
+    res.json({ status: false })
   })
 })
 
+// router.get('/return-reason/:id', async (req, res) => {
+//   let products = await userHelpers.getReturnProduct(req.params.id)
+//   console.log(response, '*****************88');
+//   res.render('user/return-reason', { products })
+// })
 
+// router.post('/return-reason', (req, res) => {
+
+// })
 module.exports = router;

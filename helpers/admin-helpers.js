@@ -1,10 +1,8 @@
 var db = require('../config/connection')
 var collection = require('../config/collection')
 var bcrypt = require('bcrypt');
-const { response } = require('express');
-const { image, url } = require('../utils/cloudinary');
 var objectId = require('mongodb').ObjectId
-//ADMIN SIGNUP
+//ADMIN SIGNUP 
 module.exports = {
     adminSignUp: (adminData) => {
         return new Promise(async (resolve, reject) => {
@@ -103,10 +101,32 @@ module.exports = {
     },
 
     //EDIT CATEGORY
-    editCategory: (catId, updatedData) => {
-        return new Promise((resolve, reject) => {
-            db.get().collection(collection.CATEGORY_COLLECTION).updateOne({ _id: objectId(catId) }, { "$set": updatedData })
-            resolve()
+    // editCategory: (updatedData) => {
+    //     console.log(updatedData, 'updateddddddddddd');
+    //     return new Promise((resolve, reject) => {
+    //         db.get().collection(collection.CATEGORY_COLLECTION).updateOne({ _id: objectId(catId) }, { "$set": updatedData })
+    //         resolve(response)
+    //     })
+    // },
+    editCategory: (categoryData) => {
+        return new Promise(async (resolve, reject) => {
+            categoryData.inputValue = categoryData.inputValue.toUpperCase()
+            let categoryCheck = await db.get().collection(collection.CATEGORY_COLLECTION).findOne({ category: categoryData.inputValue })
+            if (categoryCheck == null) {
+                db.get().collection(collection.CATEGORY_COLLECTION).updateOne(
+                    {
+                        _id: objectId(categoryData.categoryId)
+                    }, {
+                    $set: {
+                        category: categoryData.inputValue
+                    }
+                }
+                ).then((response) => {
+                    resolve(response.insertedId)
+                })
+            } else {
+                reject()
+            }
         })
     },
 
@@ -310,12 +330,13 @@ module.exports = {
 
             let data = {};
 
-            data.deliveredOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'delivered' }).count()
-            console.log(data.deliveredOrders);
-            data.shippedOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'shipped' }).count()
-            data.placedOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'placed' }).count()
-            data.pendingOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'pending' }).count()
-            data.canceledOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, status: 'canceled' }).count()
+            data.deliveredOrders = await db.get().collection(collection.ORDER_COLLECTION).find({
+                date: { $gte: startDate, $lte: endDate }, 'products.status': 'delivered'
+            }).count()
+            data.shippedOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, 'products.status': 'shipped' }).count()
+            data.placedOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, 'products.status': 'placed' }).count()
+            data.pendingOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, 'products.status': 'pending' }).count()
+            data.canceledOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, 'products.status': 'canceled' }).count()
             let codTotal = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
                 {
                     $match: {

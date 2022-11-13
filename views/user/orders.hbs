@@ -57,8 +57,15 @@
                                 </div>
                                 <div class="buttons d-flex justify-content-end mt-0">
                                     {{#ifCheck status 'delivered'}}
-                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                    {{!-- <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                         data-bs-target="#returnOrder" data-bs-whatever="@mdo">Return Product</button>
+                                    --}}
+                                    <button type="button" class="btn btn-warning"
+                                        onclick="returnProduct('{{this._id}}','{{this.item}}')">Return
+                                        Product</button>
+
+                                    {{!-- <a class="btn btn-warning" href="/return-reason/{{this.item}}">Return
+                                        Product</a> --}}
                                     {{/ifCheck}}
                                     {{#ifCheck status 'canceled'}}
                                     {{/ifCheck}}
@@ -90,7 +97,7 @@
         </div>
     </div>
 </section>
-
+{{!--
 <div class="modal fade" id="returnOrder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -123,7 +130,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 <style>
     label {
         display: block;

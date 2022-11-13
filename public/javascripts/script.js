@@ -3,7 +3,7 @@
 (() => {
     'use strict'
 
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    // Fetch all the forms we want to apply custiom Bootstrap validation styles to
     const forms = document.querySelectorAll('.needs-validation')
 
     // Loop over them and prevent submission
@@ -176,9 +176,7 @@ function addToWishlist(prodId) {
         method: 'get',
         success: (response) => {
             if (response.status) {
-                let count = $('#wish-count').html()
-                count = parseInt(count) + 1
-                $("#wish-count").html(count)
+
                 document.getElementById('add' + prodId).classList.add('d-none')
                 document.getElementById('remove' + prodId).classList.remove('d-none')
             } else {
@@ -504,6 +502,43 @@ $("#addCategory").submit((e) => {
     })
 })
 
+//EDIT CATEGORY
+function editCategory(categoryId) {
+    let category = document.getElementById(categoryId).innerHTML
+    swal({
+        title: "Edit Category!",
+        type: "input",
+        showCancelButton: true,
+        closeOnConfirm: true,
+        animation: "slide-from-top",
+        inputValue: category,
+        inputPlaceholder: "Edit Category"
+    },
+        function (inputValue) {
+            if (inputValue === null)
+                return false;
+            if (inputValue === "") {
+                return false
+            }
+            $.ajax({
+                url: '/admin/edit-category',
+                method: 'put',
+                data: {
+                    categoryId,
+                    inputValue
+                },
+                success: (response) => {
+                    if (response.status) {
+                        document.getElementById(categoryId).innerHTML = inputValue.toUpperCase()
+                    } else {
+                        return false
+                    }
+                }
+            })
+        });
+}
+
+
 //DELETE CATEGORY
 function deleteCategory(catId) {
     $.ajax({
@@ -687,14 +722,47 @@ $('#redeem-coupon').submit((e) => {
 })
 
 //RETURN ORDER
-$('#returnReason').submit((e) => {
-    e.preventDefault()
-    $.ajax({
-        url: '/return-order',
-        method: 'post',
-        data: $('#returnReason').serialize(),
-        success: (response) => {
-            location.reload()
-        }
-    })
-})
+// $('#returnReason').submit((e) => {
+//     e.preventDefault()
+//     $.ajax({
+//         url: '/return-order',
+//         method: 'post',
+//         data: $('#returnReason').serialize(),
+//         success: (response) => {
+//             location.reload()
+//         }
+//     })
+// })
+function returnProduct(orderId, prodId) {
+    swal({
+        title: "What is the Reason..?",
+        type: "input",
+        showCancelButton: true,
+        closeOnConfirm: true,
+        animation: "slide-from-top",
+        inputPlaceholder: "Please share with Us..."
+    },
+        function (inputValue) {
+            if (inputValue === null)
+                return false;
+            if (inputValue === "") {
+                return false
+            }
+            $.ajax({
+                url: '/return-product',
+                method: 'post',
+                data: {
+                    orderId,
+                    prodId,
+                },
+                success: (response) => {
+                    if (response.status) {
+                        location.href = '/orders'
+                    } else {
+                        return false
+                    }
+                }
+            })
+        });
+}
+

@@ -10,29 +10,29 @@
       <div class="col-lg-6">
         <!-- PRODUCT SLIDER-->
         <div class="row m-sm-0">
-          <div class="col-sm-2 p-sm-0 order-2 order-sm-1 mt-2 mt-sm-0 px-xl-2">
-            <div class="swiper product-slider-thumbs">
-              <div class="swiper-wrapper">
-                <div class="small-img-col">
-                  <img src="{{response.image.[0]}}" alt="" width="100px" class="small-img mb-3" />
-                </div>
-                <div class="small-img-col">
-                  <img src="{{response.image.[1]}}" alt="" width="100px" class=" small-img mb-3" />
-                </div>
-                <div class="small-img-col">
-                  <img src="{{response.image.[2]}}" alt="" width="100px" class=" small-img mb-3" />
-                </div>
-                <div class="small-img-col">
-                  <img src="{{response.image.[3]}}" alt="" width="100px" class=" small-img" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-10 order-1 order-sm-2">
+          <div class="col-sm-12 order-1 order-sm-2">
             <div class="swiper product-slider">
               <div class="swiper-wrapper">
-                <div class="col-md-4 px-0 lens mt-5" id="img-container" style="margin-left:6rem; width:100%">
+                <div class="col-md-12 px-0 lens mt-5" id="img-container" style="width:100%">
                   <img class="img-fluid" src="{{response.image.[0]}}" alt="" id="ProductImg" />
+                </div>
+                <div class="col-md-11 p-sm-1 p-0">
+                  <div class="swiper product-slider-thumbs">
+                    <div class="swiper-wrapper d-flex">
+                      <div class="small-img-col">
+                        <img src="{{response.image.[0]}}" alt="" width="100px" class="small-img m-3" />
+                      </div>
+                      <div class="small-img-col">
+                        <img src="{{response.image.[1]}}" alt="" width="100px" class=" small-img m-3" />
+                      </div>
+                      <div class="small-img-col">
+                        <img src="{{response.image.[2]}}" alt="" width="100px" class=" small-img m-3" />
+                      </div>
+                      <div class="small-img-col">
+                        <img src="{{response.image.[3]}}" alt="" width="100px" class=" small-img m-3" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -40,7 +40,7 @@
         </div>
       </div>
       <!-- PRODUCT DETAILS-->
-      <div class="col-lg-6">
+      <div class="col-lg-6 mt-5">
         <h5>{{response.brand}}</h5>
         <h1>{{response.product}}</h1>
         {{#if response.offerPrice}}
@@ -61,17 +61,24 @@
           <button type="button" class="ms-3 col-3 btn btn-primary" style="border-radius: 20; border: 0;"
             onclick="addToCart('{{response._id}}')">Add
             to Cart</button>
+          <button type="button" class="ms-3 col-3 btn btn-danger" style="border-radius: 20; border: 0;"
+            onclick="addToWishlist('{{response._id}}')">Add
+            to Wishlist</button>
           {{else}}
           <button type="button" class="ms-3 col-3 btn btn-primary" data-bs-toggle="modal"
+            style="border-radius: 20; border: 0;" data-bs-target="#login" data-bs-whatever="@mdo">
+            Add to cart</button>
+          <button type=" button" class="ms-3 col-3 btn btn-danger" data-bs-toggle="modal"
             style="border-radius: 20; border: 0;" data-bs-target="#login" data-bs-whatever="@mdo">Add to
-            cart</button>
+            Wishlist</button>
           {{/if}}
           {{else}}
-          <button type="" class="ms-3 col-3 btn btn-danger" style="border-radius: 20; border: 0;">Out of Stock</button>
+          <button type="" class="ms-3 col-3 btn btn-danger" style="border-radius: 20; border: 0;">Out of
+            Stock</button>
           {{/if}}
         </div>
-        <ul class="list-unstyled small d-inline-block">
 
+        <ul class="list-unstyled small d-inline-block">
           <li class="px-3 py-2 mb-1 bg-white text-muted"><strong class="text-uppercase text-dark">Category:</strong><a
               class="reset-anchor ms-2" href="#">{{response.category}}</a></li>
         </ul>
@@ -95,11 +102,11 @@
     <div class="row">
       {{#each random}}
       <div class="col-lg-3 col-md-6 col-sm-12 ">
-        <div class="card" style="width: 100%; margin-top:25px;">
+        <div class="card m-1" style="width: 100%; margin-top:25px;">
 
           <img style="width:75%;" src="{{this.image.[0]}}" class="card-img-top mx-auto mt-3" alt="...">
 
-          <div class="card-body">
+          <div class="card-body m-1">
             <h6>{{this.brand}}</h6>
             <a style="text-decoration: none;" href="/product-details/{{this._id}}">
               <h5>{{this.product}}</h5>

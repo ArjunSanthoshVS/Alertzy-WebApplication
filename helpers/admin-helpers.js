@@ -115,7 +115,8 @@ module.exports = {
             if (categoryCheck == null) {
                 db.get().collection(collection.CATEGORY_COLLECTION).updateOne(
                     {
-                        _id: objectId(categoryData.categoryId)
+                        // _id: objectId(categoryData.categoryId),
+                        category: categoryData.categoryName
                     }, {
                     $set: {
                         category: categoryData.inputValue
@@ -337,6 +338,8 @@ module.exports = {
             data.placedOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, 'products.status': 'placed' }).count()
             data.pendingOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, 'products.status': 'pending' }).count()
             data.canceledOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, 'products.status': 'canceled' }).count()
+            data.returnedOrders = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: startDate, $lte: endDate }, 'products.status': 'returned' }).count()
+
             let codTotal = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
                 {
                     $match: {
@@ -402,7 +405,7 @@ module.exports = {
         data.coupon = data.coupon.toUpperCase()
         data.couponOffer = Number(data.couponOffer)
         data.minPrice = Number(data.minPrice)
-        data.maxPrice = Number(data.maxPrice)
+        data.priceLimit = Number(data.priceLimit)
         data.expDate = new Date(data.expDate)
         data.user = []
         return new Promise(async (resolve, reject) => {
@@ -430,7 +433,7 @@ module.exports = {
     deleteCoupon: (data) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.COUPON_COLLECTION).deleteOne({ coupon: data })
-            resolve(response)
+            resolve()
         })
     },
 

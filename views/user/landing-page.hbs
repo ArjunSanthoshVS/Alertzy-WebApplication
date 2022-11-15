@@ -77,7 +77,7 @@
   <div class="row mb-5">
     {{#each category}}
     <div class="col-lg-4 col-md-6 col-sm-12">
-      <div class="card" style="border-radius:10px; box-shadow: rgba(100, 100, 111, 0.5) 0px 0px 9px 0px;">
+      <div class="card m-1" style="border-radius:10px; box-shadow: rgba(100, 100, 111, 0.5) 0px 0px 9px 0px;">
         <div class="card-block text-center">
           <h4 class="card-title p-5 fw-bold text-primary" style="text-shadow:2px 1px chocolate; font-size: xx-large;">
             {{this.category}}
@@ -89,14 +89,14 @@
   </div>
 </div>
 
-<div class="container mt-3">
+<div class="container mt-5">
   <div class="text-center">
     <h2 style="font-weight:bold; font-size: 45px; color:#1867C2;">Popular Products</h2>
   </div>
   <div class="row">
     {{#each random}}
     <div class="col-lg-3 col-md-6 col-sm-12">
-      <div class="card" style="width: 18rem; margin-top:25px;">
+      <div class="card m-1" style=";">
 
         <img style="width:75%;" src="{{this.image.[0]}}" class="card-img-top mx-auto mt-3" alt="...">
 

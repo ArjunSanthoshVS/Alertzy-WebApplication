@@ -140,9 +140,9 @@ function otpValidation() {
 
 //IMAGE ZOOM
 var options = {
-    width: 300,
-    zoomWidth: 900,
-    offset: { vertical: 60, horizontal: 20 },
+    width: 400,
+    zoomWidth: 1000,
+    offset: { vertical: 50, horizontal: -180 },
     scale: .5
 };
 new ImageZoom(document.getElementById("img-container"), options);
@@ -503,7 +503,7 @@ $("#addCategory").submit((e) => {
 })
 
 //EDIT CATEGORY
-function editCategory(categoryId) {
+function editCategory(categoryId, categoryName) {
     let category = document.getElementById(categoryId).innerHTML
     swal({
         title: "Edit Category!",
@@ -525,7 +525,8 @@ function editCategory(categoryId) {
                 method: 'put',
                 data: {
                     categoryId,
-                    inputValue
+                    inputValue,
+                    categoryName
                 },
                 success: (response) => {
                     if (response.status) {

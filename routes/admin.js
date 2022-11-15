@@ -209,7 +209,9 @@ router.post('/category', (req, res) => {
 //EDIT CATEGORY
 router.put('/edit-category', (req, res) => {
   console.log(req.body, '###########');
-  adminHelpers.editCategory(req.body).then(() => {
+  adminHelpers.editCategory(req.body).then(async () => {
+    console.log(req.body, 'INNNNNNnnnnnnnnnnnnnnnn');
+    await productHelpers.updateProductCategory(req.body)
     res.json({ status: true })
   }).catch(() => {
     res.json({ status: false })

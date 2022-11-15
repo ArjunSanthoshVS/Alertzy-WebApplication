@@ -725,6 +725,7 @@ module.exports = {
             let couponCheck = await db.get().collection(collection.COUPON_COLLECTION).findOne({ $and: [{ coupon: couponName }, { expDate: { $gte: currentDate } }] })
             console.log(couponCheck);
             if (couponCheck !== null) {
+                console.log(couponCheck, '$$$$$$$$$$$$$$$');
                 resolve(couponCheck)
             } else {
                 reject()

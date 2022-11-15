@@ -70,6 +70,21 @@ module.exports = {
         })
     },
 
+    //UPDATE PRODUCT CATEGORY
+    updateProductCategory: (category) => {
+        return new Promise(async (resolve, reject) => {
+            category.inputValue = category.inputValue.toUpperCase()
+            await db.get().collection(collection.PRODUCT_COLLECTION).updateMany({
+                category: category.categoryName
+            }, {
+                $set: {
+                    category: category.inputValue
+                }
+            })
+            resolve()
+        })
+    },
+
     //ADD PRODUCT OFFER
     addProductOffer: (offer) => {
         let prodId = objectId(offer.product)

@@ -355,23 +355,60 @@ router.get('/success', async (req, res) => {
 })
 
 //REDEEM COUPON 
+// router.post('/redeem-coupon', async (req, res) => {
+//   console.log(req.body);
+//   let userId = req.session.user._id
+//   let totalAmount = await userHelpers.getTotalAmount(userId)
+//   console.log(totalAmount, '*******');
+//   await userHelpers.redeemCoupon(req.body).then((couponData) => {
+//     let minMsg = "This coupen is only valid for purchase above ₹" + couponData.minPrice
+//     let maxMsg = "This coupen is only valid for purchase below ₹" + couponData.maxPrice
+//     if (totalAmount >= couponData.minPrice && totalAmount <= couponData.maxPrice) {
+//       let temp = (totalAmount * couponData.couponOffer) / 100
+//       totalAmount = (totalAmount - temp)
+//       console.log(totalAmount);
+//       res.json({ total: totalAmount, offer: temp })
+//     } else if (totalAmount <= couponData.minPrice) {
+//       res.json({ msg: minMsg, total: totalAmount })
+//     } else if (totalAmount >= couponData.maxPrice) {
+//       res.json({ msg: maxMsg, total: totalAmount })
+//     }
+//   }).catch(() => {
+//     let msg = "Invalid Coupon Or It's already Expired"
+//     res.json({ msg: msg, total: totalAmount })
+//   })
+// })
+
 router.post('/redeem-coupon', async (req, res) => {
   console.log(req.body);
   let userId = req.session.user._id
   let totalAmount = await userHelpers.getTotalAmount(userId)
   console.log(totalAmount, '*******');
+
   await userHelpers.redeemCoupon(req.body).then((couponData) => {
     let minMsg = "This coupen is only valid for purchase above ₹" + couponData.minPrice
-    let maxMsg = "This coupen is only valid for purchase below ₹" + couponData.maxPrice
-    if (totalAmount >= couponData.minPrice && totalAmount <= couponData.maxPrice) {
+
+    if (totalAmount >= couponData.minPrice) {
+      console.log('yeyeyeeeeeeee');
       let temp = (totalAmount * couponData.couponOffer) / 100
-      totalAmount = (totalAmount - temp)
-      console.log(totalAmount);
+      console.log(temp, '__________________');
+
+      if (temp < couponData.priceLimit) {
+        console.log('temp<<<<<<<<<<<');
+        totalAmount = (totalAmount - temp)
+        console.log(totalAmount);
+      } else if (temp >= couponData.priceLimit) {
+        console.log('temp>>>>>>>>>>>>>');
+        temp = couponData.priceLimit
+        totalAmount = (totalAmount - temp)
+      }
+
       res.json({ total: totalAmount, offer: temp })
+
     } else if (totalAmount <= couponData.minPrice) {
+
       res.json({ msg: minMsg, total: totalAmount })
-    } else if (totalAmount >= couponData.maxPrice) {
-      res.json({ msg: maxMsg, total: totalAmount })
+
     }
   }).catch(() => {
     let msg = "Invalid Coupon Or It's already Expired"
@@ -497,13 +534,4 @@ router.post('/return-product', async (req, res) => {
   })
 })
 
-// router.get('/return-reason/:id', async (req, res) => {
-//   let products = await userHelpers.getReturnProduct(req.params.id)
-//   console.log(response, '*****************88');
-//   res.render('user/return-reason', { products })
-// })
-
-// router.post('/return-reason', (req, res) => {
-
-// })
 module.exports = router;

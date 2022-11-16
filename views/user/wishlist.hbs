@@ -1,4 +1,4 @@
-<div class="container" style="width:60%;">
+<div class="container" style="width:100%;">
     {{#if products}}
     <div class="table-responsive wishlist-table margin-bottom-none" style="margin-top:7rem;box-shadow: rgb(100
         100 111 / 50%) 0px 7px 29px 0px;">
@@ -13,21 +13,25 @@
 
                 {{#each products}}
                 <tr>
-                    <td class="ps-5 pb-3 pt-3">
+                    <td class=" pb-3 pt-3">
                         <div class="product-item">
-                            <a class="product-thumb" href="#"><img style="" src="{{this.product.image.[0]}}"
-                                    alt="Product"></a>
-                            <div class="product-info">
-                                <h4 class="product-title"><a href="#">{{this.product.product}}</a></h4>
-                                <div class="text-lg text-medium text-muted">{{this.product.brand}}</div>
+                            <div class="product-info d-flex">
                                 <div>
-                                    <div class="d-inline text-secondary"
-                                        style="text-decoration: line-through; font-size: small;">₹
-                                        {{this.product.actualPrice}}
-                                    </div>
+                                    <a class="" href="#"><img style="width:100px;" src="{{this.product.image.[0]}}"
+                                            alt="Product"></a>
                                 </div>
-                                <div>
-                                    <div class="d-inline text-success">₹ {{this.product.offerPrice}}</div>
+                                <div class="ps-3">
+                                    <h4 class="product-title"><a href="#">{{this.product.product}}</a></h4>
+                                    <div class="text-lg text-medium text-muted">{{this.product.brand}}</div>
+                                    <div>
+                                        <div class="d-inline text-secondary"
+                                            style="text-decoration: line-through; font-size: small;">₹
+                                            {{this.product.actualPrice}}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="d-inline text-success">₹ {{this.product.offerPrice}}</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -47,7 +51,9 @@
         </table>
     </div>
     {{else}}
-    <img class="mx-auto d-block" style="margin-top: 10%;" src="/images/empty-cart-5521508-4610092.webp" alt="">
+    <img class="mx-auto d-block" style="margin-top:13%; width:500px; height:380px;"
+        src="https://res.cloudinary.com/dchrawfgy/image/upload/v1668592238/AlertzyOfficial/empty-cart-5521508-4610092_dxe9ct.webp"
+        alt="">
     {{/if}}
 </div>
 <style>

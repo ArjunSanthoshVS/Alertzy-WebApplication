@@ -139,13 +139,11 @@ function otpValidation() {
 }
 
 //IMAGE ZOOM
-var options = {
-    width: 400,
-    zoomWidth: 1000,
-    offset: { vertical: 50, horizontal: -180 },
-    scale: .5
-};
-new ImageZoom(document.getElementById("img-container"), options);
+$(document).ready(function () {
+    $(".block__pic").imagezoomsl({
+        zoomrange: [2, 2]
+    });
+});
 
 //ADD TO CART AJAX
 function addToCart(prodId) {

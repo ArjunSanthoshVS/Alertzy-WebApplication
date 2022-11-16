@@ -1,41 +1,36 @@
-<div class="container-xl px-4" style="margin-top:90px; width:60%;">
+<div class="container-xl px-4" style="margin-top:90px; width:100%;">
     <nav class=" nav nav-borders">
         <a class="nav-link active ms-0" href="/profile" style="font-size: large; font-weight: 600;">Profile</a>
         <a class="nav-link" href="/address" style="font-size: large; font-weight: 600;">Address</a>
         <a class="nav-link" href="/password" style="font-size: large; font-weight: 600;">Password</a>
         <a class="nav-link" href="/wallet" style="font-size: large; font-weight: 600;">Wallet</a>
-
-
     </nav>
-    <hr class="mt-0 mb-4">
-    <div class="d-flex">
-        <div class="box mt-4">
-            <div class="card" style="width: 18rem; border-radius: 10px; box-shadow:0px 1px 17px -2px;">
-                <div class="card-body px-5 py-4">
-                    <h5 class="card-title">Wallet</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Current Balance</h6>
-                    {{#if wallet.walletBalance}}
-                    <h3>₹ {{wallet.walletBalance}}</h3>
-                    {{else}}
-                    <h3>₹ 0</h3>
-                    {{/if}}
-                    <div class="d-flex justify-content-end">
-                        <a href="/cart" class="btn btn-small btn-primary p-1">Go to Cart</a>
-                    </div>
+    <hr class="mt-0 mb-5">
+
+    <div class="col-xl-6 col-lg-6 col-md-6 box mt-4 d-flex">
+        <div class="card p-2" style="width: 18rem; border-radius: 10px; box-shadow:0px 1px 17px -2px;">
+            <div class="card-body">
+                <h5 class="card-title">Wallet</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Current Balance</h6>
+                {{#if wallet.walletBalance}}
+                <h3>₹ {{wallet.walletBalance}}</h3>
+                {{else}}
+                <h3>₹ 0</h3>
+                {{/if}}
+                <div class="d-flex justify-content-end">
+                    <a href="/cart" class="btn btn-small btn-primary p-1">Go to Cart</a>
                 </div>
             </div>
         </div>
 
-        <div class="box mt-5 ms-5">
-            <div class="card" style="width: 20rem; border-radius: 10px; box-shadow:0px 1px 17px -2px;">
-                <div class="card-body px-5 py-4">
-                    <h5 class="card-title">Your Referral Code</h5>
-                    {{!-- <h6 class="card-subtitle mb-2 text-muted">Current Balance</h6> --}}
-                    <h3 class="mt-3">{{wallet.referralId}}</h3>
-                    <div class="d-flex justify-content-end">
-                    </div>
-                </div>
+        <div class="card ms-3  p-2" style="width: 20rem; border-radius: 10px; box-shadow:0px 1px 17px -2px;">
+            <div class="card-body">
+                <h5 class="card-title">Your Referral Code</h5>
+                {{!-- <h6 class="card-subtitle mb-2 text-muted">Current Balance</h6> --}}
+                <h3 class="mt-3">{{wallet.referralId}}</h3>
+                <p>You can refer your freinds and earn ₹100 free...!!!</p>
             </div>
         </div>
+
     </div>
 </div>

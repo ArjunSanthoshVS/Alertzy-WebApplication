@@ -1,0 +1,28 @@
+
+
+// why section
+
+.why_section {
+
+
+  .box {
+    text-align: center;
+    margin-top: 45px;
+    background-color: $primary2;
+    padding: 25px;
+    border-radius: 5px;
+    color: $white;
+
+    .img-box {
+      margin-bottom: 15px;
+
+      svg {
+        width: 55px;
+        height: auto;
+        fill: $white;
+      }
+    }
+  }
+}
+
+//end why section

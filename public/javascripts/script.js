@@ -261,7 +261,6 @@ function cancelOrder(orderId, prodId) {
 
 //SALES REPORT
 function salesReport(days, buttonId) {
-
     $.ajax({
         url: '/admin/sales-report/' + days,
         method: 'get',

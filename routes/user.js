@@ -307,7 +307,7 @@ router.post('/place-order', async (req, res) => {
           "payment_method": "paypal"
         },
         "redirect_urls": {
-          "return_url": "http://localhost:3000/success",
+          "return_url": "https://alertzy.store/success",
           "cancel_url": "http://cancel.url"
         },
         "transactions": [{

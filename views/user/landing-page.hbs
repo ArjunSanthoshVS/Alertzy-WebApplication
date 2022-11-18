@@ -75,15 +75,18 @@
 <div class="container">
   <div class="row mb-5">
     {{#each category}}
-    <div class="col-lg-4 col-md-6 col-sm-12">
-      <div class="card m-1" style="border-radius:10px; box-shadow: rgba(100, 100, 111, 0.5) 0px 0px 9px 0px;">
-        <div class="card-block text-center">
-          <h4 class="card-title p-5 fw-bold text-primary" style="text-shadow:2px 1px chocolate; font-size: xx-large;">
-            {{this.category}}
-          </h4>
+    <a style="text-decoration:none;" href="/products?search={{this.category}}">
+      <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="card m-1" style="border-radius:10px; box-shadow: rgba(100, 100, 111, 0.5) 0px 0px 9px 0px;">
+          <div class="card-block text-center">
+            <h4 class=" card-title p-5 fw-bold text-primary" style="text-decoration:none; text-shadow:2px 1px
+              chocolate; font-size: xx-large;">
+              {{this.category}}
+            </h4>
+          </div>
         </div>
       </div>
-    </div>
+    </a>
     {{/each}}
   </div>
   <hr>
@@ -377,9 +380,10 @@
             <p style="color:red;">0% off</p>
             {{/if}}
           </div>
-
+          {{#if ../user}}
           <button type="button" class="btn btn-primary" style="border-radius: 10px;"
             onclick="addToCart('{{this._id}}')">Add to Cart</button>
+          {{else}}
         </div>
       </div>
     </div>
@@ -395,6 +399,58 @@
 </div>
 
 <!-- Remove the container if you want to extend the Footer to full width. -->
+
+
+<div class="modal fade" id="login" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col col-xl-12">
+            <div class="col-md-12 col-lg-12 d-flex align-items-center">
+              <div class="card-body  text-black">
+                <form method="post" id="login-form">
+                  <div class="mb-3 pb-1 d-flex justify-content-center">
+                    <img
+                      src="https://res.cloudinary.com/dchrawfgy/image/upload/v1668592238/AlertzyOfficial/Logo_vgtbe1.png"
+                      alt="" style=" width:50%;">
+                  </div>
+                  <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account
+                  </h5>
+                  <div><small style="color:red;" id="login-Err"></small></div>
+                  <div class="invalid-feedback"></div>
+                  <div class="form-outline mb-4">
+                    <input type="email" id="email" class="form-control form-control-lg" name="email" required />
+                    <label class="form-label" for="form2Example17">Email address</label>
+                  </div>
+
+                  <div class="invalid-feedback"></div>
+                  <div class="form-outline mb-4">
+                    <input type="password" id="password" class="form-control form-control-lg" name="password"
+                      required />
+                    <label class="form-label" for="form2Example27">Password</label>
+                  </div>
+                  <div id="login-Err"></div>
+
+                  <div class="pt-1 mb-4">
+
+                    <button class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
+
+                  </div>
+                  <div>
+                    <p>Forgot Password..? <a href="/otp-login">Login with OTP</a></p>
+                  </div>
+                  <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a href="/signup"
+                      style="color: #393f81;">Register here</a></p>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 

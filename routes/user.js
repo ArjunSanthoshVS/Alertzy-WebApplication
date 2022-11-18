@@ -147,7 +147,7 @@ router.post('/signup', (req, res) => {
       res.render('user/login')
     } else {
       req.session.signupErr = resolve.message;
-      res.redirect('/signup');
+      res.redirect('/login');
     }
   })
 })

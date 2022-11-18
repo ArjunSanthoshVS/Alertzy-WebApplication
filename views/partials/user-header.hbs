@@ -10,6 +10,7 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <div class="mx-auto">
                 <ul class="navbar-nav" style="font-weight:700;">
+                    {{#if user}}
                     <li class="nav-item">
                         <a class="nav-link active pe-4" aria-current="page" href="/"
                             style=" color: #1867C2; font-family:auto; font-size: larger;">Home</a>
@@ -26,6 +27,26 @@
                         <a class="nav-link active pe-4" href="#footer"
                             style=" color: #1867C2; font-family:auto; font-size: larger;">Contact Us</a>
                     </li>
+                    {{else}}
+                    <li class="nav-item">
+                        <a class="nav-link active pe-4" aria-current="page" href="/"
+                            style=" color: #1867C2; font-family:auto; font-size: larger;">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active pe-4" href="/products?search"
+                            style=" color: #1867C2; font-family:auto; font-size: larger;">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" class="nav-link active" data-bs-toggle="modal" data-bs-target="#login"
+                            data-bs-whatever="@mdo"
+                            style=" color: #1867C2; font-family:auto; font-size: larger; border:0; background-color: white;">Orders</button>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active pe-4" href="#footer"
+                            style=" color: #1867C2; font-family:auto; font-size: larger;">Contact
+                            Us</a>
+                    </li>
+                    {{/if}}
                 </ul>
             </div>
             <div class="">

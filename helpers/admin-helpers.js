@@ -92,7 +92,7 @@ module.exports = {
             let categoryCheck = await db.get().collection(collection.CATEGORY_COLLECTION).findOne({ category: categoryData.category })
             if (categoryCheck == null) {
                 db.get().collection(collection.CATEGORY_COLLECTION).insertOne(categoryData).then((response) => {
-                    resolve(response.insertedId)
+                    resolve(response)
                 })
             } else {
                 reject()
@@ -123,7 +123,7 @@ module.exports = {
                     }
                 }
                 ).then((response) => {
-                    resolve(response.insertedId)
+                    resolve(response)
                 })
             } else {
                 reject()

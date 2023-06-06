@@ -8,7 +8,6 @@ const adminHelpers = require('../helpers/admin-helpers');
 require('dotenv').config()
 const client = require('twilio')(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN)
 const paypal = require('paypal-rest-sdk');
-const { response } = require('express');
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
   'client_id': process.env.CLIENT_ID,
@@ -80,7 +79,7 @@ router.post('/modal-signup', (req, res) => {
 });
 
 //OTP LOGIN
-router.get('/otp-login', (req, res) => {
+router.get('/otp-login', middleware.loginUnchecked, (req, res) => {
   res.render('user/otp-login', { not: true })
 })
 
@@ -96,11 +95,14 @@ router.post('/otp-login', (req, res) => {
         channel: 'sms'
       }).then((data) => {
         req.session.user = response.user;
-        res.render('user/otp-verification', { phone, not: true })
+        req.session.user = req.session.phone
+        res.redirect('/otp-verification')
+        // res.render('user/otp-verification', { phone, not: true })
       }).catch((err) => {
         console.log(err);
       })
   }).catch((response) => {
+    console.log('DDDDDDDDDDDDdddddddddddddddddd');
     req.session.loginErr = "Please check your mobile number";
     res.redirect('/login')
   })
@@ -108,7 +110,8 @@ router.post('/otp-login', (req, res) => {
 
 //OTP VERIFICATION
 router.get('/otp-verification', (req, res) => {
-  res.render('user/otp-verification', { not: true })
+  let phone = req.session.user
+  res.render('user/otp-verification', { phone })
 })
 
 router.post('/otp-verification', (req, res) => {

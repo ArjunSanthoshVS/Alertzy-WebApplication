@@ -319,7 +319,7 @@ window.addEventListener('load', () => {
 })
 
 function histogram(days, buttonId) {
-
+    console.log(days, '$$$$$$$$');
     $.ajax({
         url: '/admin/dashboard/' + days,
         method: 'get',
